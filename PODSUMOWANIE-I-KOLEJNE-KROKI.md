@@ -1,13 +1,14 @@
 # KadroweFinanse — podsumowanie stanu i kolejne kroki
 
-Zaktualizowano 2026-07-09: strona działa pod https://kadrowefinanse.pl i https://www.kadrowefinanse.pl (Cloudflare Pages, projekt `kadrowefinanse`, deploy typu direct upload — patrz "Deploy" niżej). Poczta na domenie (MX/IMAP/SMTP) nie została ruszona i nadal działa.
+Zaktualizowano 2026-07-09: strona działa pod https://kadrowefinanse.pl i https://www.kadrowefinanse.pl, obsługiwana przez **Cloudflare Worker `kadrowefinanse`** (statyczny hosting, auto-deploy z GitHub). Poczta na domenie (MX/IMAP/SMTP) nie została ruszona i nadal działa.
 
 ## Status wdrożenia
 
-- Projekt Cloudflare Pages **`kadrowefinanse`** utworzony w koncie `Poddamian@gmail.com's Account`.
-- Custom domains `kadrowefinanse.pl` i `www.kadrowefinanse.pl` podpięte i aktywne (status `active`, certyfikat SSL wystawiony).
-- Rekordy DNS apex i `www` zmienione z A (stary hosting lh.pl) na CNAME → `kadrowefinanse.pages.dev`, proxy przez Cloudflare. Pozostałe rekordy pocztowe (MX, `mail.`/`imap.`/`smtp.`/`pop3.`, SPF) nie zostały zmienione.
-- **Deploy jest na razie ręczny (direct upload przez `wrangler pages deploy dist`), NIE jest jeszcze podłączony do GitHub** — `git push` sam z siebie NIE aktualizuje strony. Żeby to zmienić, trzeba w dashboardzie Cloudflare Pages → projekt `kadrowefinanse` → Settings → Builds & deployments połączyć z repo `poddamian/kadrowefinanse` (branch `master`, build `npm run build`, output `dist`), co przełączy projekt na automatyczne deploye przy pushu.
+- Zasób **Worker `kadrowefinanse`** (Workers & Pages → Compute) podłączony do repo `poddamian/kadrowefinanse`, branch `master`. Build: `npm run build`, deploy: `npx wrangler deploy` (auto-detect static assets z `dist/`, bez adaptera SSR — strona jest w 100% statyczna/client-side).
+- **Auto-deploy działa** — każdy `git push` na `master` automatycznie buduje i wdraża stronę (Cloudflare Workers Builds). Nie trzeba już ręcznego `wrangler pages deploy`.
+- Custom domains `kadrowefinanse.pl` i `www.kadrowefinanse.pl` podpięte bezpośrednio pod ten Worker (zakładka Domains).
+- Historia: początkowo strona była wdrożona jako osobny projekt **Cloudflare Pages** (direct upload). Po podłączeniu GitHub w dashboardzie Cloudflare utworzyło **nowy, osobny zasób Worker** o tej samej nazwie zamiast połączyć się z istniejącym Pages — dlatego auto-deploy z początku nie aktualizował żywej domeny. Naprawione 2026-07-09: domenę przepięto z Pages na Worker, stary projekt Pages usunięty.
+- Bot Cloudflare otworzył PR proponujący adapter `@astrojs/cloudflare` (SSR) — **zamknięty bez mergowania**, bo niepotrzebny dla w pełni statycznej strony.
 
 ## Co jest gotowe
 
@@ -17,7 +18,7 @@ Zaktualizowano 2026-07-09: strona działa pod https://kadrowefinanse.pl i https:
 - `/ekwiwalent-za-urlop/` — ekwiwalent za niewykorzystany urlop
 - `/skladka-zdrowotna/` — porównanie składki zdrowotnej między formami opodatkowania
 
-Silnik obliczeniowy (`src/lib/podatki.ts`) ma 26 testów regresji (`npm run test:calc`) — wszystkie przechodzą, wartości zweryfikowane ręcznie.
+Silnik obliczeniowy (`src/lib/podatki.ts`) ma 26 testów regresji (`npm run test:calc`) — wszystkie przechodzą, wartości zweryfikowane ręcznie. Formularze startują puste (placeholdery), wynik pokazuje „—" dopóki dane nie są wpisane.
 
 ### 4 strony zaufania
 - `/o-nas/`
@@ -26,7 +27,7 @@ Silnik obliczeniowy (`src/lib/podatki.ts`) ma 26 testów regresji (`npm run test
 - `/regulamin/`
 
 ### Design system
-Papierowa "księga rachunkowa": zieleń butelkowa + bursztyn, Manrope + IBM Plex Mono. Progress indicator w kalkulatorach, touch targety min. 44px, kontrast WCAG AA/AAA.
+Papierowa "księga rachunkowa": zieleń butelkowa + bursztyn, Manrope + IBM Plex Mono. Logo w headerze, przyciski-zakładki w nawigacji, progress indicator w kalkulatorach, touch targety min. 44px, kontrast WCAG AA/AAA.
 
 ## Plan artykułów
 
@@ -42,10 +43,9 @@ Wszystkie 4 pillar artykuły klastrów A–D gotowe — każdy linkuje wzajemnie
 
 ## Kolejne kroki (w kolejności)
 
-1. **Podłączyć Cloudflare Pages do GitHub** (dashboard → projekt `kadrowefinanse` → Settings → Builds & deployments), żeby `git push` automatycznie deployował — na razie trzeba ręcznie `wrangler pages deploy dist`.
-2. Napisać pozostałe 12 artykułów wg harmonogramu w `Plan artykulow blogowych.md` (satelity klastrów A–D + klaster E).
-3. Sitemap, schema.org (structured data kalkulatorów), Google Search Console.
-4. Dopiero po tym: zgłoszenie do Google AdSense.
+1. Napisać pozostałe 12 artykułów wg harmonogramu w `Plan artykulow blogowych.md` (satelity klastrów A–D + klaster E).
+2. Sitemap, schema.org (structured data kalkulatorów), Google Search Console.
+3. Dopiero po tym: zgłoszenie do Google AdSense.
 
 ## Jak wznowić pracę lokalnie
 
@@ -58,19 +58,21 @@ Otwórz http://localhost:4321
 
 ## Deploy
 
-Dopóki GitHub nie jest podłączony (patrz punkt 1 wyżej), deploy jest ręczny:
-
-```
-npm run build
-npx wrangler pages deploy dist --project-name kadrowefinanse --branch master
-```
-
-Wymaga zmiennej środowiskowej `CLOUDFLARE_API_TOKEN` (uprawnienia: Account → Cloudflare Pages: Edit, Zone → DNS: Edit, Zone → Zone: Read, zakres: konto + strefa `kadrowefinanse.pl`).
-
-Warto też commitować do gita niezależnie od deployu, żeby historia była spójna:
+Automatyczny — wystarczy zwykły push:
 
 ```
 git add -A
 git commit -m "opis zmiany"
 git push
 ```
+
+Cloudflare Workers Builds sam buduje (`npm run build`) i wdraża (`npx wrangler deploy`) na `kadrowefinanse.pl` przy każdym pushu na `master`. Postęp builda widać w dashboardzie: Workers & Pages → `kadrowefinanse` → Deployments.
+
+Ręczny deploy (awaryjnie, gdy trzeba wdrożyć bez czekania na build w chmurze) nadal możliwy:
+
+```
+npm run build
+npx wrangler deploy
+```
+
+Wymaga zmiennej środowiskowej `CLOUDFLARE_API_TOKEN` z uprawnieniami do kontа i strefy `kadrowefinanse.pl`.
