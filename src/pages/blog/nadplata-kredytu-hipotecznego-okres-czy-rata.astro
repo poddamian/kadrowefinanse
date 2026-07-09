@@ -31,11 +31,23 @@ function okresSlownie(mies: number): string {
   if (m > 0) czesci.push(`${m} mies.`);
   return czesci.join(' i ') || '0 mies.';
 }
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'Nadpłata kredytu hipotecznego — skrócić okres czy zmniejszyć ratę?',
+  description: 'Porównanie dwóch trybów nadpłaty kredytu hipotecznego na przykładzie 400 000 zł: skrócenie okresu vs zmniejszenie raty. Ile realnie oszczędzasz w każdym wariancie.',
+  datePublished: '2026-07-09',
+  dateModified: '2026-07-09',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/nadplata-kredytu-hipotecznego-okres-czy-rata/',
+};
 ---
 
 <Layout
   title="Nadpłata kredytu hipotecznego — skrócić okres czy zmniejszyć ratę?"
   description="Porównanie dwóch trybów nadpłaty kredytu hipotecznego na przykładzie 400 000 zł: skrócenie okresu vs zmniejszenie raty. Ile realnie oszczędzasz w każdym wariancie."
+  schema={schema}
 >
   <span class="brew">case study · 400 000 zł, 25 lat, 7,20%</span>
   <h1>Nadpłata kredytu hipotecznego — skrócić okres czy zmniejszyć ratę?</h1>

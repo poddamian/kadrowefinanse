@@ -12,11 +12,24 @@ const dni20 = ekwiwalent(8000, 20, 1);
 const dni26 = ekwiwalent(8000, 26, 1);
 // Wpływ wymiaru etatu przy tej samej pensji i 10 dniach
 const polEtatu = ekwiwalent(4000, 10, 0.5);
+const tytul = `Ekwiwalent za niewykorzystany urlop ${ROK} — jak liczyć i kiedy się należy`;
+const opis = `Krok po kroku: jak liczyć ekwiwalent za niewykorzystany urlop w ${ROK} r. (współczynnik ${wsp}), przykłady liczbowe i zasady wypłaty przy rozwiązaniu umowy o pracę.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-07-09',
+  dateModified: '2026-07-09',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/ekwiwalent-za-urlop-jak-liczyc/',
+};
 ---
 
 <Layout
-  title={`Ekwiwalent za niewykorzystany urlop ${ROK} — jak liczyć i kiedy się należy`}
-  description={`Krok po kroku: jak liczyć ekwiwalent za niewykorzystany urlop w ${ROK} r. (współczynnik ${wsp}), przykłady liczbowe i zasady wypłaty przy rozwiązaniu umowy o pracę.`}
+  title={tytul}
+  description={opis}
+  schema={schema}
 >
   <span class="brew">stawki {ROK} · współczynnik {wsp}</span>
   <h1>Ekwiwalent za niewykorzystany urlop — jak liczyć i kiedy się należy</h1>

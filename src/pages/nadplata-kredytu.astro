@@ -1,12 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { ROK } from '../lib/params2026';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Kalkulator nadpłaty kredytu hipotecznego',
+  url: 'https://kadrowefinanse.pl/nadplata-kredytu/',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (przeglądarka internetowa)',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'PLN' },
+  description: 'Symulacja nadpłaty kredytu hipotecznego miesiąc po miesiącu — oszczędność na odsetkach i skrócenie okresu spłaty.',
+};
 ---
 
 <Layout
   title="Kalkulator nadpłaty kredytu hipotecznego — ile oszczędzisz?"
   description="Policz, ile odsetek zaoszczędzisz i o ile skrócisz kredyt hipoteczny nadpłacając co miesiąc lub jednorazowo. Symulacja miesiąc po miesiącu, bez rejestracji."
   aktywna="/nadplata-kredytu/"
+  schema={schema}
 >
   <span class="brew">symulacja miesiąc po miesiącu</span>
   <h1>Nadpłata kredytu — ile naprawdę oszczędzisz?</h1>
@@ -126,6 +138,8 @@ import { ROK } from '../lib/params2026';
     </div>
     <p>
       Case study na przykładzie 400 000 zł: <a href="/blog/nadplata-kredytu-hipotecznego-okres-czy-rata/">Nadpłata kredytu hipotecznego — skrócić okres czy zmniejszyć ratę?</a>
+      Zastanawiasz się, czy bank pobierze opłatę za nadpłatę? Sprawdź{' '}
+      <a href="/blog/rekomendacja-s-wczesniejsza-splata-kredytu/">Rekomendacja S i wcześniejsza spłata kredytu</a>.
     </p>
   </section>
 </Layout>

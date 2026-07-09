@@ -3,11 +3,24 @@ import Layout from '../../layouts/Layout.astro';
 import { ROK, ZUS_DUZY_PODSTAWA, PLACA_MINIMALNA } from '../../lib/params2026';
 
 const aktualizacja = '8 lipca 2026';
+const tytul = `B2B czy umowa o pracę — co się bardziej opłaca w ${ROK} roku?`;
+const opis = `Porównanie netto z etatu i z B2B przy 4 poziomach zarobków (6, 10, 15 i 20 tys. zł), liczone tym samym silnikiem co nasz kalkulator. Sprawdź, od jakiej kwoty B2B zaczyna się opłacać.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-07-08',
+  dateModified: '2026-07-08',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/b2b-czy-umowa-o-prace-2026/',
+};
 ---
 
 <Layout
-  title={`B2B czy umowa o pracę — co się bardziej opłaca w ${ROK} roku?`}
-  description={`Porównanie netto z etatu i z B2B przy 4 poziomach zarobków (6, 10, 15 i 20 tys. zł), liczone tym samym silnikiem co nasz kalkulator. Sprawdź, od jakiej kwoty B2B zaczyna się opłacać.`}
+  title={tytul}
+  description={opis}
+  schema={schema}
 >
   <span class="brew">stawki {ROK} · duży ZUS od {ZUS_DUZY_PODSTAWA} zł podstawy</span>
   <h1>B2B czy umowa o pracę — co się bardziej opłaca w {ROK} roku?</h1>

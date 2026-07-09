@@ -2,12 +2,24 @@
 import Layout from '../layouts/Layout.astro';
 import { ROK, ZDROWOTNA, PLACA_MINIMALNA } from '../lib/params2026';
 const min = ZDROWOTNA.minimalna.toFixed(2).replace('.', ',');
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `Kalkulator składki zdrowotnej ${ROK}`,
+  url: 'https://kadrowefinanse.pl/skladka-zdrowotna/',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (przeglądarka internetowa)',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'PLN' },
+  description: `Obliczenie miesięcznej składki zdrowotnej przedsiębiorcy w ${ROK} r. — skala, liniowy, ryczałt.`,
+};
 ---
 
 <Layout
   title={`Kalkulator składki zdrowotnej ${ROK} — skala, liniowy, ryczałt`}
   description={`Oblicz miesięczną składkę zdrowotną przedsiębiorcy w ${ROK} r.: 9% na skali, 4,9% na liniowym (min. ${min} zł), ryczałt wg progów przychodu. Bez rejestracji.`}
   aktywna="/skladka-zdrowotna/"
+  schema={schema}
 >
   <span class="brew">minimalna {ROK}: {min} zł/mies.</span>
   <h1>Składka zdrowotna przedsiębiorcy {ROK}</h1>
@@ -103,6 +115,8 @@ const min = ZDROWOTNA.minimalna.toFixed(2).replace('.', ',');
     </div>
     <p>
       Więcej o zasadach i przykładach liczbowych: <a href="/blog/skladka-zdrowotna-2026-przewodnik/">Składka zdrowotna przedsiębiorcy {ROK} — pełny przewodnik</a>.
+      Szukasz legalnych sposobów na jej obniżenie? Sprawdź{' '}
+      <a href="/blog/jak-obnizyc-skladke-zdrowotna/">Jak obniżyć składkę zdrowotną na działalności gospodarczej</a>.
     </p>
   </section>
 </Layout>

@@ -1,0 +1,191 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+import { b2bNetto, zlGr } from '../../lib/podatki';
+
+const aktualizacja = '9 lipca 2026';
+
+const poziomy = [8000, 12000, 20000];
+const wyniki = poziomy.map((przychod) => ({
+  przychod,
+  liniowy: b2bNetto({ przychodMies: przychod, kosztyMies: 500, forma: 'liniowy', zus: 'duzy', chorobowe: true }),
+  ryczalt12: b2bNetto({ przychodMies: przychod, kosztyMies: 500, forma: 'ryczalt', stawkaRyczaltu: 0.12, zus: 'duzy', chorobowe: true }),
+  ryczalt85: b2bNetto({ przychodMies: przychod, kosztyMies: 500, forma: 'ryczalt', stawkaRyczaltu: 0.085, zus: 'duzy', chorobowe: true }),
+}));
+
+const tytul = `Ryczałt czy podatek liniowy na B2B — co wybrać w ${ROK} roku?`;
+const opis = `Porównanie ryczałtu i podatku liniowego na przykładach liczbowych przy 8, 12 i 20 tys. zł przychodu. Kiedy ryczałt się opłaca, a kiedy lepszy jest liniowy — stawki ${ROK}.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-07-09',
+  dateModified: '2026-07-09',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/ryczalt-czy-liniowy-2026/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">stawki {ROK} · koszty 500 zł/mies., duży ZUS</span>
+  <h1>Ryczałt czy podatek liniowy na B2B — co wybrać w {ROK} roku?</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Ryczałt i podatek liniowy liczą się zupełnie inaczej — liniowy od dochodu (przychód minus
+      koszty), ryczałt od samego przychodu, bez odliczania kosztów. To sprawia, że odpowiedź
+      „co się bardziej opłaca” zależy mocno od tego, ile realnie wydajesz na prowadzenie firmy i
+      jaką stawkę ryczałtu przewiduje Twoja branża. Sprawdziliśmy to na przykładach liczbowych,
+      tym samym silnikiem co nasz <a href="/b2b-czy-uop/">kalkulator B2B vs umowa o pracę</a>.
+      Jeśli dopiero zastanawiasz się nad przejściem z etatu na B2B, zacznij od artykułu{' '}
+      <a href="/blog/b2b-czy-umowa-o-prace-2026/">B2B czy umowa o pracę — co się bardziej opłaca?</a>
+    </p>
+
+    <h2>Jak liczy się każda z form</h2>
+    <ul>
+      <li>
+        <strong>Podatek liniowy (19%):</strong> podstawą jest <em>dochód</em> — przychód minus
+        koszty firmowe i składki społeczne ZUS. Zapłaconą składkę zdrowotną (4,9% dochodu, min.
+        432,54 zł) można dodatkowo odliczyć od dochodu do limitu 14 100 zł rocznie.
+      </li>
+      <li>
+        <strong>Ryczałt od przychodów ewidencjonowanych:</strong> podstawą jest <em>przychód</em> —
+        koszty firmowe (poza składkami ZUS) nie obniżają podstawy opodatkowania wcale. Stawka
+        zależy od rodzaju działalności: 12% dla usług IT/programowania, 8,5% dla większości
+        usług, 15% dla pośrednictwa i reklamy i inne progi dla pozostałych branż.
+      </li>
+    </ul>
+
+    <h2>Case study: 8, 12 i 20 tys. zł przychodu miesięcznie</h2>
+    <p>
+      Założenia: koszty firmowe 500 zł/mies., duży ZUS, dobrowolna składka chorobowa. Dla
+      ryczałtu porównujemy dwie popularne stawki: 12% (usługi IT) i 8,5% (większość usług).
+    </p>
+
+    <table>
+      <caption>Netto miesięczne: liniowy vs ryczałt przy różnych przychodach. Stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Przychód</th>
+          <th class="liczba">Liniowy 19%</th>
+          <th class="liczba">Ryczałt 12%</th>
+          <th class="liczba">Ryczałt 8,5%</th>
+        </tr>
+      </thead>
+      <tbody>
+        {wyniki.map((w) => (
+          <tr class={w.przychod === 20000 ? 'wyroznione' : ''}>
+            <td>{w.przychod.toLocaleString('pl-PL')} zł</td>
+            <td class="mono">{zlGr(w.liniowy.nettoMies)}</td>
+            <td class="mono">{zlGr(w.ryczalt12.nettoMies)}</td>
+            <td class="mono">{zlGr(w.ryczalt85.nettoMies)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 320" role="img" aria-label="Wykres słupkowy: przy 8 tys. zł liniowy daje najwięcej netto, ale przy 12 i 20 tys. zł ryczałt (8,5% i 12%) zaczyna wygrywać z liniowym.">
+        <title>Netto miesięczne: liniowy vs ryczałt przy różnych przychodach ({ROK})</title>
+        <line x1="40" y1="280" x2="620" y2="280" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="45" y="10" width="14" height="14" fill="#1e5b43" /><text x="64" y="21" font-family="Manrope Variable, sans-serif" font-size="12" fill="#16281f">Liniowy 19%</text>
+        <rect x="200" y="10" width="14" height="14" fill="#c96f1e" /><text x="219" y="21" font-family="Manrope Variable, sans-serif" font-size="12" fill="#16281f">Ryczałt 12%</text>
+        <rect x="355" y="10" width="14" height="14" fill="#2f7a5a" /><text x="374" y="21" font-family="Manrope Variable, sans-serif" font-size="12" fill="#16281f">Ryczałt 8,5%</text>
+
+        <rect x="60" y="238" width="34" height="42" fill="#1e5b43" rx="2" />
+        <rect x="98" y="243" width="34" height="37" fill="#c96f1e" rx="2" />
+        <rect x="136" y="234" width="34" height="46" fill="#2f7a5a" rx="2" />
+        <text x="115" y="300" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">8 000 zł</text>
+
+        <rect x="260" y="153" width="34" height="127" fill="#1e5b43" rx="2" />
+        <rect x="298" y="140" width="34" height="140" fill="#c96f1e" rx="2" />
+        <rect x="336" y="122" width="34" height="158" fill="#2f7a5a" rx="2" />
+        <text x="315" y="300" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">12 000 zł</text>
+
+        <rect x="460" y="46" width="34" height="234" fill="#1e5b43" rx="2" />
+        <rect x="498" y="27" width="34" height="253" fill="#c96f1e" rx="2" />
+        <rect x="536" y="16" width="34" height="264" fill="#2f7a5a" rx="2" />
+        <text x="515" y="300" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">20 000 zł</text>
+      </svg>
+      <figcaption>
+        Im wyższy przychód przy niskich kosztach firmowych, tym bardziej ryczałt zyskuje przewagę
+        nad liniowym — bo nie płaci podatku od kosztów, których i tak prawie nie ponosi.
+      </figcaption>
+    </figure>
+
+    <h2>Dlaczego ryczałt wygrywa przy niskich kosztach</h2>
+    <p>
+      Przy przychodzie 8 000 zł liniowy daje {zlGr(wyniki[0].liniowy.nettoMies)} — więcej niż
+      ryczałt 12% ({zlGr(wyniki[0].ryczalt12.nettoMies)}), bo niska podstawa opodatkowania na
+      liniowym (dochód po kosztach) nie rekompensuje jeszcze różnicy stawek. Ale już przy
+      12 000 zł ryczałt 12% wyprzedza liniowy, a przy 20 000 zł przewaga ryczałtu 8,5% nad
+      liniowym sięga {zlGr(wyniki[2].ryczalt85.nettoMies - wyniki[2].liniowy.nettoMies)} miesięcznie.
+      Powód: przy niskich kosztach firmowych (tu: 500 zł/mies.) różnica między przychodem a
+      dochodem jest mała, więc liniowy i tak płaci podatek niemal od całego przychodu — ale przy
+      wyższej stawce (19% vs 8,5–12%).
+    </p>
+    <p>
+      Ten mechanizm działa w drugą stronę, jeśli koszty firmowe są wysokie: im więcej realnie
+      wydajesz na prowadzenie firmy (sprzęt, biuro, podwykonawcy), tym bardziej liniowy zyskuje
+      przewagę — bo te koszty obniżają podstawę opodatkowania, a na ryczałcie nie obniżają nic.
+    </p>
+
+    <h2>Jaki ryczałt dla jakiej branży</h2>
+    <p>
+      Stawka ryczałtu zależy od rodzaju działalności (PKWiU), nie jest wyborem dowolnym:
+    </p>
+    <ul>
+      <li><strong>12%</strong> — usługi związane z oprogramowaniem, programowanie, doradztwo IT.</li>
+      <li><strong>8,5%</strong> — większość pozostałych usług (do limitu przychodu 100 tys. zł, powyżej 12,5%).</li>
+      <li><strong>14%</strong> — usługi w zakresie opieki zdrowotnej, architektura, inżynieria.</li>
+      <li><strong>15%</strong> — pośrednictwo, reklama, zarządzanie.</li>
+      <li><strong>17%</strong> — wolne zawody (część z nich).</li>
+    </ul>
+    <p>
+      Zanim zdecydujesz się na ryczałt, sprawdź dokładną stawkę dla swojego PKD — pomyłka w
+      klasyfikacji to częsty powód sporów z urzędem skarbowym. Chcesz porównać dokładnie swoje
+      liczby? Wpisz realny przychód, koszty i stawkę w{' '}
+      <a href="/b2b-czy-uop/">kalkulatorze B2B vs umowa o pracę</a> — przełącznik formy
+      opodatkowania pozwala zobaczyć wynik dla skali, liniowego i ryczałtu jednocześnie.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Jaki ryczałt dla programisty w {ROK} roku?</p>
+    <p>
+      Dla usług związanych z oprogramowaniem i doradztwem IT standardowa stawka to 12%. Wyjątkiem
+      są niektóre wąskie kategorie (np. sprzedaż licencji własnego oprogramowania), które mogą
+      kwalifikować się do innej stawki — w razie wątpliwości warto potwierdzić klasyfikację PKWiU
+      z księgową lub przez indywidualną interpretację podatkową.
+    </p>
+
+    <p class="faq-pytanie">Czy da się zmienić formę opodatkowania w trakcie roku?</p>
+    <p>
+      Nie — wyboru formy (ryczałt, liniowy, skala) dokonuje się raz w roku, zwykle do 20. dnia
+      miesiąca następującego po pierwszym przychodzie w nowym roku podatkowym. Zmiana w trakcie
+      roku nie jest możliwa, dlatego warto przeliczyć oba warianty na podstawie prognozy
+      przychodów i kosztów, zanim zapadnie decyzja.
+    </p>
+
+    <p class="faq-pytanie">Czy na ryczałcie można odliczyć koszty prowadzenia firmy?</p>
+    <p>
+      Nie w sensie obniżenia podstawy opodatkowania — na ryczałcie podatek liczy się od pełnego
+      przychodu, niezależnie od poniesionych kosztów. Jedynym odliczeniem od podstawy jest 50%
+      zapłaconych w roku składek zdrowotnych. To główny powód, dla którego ryczałt opłaca się
+      najbardziej przy niskich kosztach firmowych.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i przyjmuje uproszczenia (m.in. stałe koszty firmowe, brak
+      ulg i wspólnego rozliczenia). Stawki na {ROK} r. Nie stanowi porady podatkowej — przed
+      wyborem formy opodatkowania skonsultuj się z księgowym lub doradcą podatkowym.
+    </div>
+  </div>
+</Layout>

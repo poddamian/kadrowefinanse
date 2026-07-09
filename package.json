@@ -13,6 +13,7 @@
     "test:calc": "tsx tests/obliczenia.test.ts"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/manrope": "^5.2.8",
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "astro": "^7.0.6"

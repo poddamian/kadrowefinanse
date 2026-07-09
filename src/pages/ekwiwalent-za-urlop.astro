@@ -2,12 +2,24 @@
 import Layout from '../layouts/Layout.astro';
 import { ROK, WSPOLCZYNNIK_URLOPOWY } from '../lib/params2026';
 const wsp = WSPOLCZYNNIK_URLOPOWY.toString().replace('.', ',');
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `Kalkulator ekwiwalentu za urlop ${ROK}`,
+  url: 'https://kadrowefinanse.pl/ekwiwalent-za-urlop/',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (przeglądarka internetowa)',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'PLN' },
+  description: `Obliczenie ekwiwalentu za niewykorzystany urlop wypoczynkowy w ${ROK} r. wg współczynnika ${wsp}.`,
+};
 ---
 
 <Layout
   title={`Kalkulator ekwiwalentu za urlop ${ROK} — współczynnik ${wsp}`}
   description={`Oblicz ekwiwalent za niewykorzystany urlop wypoczynkowy w ${ROK} r. Współczynnik ${wsp}, wymiar etatu, kwota brutto — prosty kalkulator bez rejestracji.`}
   aktywna="/ekwiwalent-za-urlop/"
+  schema={schema}
 >
   <span class="brew">współczynnik {ROK}: {wsp}</span>
   <h1>Ekwiwalent za niewykorzystany urlop</h1>
@@ -112,6 +124,8 @@ const wsp = WSPOLCZYNNIK_URLOPOWY.toString().replace('.', ',');
     </div>
     <p>
       Wzór krok po kroku i przykłady liczbowe: <a href="/blog/ekwiwalent-za-urlop-jak-liczyc/">Ekwiwalent za niewykorzystany urlop — jak liczyć i kiedy się należy</a>.
+      Chcesz poznać zasady urlopu na żądanie, zaległego i proporcjonalnego? Sprawdź{' '}
+      <a href="/blog/urlop-proporcjonalny-na-zadanie-zalegly/">kompendium o urlopie wypoczynkowym</a>.
     </p>
   </section>
 </Layout>

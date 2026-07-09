@@ -10,9 +10,20 @@ interface Props {
   description: string;
   /** Ścieżka bieżącej strony do zaznaczenia w menu, np. "/b2b-czy-uop/" */
   aktywna?: string;
+  /** Dodatkowe dane strukturalne schema.org (JSON-LD) specyficzne dla strony */
+  schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, aktywna = '' } = Astro.props;
+const { title, description, aktywna = '', schema } = Astro.props;
+const schematy = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+
+const organizacja = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Kadrowe Finanse',
+  url: 'https://kadrowefinanse.pl',
+  logo: 'https://kadrowefinanse.pl/favicon.svg',
+};
 
 const narzedzia = [
   { url: '/b2b-czy-uop/', nazwa: 'B2B czy UoP' },
@@ -34,6 +45,8 @@ const narzedzia = [
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pl_PL" />
+    <script type="application/ld+json" set:html={JSON.stringify(organizacja)} />
+    {schematy.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
   <body>
     <header class="naglowek">

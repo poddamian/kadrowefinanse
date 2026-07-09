@@ -1,12 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { ROK, ZUS_DUZY_PODSTAWA, ZUS_PREF_PODSTAWA, STAWKI_RYCZALTU, ZDROWOTNA } from '../lib/params2026';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `Kalkulator B2B czy umowa o pracę ${ROK}`,
+  url: 'https://kadrowefinanse.pl/b2b-czy-uop/',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (przeglądarka internetowa)',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'PLN' },
+  description: `Porównanie wynagrodzenia netto na etacie i na B2B (skala, liniowy, ryczałt) ze stawkami ${ROK}.`,
+};
 ---
 
 <Layout
   title={`Kalkulator B2B czy umowa o pracę ${ROK} — porównaj netto`}
   description={`Porównaj wynagrodzenie netto na etacie i na B2B (skala, liniowy, ryczałt) ze stawkami ${ROK}. Pełne rozbicie ZUS, składki zdrowotnej i PIT — bez rejestracji.`}
   aktywna="/b2b-czy-uop/"
+  schema={schema}
 >
   <span class="brew">stawki {ROK} · duży ZUS od {ZUS_DUZY_PODSTAWA} zł podstawy</span>
   <h1>B2B czy umowa o pracę — co się bardziej opłaca?</h1>
@@ -165,6 +177,10 @@ import { ROK, ZUS_DUZY_PODSTAWA, ZUS_PREF_PODSTAWA, STAWKI_RYCZALTU, ZDROWOTNA }
       Chcesz zobaczyć, jak ta różnica zmienia się przy różnych zarobkach? Sprawdziliśmy to na
       czterech poziomach wynagrodzeń w artykule{' '}
       <a href="/blog/b2b-czy-umowa-o-prace-2026/">B2B czy umowa o pracę — co się bardziej opłaca w {ROK} roku?</a>
+    </p>
+    <p>
+      Wybierasz między ryczałtem a liniowym na B2B? Zobacz porównanie na przykładach w artykule{' '}
+      <a href="/blog/ryczalt-czy-liniowy-2026/">Ryczałt czy podatek liniowy na B2B</a>.
     </p>
     <div class="zastrzezenie">
       Kalkulator ma charakter poglądowy i przyjmuje uproszczenia (m.in. standardowe koszty

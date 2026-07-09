@@ -1,0 +1,195 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+import { symulujNadplate, rataAnnuitetowa, zl, zlGr } from '../../lib/podatki';
+
+const aktualizacja = '9 lipca 2026';
+
+const kapital = 350000;
+const oproc = 0.068;
+const okresMies = 264; // 22 lata
+const rataBazowa = rataAnnuitetowa(kapital, oproc, okresMies);
+const nadplataJednorazowa = 40000;
+const wynik = symulujNadplate({ kapital, oprocentowanie: oproc, okresMies, nadplataMies: 0, nadplataJednorazowa, tryb: 'okres' });
+const rekompensata = nadplataJednorazowa * 0.03;
+
+function okresSlownie(mies: number): string {
+  const lata = Math.floor(mies / 12);
+  const m = mies % 12;
+  const czesci = [];
+  if (lata > 0) czesci.push(`${lata} ${lata === 1 ? 'rok' : lata < 5 ? 'lata' : 'lat'}`);
+  if (m > 0) czesci.push(`${m} mies.`);
+  return czesci.join(' i ') || '0 mies.';
+}
+
+const tytul = `Rekomendacja S i wcześniejsza spłata kredytu — co musisz wiedzieć w ${ROK}`;
+const opis = 'Kiedy bank może pobrać rekompensatę za wcześniejszą spłatę kredytu hipotecznego, ile może wynosić i jak to policzyć na przykładzie. Zasady wynikające z Rekomendacji S i ustawy o kredycie hipotecznym.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-07-09',
+  dateModified: '2026-07-09',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/rekomendacja-s-wczesniejsza-splata-kredytu/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">case study · nadpłata 40 000 zł w 1. roku kredytu</span>
+  <h1>Rekomendacja S i wcześniejsza spłata kredytu — co musisz wiedzieć</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Wcześniejsza spłata kredytu hipotecznego prawie zawsze się opłaca — ale w pierwszych
+      latach kredytu bank może doliczyć rekompensatę za utracone odsetki. Wyjaśniamy, kiedy to
+      możliwe, ile może wynosić i czy warto nadpłacać mimo tej opłaty — na przykładzie liczonym
+      tym samym silnikiem co nasz <a href="/nadplata-kredytu/">kalkulator nadpłaty kredytu</a>.
+      Case study porównujące skrócenie okresu i zmniejszenie raty znajdziesz w artykule{' '}
+      <a href="/blog/nadplata-kredytu-hipotecznego-okres-czy-rata/">Nadpłata kredytu hipotecznego — skrócić okres czy zmniejszyć ratę?</a>
+    </p>
+
+    <h2>Czym jest Rekomendacja S</h2>
+    <p>
+      Rekomendacja S to zbiór wytycznych Komisji Nadzoru Finansowego dla banków dotyczących
+      kredytów hipotecznych — m.in. sposobu liczenia zdolności kredytowej i zasad pobierania
+      opłat za wcześniejszą spłatę. W praktyce najważniejsze są jednak przepisy{' '}
+      <strong>ustawy o kredycie hipotecznym</strong> z 2017 r., które precyzyjnie ograniczają,
+      kiedy i ile bank może pobrać.
+    </p>
+
+    <h2>Kiedy bank może pobrać rekompensatę</h2>
+    <p>
+      Dla kredytów hipotecznych zaciągniętych <strong>po 22 lipca 2017 r.</strong>, bank może
+      pobrać rekompensatę za wcześniejszą spłatę (całkowitą lub częściową) tylko, gdy spełnione
+      są jednocześnie dwa warunki:
+    </p>
+    <ul>
+      <li>kredyt ma <strong>oprocentowanie zmienne</strong> (WIBOR/WIRON + marża),</li>
+      <li>spłata następuje w ciągu <strong>pierwszych 36 miesięcy</strong> od uruchomienia kredytu.</li>
+    </ul>
+    <p>
+      Po upływie 36 miesięcy każda nadpłata — częściowa czy całkowita — jest{' '}
+      <strong>całkowicie bezpłatna</strong>, niezależnie od kwoty. Kredyty ze{' '}
+      <strong>stałym oprocentowaniem</strong> rządzą się swoimi zasadami — tu rekompensata może
+      obowiązywać przez cały okres obowiązywania stałej stopy, zgodnie z umową.
+    </p>
+
+    <h2>Ile może wynosić rekompensata</h2>
+    <p>
+      Ustawa ogranicza wysokość rekompensaty do niższej z dwóch kwot:
+    </p>
+    <ul>
+      <li><strong>1% nadpłacanej kwoty</strong> — jeśli spłata następuje w okresie dłuższym niż rok przed końcem 36-miesięcznego okresu,</li>
+      <li><strong>0,5% nadpłacanej kwoty</strong> — jeśli spłata następuje w ciągu ostatniego roku tego okresu,</li>
+    </ul>
+    <p>
+      a dodatkowo rekompensata nie może przekroczyć wysokości odsetek, które bank utraciłby w
+      wyniku wcześniejszej spłaty. W praktyce banki różnie formułują to w umowach — część
+      stosuje uproszczony limit rzędu 2–3% nadpłacanej kwoty w pierwszym roku, malejący w
+      kolejnych miesiącach. <strong>Zawsze sprawdź dokładny zapis w swojej umowie</strong> —
+      to jedyne wiążące źródło.
+    </p>
+
+    <h2>Case study: czy nadpłata z rekompensatą się opłaca?</h2>
+    <p>
+      Kredyt 350 000 zł, oprocentowanie zmienne 6,8%, 22 lata (264 miesiące). Rata bazowa:{' '}
+      <strong>{zlGr(rataBazowa)}</strong>. Załóżmy jednorazową nadpłatę{' '}
+      {nadplataJednorazowa.toLocaleString('pl-PL')} zł już po roku spłacania (czyli w okresie,
+      gdy bank może jeszcze pobrać rekompensatę) — przy przykładowej stawce 3%.
+    </p>
+
+    <table>
+      <caption>Rekompensata a oszczędność z nadpłaty {nadplataJednorazowa.toLocaleString('pl-PL')} zł. Kredyt {kapital.toLocaleString('pl-PL')} zł, {oproc * 100}%, {okresMies / 12} lat.</caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th class="liczba">Kwota</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Rekompensata (przykładowe 3%)</td>
+          <td class="mono">{zl(rekompensata)}</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>Oszczędność na odsetkach dzięki nadpłacie</td>
+          <td class="mono">{zl(wynik.oszczednosc)}</td>
+        </tr>
+        <tr>
+          <td>Skrócenie okresu spłaty</td>
+          <td class="mono">{okresSlownie(wynik.skrocenieMies)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 300" role="img" aria-label="Wykres słupkowy: rekompensata 1200 zł jest wielokrotnie mniejsza niż oszczędność na odsetkach z nadpłaty, wynosząca ponad 110 tysięcy złotych.">
+        <title>Rekompensata vs oszczędność na odsetkach</title>
+        <line x1="40" y1="260" x2="620" y2="260" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="140" y="252" width="90" height="8" fill="#b3372f" rx="2" />
+        <text x="185" y="242" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zl(rekompensata)}</text>
+        <text x="185" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">Rekompensata</text>
+
+        <rect x="380" y="40" width="90" height="220" fill="#1e5b43" rx="2" />
+        <text x="425" y="30" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zl(wynik.oszczednosc)}</text>
+        <text x="425" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">Oszczędność na odsetkach</text>
+      </svg>
+      <figcaption>
+        Nawet przy maksymalnej dopuszczalnej rekompensacie, nadpłata kredytu hipotecznego niemal
+        zawsze się opłaca — rekompensata to promil oszczędności, jaką daje szybsza spłata.
+      </figcaption>
+    </figure>
+
+    <p>
+      Wniosek jest jednoznaczny: nawet w pierwszych 36 miesiącach, gdy rekompensata jest prawnie
+      dopuszczalna, jej wysokość (ograniczona ustawowo do 0,5–1% nadpłacanej kwoty) jest
+      pomijalna wobec oszczędności na odsetkach przy wieloletnim kredycie. Jedynym scenariuszem,
+      w którym warto się wstrzymać, jest sytuacja, gdy planujesz nadpłatę <em>tuż przed</em>{' '}
+      upływem 36 miesięcy — wtedy kilka tygodni odczekania pozwoli uniknąć opłaty całkowicie.
+    </p>
+    <p>
+      Chcesz sprawdzić własny scenariusz? Wpisz parametry swojego kredytu w{' '}
+      <a href="/nadplata-kredytu/">kalkulatorze nadpłaty</a> — symulacja miesiąc po miesiącu
+      pokaże dokładną oszczędność niezależnie od ewentualnej rekompensaty.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy bank może pobrać opłatę za nadpłatę kredytu hipotecznego w {ROK} roku?</p>
+    <p>
+      Tylko jeśli kredyt ma oprocentowanie zmienne i nadpłata następuje w ciągu pierwszych 36
+      miesięcy od uruchomienia. Po tym okresie każda nadpłata jest bezpłatna niezależnie od
+      kwoty i częstotliwości.
+    </p>
+
+    <p class="faq-pytanie">Czy rekompensata dotyczy też kredytów gotówkowych?</p>
+    <p>
+      Nie — zasady opisane tu dotyczą wyłącznie kredytów hipotecznych objętych ustawą z 2017 r.
+      Kredyty konsumenckie (gotówkowe) rządzą się innymi przepisami (ustawa o kredycie
+      konsumenckim), które inaczej ograniczają wysokość ewentualnej rekompensaty.
+    </p>
+
+    <p class="faq-pytanie">Jak sprawdzić, czy mój kredyt jeszcze podlega rekompensacie?</p>
+    <p>
+      Policz, ile miesięcy minęło od dnia uruchomienia kredytu (nie podpisania umowy). Jeśli to
+      więcej niż 36 miesięcy, rekompensata nie obowiązuje niezależnie od zapisów w umowie —
+      przepis ustawowy ma pierwszeństwo. W razie wątpliwości zapytaj bank wprost przed złożeniem
+      dyspozycji nadpłaty.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy — dokładne zasady rekompensaty zależą od Twojej umowy
+      kredytowej i mogą się różnić między bankami w granicach ustawy. Stawki i przykład
+      liczbowy na {ROK} r. Nie stanowi porady finansowej ani prawnej — przed nadpłatą sprawdź
+      warunki w swojej umowie lub skontaktuj się z bankiem.
+    </div>
+  </div>
+</Layout>

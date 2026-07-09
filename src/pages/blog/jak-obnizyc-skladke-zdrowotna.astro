@@ -1,0 +1,206 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, ZDROWOTNA } from '../../lib/params2026';
+import { b2bNetto, zlGr } from '../../lib/podatki';
+
+const aktualizacja = '9 lipca 2026';
+
+const koszty = [500, 2000, 4000];
+const wplywKosztow = koszty.map((k) => b2bNetto({ przychodMies: 15000, kosztyMies: k, forma: 'liniowy', zus: 'duzy', chorobowe: true }));
+
+const skala15 = b2bNetto({ przychodMies: 15000, kosztyMies: 500, forma: 'skala', zus: 'duzy', chorobowe: true });
+const liniowy15 = b2bNetto({ przychodMies: 15000, kosztyMies: 500, forma: 'liniowy', zus: 'duzy', chorobowe: true });
+const skala25 = b2bNetto({ przychodMies: 25000, kosztyMies: 500, forma: 'skala', zus: 'duzy', chorobowe: true });
+const liniowy25 = b2bNetto({ przychodMies: 25000, kosztyMies: 500, forma: 'liniowy', zus: 'duzy', chorobowe: true });
+
+const tytul = `Jak obniżyć składkę zdrowotną na działalności gospodarczej — legalne sposoby ${ROK}`;
+const opis = `Legalne sposoby na obniżenie składki zdrowotnej przedsiębiorcy w ${ROK} r.: wpływ kosztów firmowych, wybór formy opodatkowania, przykłady liczbowe.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-07-09',
+  dateModified: '2026-07-09',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/jak-obnizyc-skladke-zdrowotna/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">stawki {ROK} · liniowy, skala i wpływ kosztów</span>
+  <h1>Jak obniżyć składkę zdrowotną na działalności gospodarczej</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Składka zdrowotna po Polskim Ładzie to realny koszt liczony procentowo — nie ma jednego
+      „triku”, który obniża ją do zera, ale jest kilka legalnych dźwigni, które realnie zmieniają
+      wysokość miesięcznej płatności. Sprawdziliśmy je liczbowo, tym samym silnikiem co nasz{' '}
+      <a href="/skladka-zdrowotna/">kalkulator składki zdrowotnej</a>. Jeśli szukasz pełnego
+      przeglądu zasad, zacznij od{' '}
+      <a href="/blog/skladka-zdrowotna-2026-przewodnik/">Składka zdrowotna przedsiębiorcy {ROK} — pełny przewodnik</a>.
+    </p>
+
+    <h2>Dźwignia #1: koszty firmowe (tylko na liniowym i skali)</h2>
+    <p>
+      Na liniowym i skali podstawą składki jest <strong>dochód</strong>, czyli przychód minus
+      koszty. Każda złotówka realnie poniesionego, udokumentowanego kosztu firmowego obniża więc
+      nie tylko podatek, ale i składkę zdrowotną. Przy przychodzie 15 000 zł/mies. na liniowym:
+    </p>
+
+    <table>
+      <caption>Wpływ kosztów firmowych na składkę zdrowotną i netto — liniowy, przychód 15 000 zł/mies.</caption>
+      <thead>
+        <tr>
+          <th>Koszty firmowe</th>
+          <th class="liczba">Dochód</th>
+          <th class="liczba">Składka zdrowotna</th>
+          <th class="liczba">Netto</th>
+        </tr>
+      </thead>
+      <tbody>
+        {koszty.map((k, i) => (
+          <tr class={k === 4000 ? 'wyroznione' : ''}>
+            <td>{k.toLocaleString('pl-PL')} zł</td>
+            <td class="mono">{zlGr(wplywKosztow[i].dochodMies)}</td>
+            <td class="mono">{zlGr(wplywKosztow[i].zdrowotnaMies)}</td>
+            <td class="mono">{zlGr(wplywKosztow[i].nettoMies)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 280" role="img" aria-label="Wykres słupkowy malejący: składka zdrowotna spada z 616 zł do 445 zł, gdy koszty firmowe rosną z 500 do 4000 zł miesięcznie.">
+        <title>Składka zdrowotna a koszty firmowe (liniowy, {ROK})</title>
+        <line x1="40" y1="240" x2="620" y2="240" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="100" y="60" width="80" height="180" fill="#1e5b43" rx="2" />
+        <text x="140" y="50" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(wplywKosztow[0].zdrowotnaMies)}</text>
+        <text x="140" y="260" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">koszty 500 zł</text>
+
+        <rect x="280" y="80" width="80" height="160" fill="#c96f1e" rx="2" />
+        <text x="320" y="70" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(wplywKosztow[1].zdrowotnaMies)}</text>
+        <text x="320" y="260" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">koszty 2000 zł</text>
+
+        <rect x="460" y="109" width="80" height="131" fill="#2f7a5a" rx="2" />
+        <text x="500" y="99" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(wplywKosztow[2].zdrowotnaMies)}</text>
+        <text x="500" y="260" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">koszty 4000 zł</text>
+      </svg>
+      <figcaption>
+        Każdy dodatkowy 1 000 zł realnego kosztu firmowego obniża tu składkę zdrowotną o ok.
+        49 zł miesięcznie (4,9% mniejszego dochodu) — plus dodatkowo obniża podatek liniowy.
+      </figcaption>
+    </figure>
+    <p>
+      To nie znaczy, że warto sztucznie mnożyć wydatki — każdy koszt to i tak realny wypływ
+      gotówki z firmy, tylko częściowo rekompensowany niższym podatkiem i składką. Ale dokładne
+      księgowanie <em>wszystkich</em> uprawnionych kosztów (sprzęt, oprogramowanie, część
+      rachunków za internet i telefon, szkolenia) — zamiast pomijania drobnych wydatków — to
+      legalny i często niedoceniany sposób na obniżenie podstawy.
+    </p>
+
+    <h2>Dźwignia #2: wybór formy opodatkowania</h2>
+    <p>
+      Skala liczy składkę jako 9% dochodu, liniowy jako 4,9% — przy tym samym dochodzie liniowy
+      zawsze daje niższą składkę zdrowotną w ujęciu procentowym. Ale forma opodatkowania wpływa
+      też na podatek, więc decyzja nie powinna zapadać wyłącznie na podstawie samej składki:
+    </p>
+
+    <table>
+      <caption>Skala vs liniowy — składka zdrowotna i netto przy dwóch poziomach przychodu.</caption>
+      <thead>
+        <tr>
+          <th>Przychód</th>
+          <th class="liczba">Zdrowotna (skala)</th>
+          <th class="liczba">Zdrowotna (liniowy)</th>
+          <th class="liczba">Netto skala</th>
+          <th class="liczba">Netto liniowy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>15 000 zł</td>
+          <td class="mono">{zlGr(skala15.zdrowotnaMies)}</td>
+          <td class="mono">{zlGr(liniowy15.zdrowotnaMies)}</td>
+          <td class="mono">{zlGr(skala15.nettoMies)}</td>
+          <td class="mono">{zlGr(liniowy15.nettoMies)}</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>25 000 zł</td>
+          <td class="mono">{zlGr(skala25.zdrowotnaMies)}</td>
+          <td class="mono">{zlGr(liniowy25.zdrowotnaMies)}</td>
+          <td class="mono">{zlGr(skala25.nettoMies)}</td>
+          <td class="mono">{zlGr(liniowy25.nettoMies)}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Przy 25 000 zł przychodu liniowy daje {zlGr(liniowy25.nettoMies - skala25.nettoMies)}{' '}
+      więcej netto niż skala — głównie dzięki niższej składce zdrowotnej i braku drugiej stawki
+      32% powyżej progu. Przy niższych dochodach różnica bywa dużo mniejsza albo odwraca się na
+      korzyść skali (dzięki kwocie wolnej). Zawsze warto przeliczyć obie formy dla własnych,
+      realnych liczb w{' '}
+      <a href="/skladka-zdrowotna/">kalkulatorze składki zdrowotnej</a>.
+    </p>
+
+    <h2>Dźwignia #3: odliczenie zapłaconej składki (liniowy i ryczałt)</h2>
+    <p>
+      Na liniowym zapłacone w danym roku składki zdrowotne odliczasz od dochodu do limitu{' '}
+      {ZDROWOTNA.liniowyLimitOdliczenia.toLocaleString('pl-PL')} zł rocznie — to nie obniża samej
+      składki, ale obniża podatek liczony od pomniejszonego dochodu, czyli realnie zmniejsza
+      łączne obciążenie. Na ryczałcie mechanizm jest podobny: od przychodu odliczasz{' '}
+      {(ZDROWOTNA.ryczaltOdliczenieProc * 100).toFixed(0)}% zapłaconych w roku składek
+      zdrowotnych, co obniża podstawę ryczałtu.
+    </p>
+
+    <h2>Czego NIE da się zrobić</h2>
+    <p>
+      Nie da się legalnie zejść poniżej składki minimalnej ({ZDROWOTNA.minimalna.toFixed(2).replace('.', ',')}{' '}
+      zł/mies. na skali i liniowym) niezależnie od tego, jak niski jest dochód — nawet przy
+      stracie. Nie da się też „przełączać” formy opodatkowania w trakcie roku w zależności od
+      bieżących wyników — wybór jest wiążący na cały rok podatkowy. I nie da się uniknąć
+      rocznego rozliczenia składki: jeśli w trakcie roku dochód się zmienił, ZUS i tak wyrówna
+      różnicę przy rozliczeniu rocznym (dopłata lub zwrot).
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy warto zmienić formę opodatkowania, żeby obniżyć składkę zdrowotną?</p>
+    <p>
+      Samo obniżenie składki to za mało — trzeba spojrzeć na łączne obciążenie (podatek +
+      składka). Przy wysokich dochodach liniowy zwykle wygrywa dzięki niższej składce i braku
+      progresji podatkowej; przy niższych dochodach skala bywa korzystniejsza dzięki kwocie
+      wolnej. Policz obie opcje dla swoich liczb przed decyzją — zmiana formy wiąże na cały rok.
+    </p>
+
+    <p class="faq-pytanie">Czy zwiększenie kosztów firmowych zawsze się opłaca?</p>
+    <p>
+      Nie automatycznie — koszt musi być realnie poniesiony i uzasadniony biznesowo, inaczej
+      urząd skarbowy może go zakwestionować. Ale jeśli już ponosisz dany wydatek (sprzęt,
+      oprogramowanie, część kosztów mieszkania przy pracy zdalnej), upewnij się, że jest w pełni
+      i poprawnie zaksięgowany — to legalnie obniża zarówno podatek, jak i składkę zdrowotną na
+      liniowym i skali.
+    </p>
+
+    <p class="faq-pytanie">Czy ryczałt zawsze ma niższą składkę zdrowotną niż liniowy?</p>
+    <p>
+      Niekoniecznie — na ryczałcie składka jest stałą kwotą zależną od progu przychodu rocznego,
+      niezależną od kosztów. Przy wysokich kosztach firmowych liniowy może dać niższą składkę
+      (bo dochód, czyli podstawa, jest mocno obniżony), a przy niskich kosztach to ryczałt zwykle
+      wygrywa. Dokładne porównanie znajdziesz w artykule{' '}
+      <a href="/blog/ryczalt-czy-liniowy-2026/">Ryczałt czy podatek liniowy na B2B</a>.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy — stawki na {ROK} r. Nie stanowi porady podatkowej. Przed
+      decyzją o formie opodatkowania lub kwalifikacji kosztów firmowych skonsultuj się z
+      księgowym lub doradcą podatkowym.
+    </div>
+  </div>
+</Layout>

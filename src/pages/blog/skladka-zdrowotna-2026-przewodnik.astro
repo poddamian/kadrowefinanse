@@ -4,11 +4,24 @@ import { ROK, ZDROWOTNA, PLACA_MINIMALNA } from '../../lib/params2026';
 
 const aktualizacja = '9 lipca 2026';
 const min = ZDROWOTNA.minimalna.toFixed(2).replace('.', ',');
+const tytul = `Składka zdrowotna przedsiębiorcy ${ROK} — pełny przewodnik po zmianach`;
+const opis = `Ile wynosi składka zdrowotna w ${ROK} r. na skali, liniowym i ryczałcie — stawki, minimalna składka ${min} zł, limity odliczeń i przykłady liczbowe.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-07-09',
+  dateModified: '2026-07-09',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/skladka-zdrowotna-2026-przewodnik/',
+};
 ---
 
 <Layout
-  title={`Składka zdrowotna przedsiębiorcy ${ROK} — pełny przewodnik po zmianach`}
-  description={`Ile wynosi składka zdrowotna w ${ROK} r. na skali, liniowym i ryczałcie — stawki, minimalna składka ${min} zł, limity odliczeń i przykłady liczbowe.`}
+  title={tytul}
+  description={opis}
+  schema={schema}
 >
   <span class="brew">stawki {ROK} · minimalna {min} zł/mies.</span>
   <h1>Składka zdrowotna przedsiębiorcy {ROK} — pełny przewodnik</h1>

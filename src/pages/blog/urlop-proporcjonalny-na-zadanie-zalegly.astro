@@ -1,0 +1,183 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '9 lipca 2026';
+
+function urlopProporcjonalny(wymiarRoczny: number, miesiacePrzepracowane: number): number {
+  return Math.ceil((wymiarRoczny * miesiacePrzepracowane) / 12);
+}
+
+const przyklady = [3, 6, 9, 12].map((m) => ({
+  miesiace: m,
+  dni20: urlopProporcjonalny(20, m),
+  dni26: urlopProporcjonalny(26, m),
+}));
+
+const tytul = `Urlop na żądanie, zaległy, proporcjonalny — kompendium ${ROK}`;
+const opis = 'Ile dni urlopu na żądanie przysługuje, do kiedy trzeba wykorzystać urlop zaległy i jak liczy się urlop proporcjonalny przy zmianie pracy w trakcie roku. Kompendium z przykładami.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-07-09',
+  dateModified: '2026-07-09',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/urlop-proporcjonalny-na-zadanie-zalegly/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">stawki {ROK} · 20 lub 26 dni rocznie</span>
+  <h1>Urlop na żądanie, zaległy, proporcjonalny — kompendium</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Urlop wypoczynkowy w Kodeksie pracy ma kilka odmian, które łatwo pomylić — na żądanie,
+      zaległy, proporcjonalny. Każda rządzi się innymi terminami i zasadami. To kompendium
+      porządkuje wszystkie trzy, z przykładami liczbowymi — powiązane z naszym{' '}
+      <a href="/ekwiwalent-za-urlop/">kalkulatorem ekwiwalentu za urlop</a>, jeśli szukasz
+      wyliczenia kwoty do wypłaty przy rozwiązaniu umowy — zobacz też{' '}
+      <a href="/blog/ekwiwalent-za-urlop-jak-liczyc/">Ekwiwalent za niewykorzystany urlop — jak liczyć</a>.
+    </p>
+
+    <h2>Ile dni urlopu przysługuje rocznie</h2>
+    <p>
+      Wymiar podstawowy zależy od stażu pracy (wliczając okres nauki):
+    </p>
+    <ul>
+      <li><strong>20 dni</strong> rocznie — przy stażu pracy poniżej 10 lat.</li>
+      <li><strong>26 dni</strong> rocznie — przy stażu pracy 10 lat i więcej.</li>
+    </ul>
+    <p>
+      Do stażu wlicza się okresy zatrudnienia u wszystkich poprzednich pracodawców oraz — w
+      zależności od typu szkoły — od 3 do 8 lat z tytułu ukończonej nauki (te okresy się nie
+      sumują, liczy się najkorzystniejszy).
+    </p>
+
+    <h2>Urlop na żądanie</h2>
+    <p>
+      To nie jest osobna pula dni, tylko <strong>4 dni z rocznego wymiaru</strong>, które
+      pracownik może wykorzystać bez wcześniejszego planowania — zgłoszenie najpóźniej w dniu
+      rozpoczęcia urlopu, przed rozpoczęciem pracy. Pracodawca może odmówić tylko w wyjątkowych
+      sytuacjach (np. zagrożenie ciągłości pracy zakładu), ale musi to uzasadnić. Niewykorzystane
+      dni „na żądanie” nie przepadają — po prostu stają się zwykłym urlopem zaległym, jeśli nie
+      zostaną wzięte do końca roku.
+    </p>
+
+    <h2>Urlop zaległy — do kiedy trzeba go wykorzystać</h2>
+    <p>
+      Urlop niewykorzystany w danym roku kalendarzowym staje się <strong>urlopem
+      zaległym</strong> i musi zostać wykorzystany najpóźniej <strong>do 30 września kolejnego
+      roku</strong> — to twardy termin wynikający z Kodeksu pracy. Po tej dacie prawo do
+      urlopu nie wygasa, ale pracodawca może zostać ukarany grzywną za niedopilnowanie tego
+      obowiązku, a pracownik powinien jak najszybciej dopilnować wykorzystania zaległych dni.
+      Urlopu zaległego pracodawca może udzielić nawet bez zgody pracownika, jeśli zbliża się
+      termin graniczny.
+    </p>
+    <p>
+      Wyjątek: jeśli stosunek pracy się kończy, a urlop zaległy nie został wykorzystany,
+      pracodawca musi wypłacić za niego <strong>ekwiwalent pieniężny</strong> — dokładne
+      wyliczenie kwoty znajdziesz w{' '}
+      <a href="/blog/ekwiwalent-za-urlop-jak-liczyc/">artykule o ekwiwalencie za urlop</a>.
+    </p>
+
+    <h2>Urlop proporcjonalny — zmiana pracy w trakcie roku</h2>
+    <p>
+      Jeśli zmieniasz pracę w trakcie roku kalendarzowego, urlop u każdego z pracodawców w tym
+      roku liczy się <strong>proporcjonalnie</strong> do przepracowanego okresu — nie
+      przysługuje pełny roczny wymiar u obu naraz. Wzór: roczny wymiar (20 lub 26 dni) razy
+      liczba przepracowanych miesięcy, podzielone przez 12, zaokrąglone w górę do pełnego dnia.
+    </p>
+
+    <table>
+      <caption>Urlop proporcjonalny w zależności od liczby przepracowanych miesięcy w roku.</caption>
+      <thead>
+        <tr>
+          <th>Przepracowane miesiące</th>
+          <th class="liczba">Wymiar 20 dni/rok</th>
+          <th class="liczba">Wymiar 26 dni/rok</th>
+        </tr>
+      </thead>
+      <tbody>
+        {przyklady.map((p) => (
+          <tr class={p.miesiace === 12 ? 'wyroznione' : ''}>
+            <td>{p.miesiace} {p.miesiace === 1 ? 'miesiąc' : p.miesiace < 5 ? 'miesiące' : 'miesięcy'}</td>
+            <td class="mono">{p.dni20} dni</td>
+            <td class="mono">{p.dni26} dni</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 300" role="img" aria-label="Wykres słupkowy rosnący: urlop proporcjonalny rośnie liniowo z liczbą przepracowanych miesięcy, od 5 dni przy 3 miesiącach do 20 dni przy pełnym roku (wymiar 20 dni), oraz od 7 do 26 dni dla wymiaru 26 dni.">
+        <title>Urlop proporcjonalny a liczba przepracowanych miesięcy</title>
+        <line x1="40" y1="260" x2="620" y2="260" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="45" y="10" width="14" height="14" fill="#1e5b43" /><text x="64" y="21" font-family="Manrope Variable, sans-serif" font-size="12" fill="#16281f">Wymiar 20 dni/rok</text>
+        <rect x="220" y="10" width="14" height="14" fill="#c96f1e" /><text x="239" y="21" font-family="Manrope Variable, sans-serif" font-size="12" fill="#16281f">Wymiar 26 dni/rok</text>
+
+        {przyklady.map((p, i) => {
+          const x = 70 + i * 140;
+          const h20 = (p.dni20 / 26) * 200;
+          const h26 = (p.dni26 / 26) * 200;
+          return (
+            <>
+              <rect x={x} y={260 - h20} width="40" height={h20} fill="#1e5b43" rx="2" />
+              <text x={x + 20} y={260 - h20 - 8} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">{p.dni20}</text>
+              <rect x={x + 45} y={260 - h26} width="40" height={h26} fill="#c96f1e" rx="2" />
+              <text x={x + 65} y={260 - h26 - 8} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">{p.dni26}</text>
+              <text x={x + 42} y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">{p.miesiace} mies.</text>
+            </>
+          );
+        })}
+      </svg>
+      <figcaption>
+        Urlop proporcjonalny rośnie liniowo z liczbą przepracowanych miesięcy — po pełnym roku
+        u jednego pracodawcy wraca do standardowego wymiaru 20 lub 26 dni.
+      </figcaption>
+    </figure>
+
+    <p>
+      Ważne: jeśli w ciągu roku pracujesz kolejno u dwóch pracodawców, suma urlopu
+      proporcjonalnego z obu okresów nie powinna przekroczyć pełnego rocznego wymiaru — drugi
+      pracodawca powinien odliczyć dni już wykorzystane lub wypłacone jako ekwiwalent u
+      poprzedniego.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Ile dni urlopu na żądanie przysługuje w roku?</p>
+    <p>
+      4 dni rocznie, wliczone w normalny wymiar urlopu (20 lub 26 dni) — to nie jest dodatkowa
+      pula. Zgłoszenie następuje najpóźniej w dniu, w którym pracownik chce skorzystać z urlopu,
+      przed rozpoczęciem pracy tego dnia.
+    </p>
+
+    <p class="faq-pytanie">Do kiedy trzeba wykorzystać urlop zaległy?</p>
+    <p>
+      Najpóźniej do 30 września roku następującego po roku, w którym urlop powstał. To termin
+      ustawowy, niezależny od wewnętrznych zasad danego pracodawcy.
+    </p>
+
+    <p class="faq-pytanie">Ile dni urlopu przysługuje przy zmianie pracy w trakcie roku kalendarzowego?</p>
+    <p>
+      U każdego pracodawcy w danym roku przysługuje urlop proporcjonalny do okresu
+      przepracowanego u niego — wzór: (wymiar roczny × przepracowane miesiące) ÷ 12, zaokrąglone
+      w górę. Łącznie z obu miejsc pracy nie powinno wyjść więcej niż pełny roczny wymiar.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie uwzględnia szczególnych przypadków (urlop na
+      częściach etatu, urlop wychowawczy, umowy nietypowe). Stawki i przepisy na {ROK} r. Nie
+      stanowi porady prawnej — w razie wątpliwości skonsultuj się z działem kadr.
+    </div>
+  </div>
+</Layout>
