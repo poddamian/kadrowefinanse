@@ -27,11 +27,11 @@ import { ROK, ZUS_DUZY_PODSTAWA, ZUS_PREF_PODSTAWA, STAWKI_RYCZALTU, ZDROWOTNA }
       <div class="pole-wiersz">
         <div class="pole">
           <label for="brutto">Etat: brutto (zł/mies.)</label>
-          <input type="number" id="brutto" value="10000" min="0" step="100" inputmode="decimal" />
+          <input type="number" id="brutto" placeholder="np. 10000" min="0" step="100" inputmode="decimal" />
         </div>
         <div class="pole">
           <label for="faktura">B2B: netto na fakturze (zł/mies.)</label>
-          <input type="number" id="faktura" value="12000" min="0" step="100" inputmode="decimal" />
+          <input type="number" id="faktura" placeholder="np. 12000" min="0" step="100" inputmode="decimal" />
         </div>
       </div>
 
@@ -69,7 +69,7 @@ import { ROK, ZUS_DUZY_PODSTAWA, ZUS_PREF_PODSTAWA, STAWKI_RYCZALTU, ZDROWOTNA }
       <div class="pole-wiersz">
         <div class="pole">
           <label for="koszty">Koszty firmowe (zł/mies.)</label>
-          <input type="number" id="koszty" value="500" min="0" step="100" inputmode="decimal" />
+          <input type="number" id="koszty" placeholder="np. 500" min="0" step="100" inputmode="decimal" />
           <span class="hint">Księgowość, sprzęt, paliwo… (nie obniżają ryczałtu)</span>
         </div>
         <div class="pole" style="align-self: end;">
@@ -222,6 +222,16 @@ import { ROK, ZUS_DUZY_PODSTAWA, ZUS_PREF_PODSTAWA, STAWKI_RYCZALTU, ZDROWOTNA }
     const stawkaR = Number(($('stawkaR') as unknown as HTMLSelectElement).value);
 
     ($('poleRyczalt') as HTMLElement).hidden = forma !== 'ryczalt';
+
+    if (brutto <= 0 || faktura <= 0) {
+      const pola = [
+        'uopBrutto', 'uopSpoleczne', 'uopZdrowotna', 'uopPit', 'uopNetto',
+        'b2bPrzychod', 'b2bSpoleczne', 'b2bZdrowotna', 'b2bPodatek', 'b2bKoszty', 'b2bNetto',
+      ];
+      pola.forEach((id) => ($(id).textContent = '—'));
+      $('roznica').textContent = 'Wpisz kwoty, aby zobaczyć porównanie.';
+      return;
+    }
 
     const u = uopNetto(brutto);
     const b = b2bNetto({

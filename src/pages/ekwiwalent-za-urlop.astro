@@ -27,7 +27,7 @@ const wsp = WSPOLCZYNNIK_URLOPOWY.toString().replace('.', ',');
     <form class="formularz" id="frm" autocomplete="off">
       <div class="pole">
         <label for="podstawa">Wynagrodzenie miesięczne brutto (zł)</label>
-        <input type="number" id="podstawa" value="8000" min="0" step="100" inputmode="decimal" />
+        <input type="number" id="podstawa" placeholder="np. 8000" min="0" step="100" inputmode="decimal" />
         <span class="hint">
           Stałe składniki z miesiąca nabycia prawa + średnia zmiennych (premie, nadgodziny)
           z 3 poprzednich miesięcy
@@ -37,7 +37,7 @@ const wsp = WSPOLCZYNNIK_URLOPOWY.toString().replace('.', ',');
       <div class="pole-wiersz">
         <div class="pole">
           <label for="dni">Dni niewykorzystanego urlopu</label>
-          <input type="number" id="dni" value="10" min="0" max="70" step="0.5" inputmode="decimal" />
+          <input type="number" id="dni" placeholder="np. 10" min="0" max="70" step="0.5" inputmode="decimal" />
         </div>
         <div class="pole">
           <label for="etat">Wymiar etatu</label>
@@ -150,6 +150,13 @@ const wsp = WSPOLCZYNNIK_URLOPOWY.toString().replace('.', ',');
     const podstawa = Math.max(0, Number($('podstawa').value) || 0);
     const dni = Math.max(0, Number($('dni').value) || 0);
     const etat = Number(($('etat') as unknown as HTMLSelectElement).value);
+
+    if (podstawa <= 0 || dni <= 0) {
+      const pola = ['wynik', 'wspolczynnik', 'dzienna', 'godzinowa', 'godziny'];
+      pola.forEach((id) => ($(id).textContent = '—'));
+      $('opis').textContent = 'Wpisz dane, aby zobaczyć wyliczenie.';
+      return;
+    }
 
     const w = ekwiwalent(podstawa, dni, etat);
 

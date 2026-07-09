@@ -27,11 +27,11 @@ import { ROK } from '../lib/params2026';
       <div class="pole-wiersz">
         <div class="pole">
           <label for="kapital">Pozostały kapitał (zł)</label>
-          <input type="number" id="kapital" value="400000" min="0" step="1000" inputmode="decimal" />
+          <input type="number" id="kapital" placeholder="np. 400000" min="0" step="1000" inputmode="decimal" />
         </div>
         <div class="pole">
           <label for="oproc">Oprocentowanie (% rocznie)</label>
-          <input type="number" id="oproc" value="7.20" min="0" max="30" step="0.01" inputmode="decimal" />
+          <input type="number" id="oproc" placeholder="np. 7.20" min="0" max="30" step="0.01" inputmode="decimal" />
           <span class="hint">Marża + WIBOR/WIRON albo stopa stała</span>
         </div>
       </div>
@@ -39,17 +39,17 @@ import { ROK } from '../lib/params2026';
       <div class="pole-wiersz">
         <div class="pole">
           <label for="lata">Pozostały okres (lata)</label>
-          <input type="number" id="lata" value="25" min="1" max="40" step="1" inputmode="numeric" />
+          <input type="number" id="lata" placeholder="np. 25" min="1" max="40" step="1" inputmode="numeric" />
         </div>
         <div class="pole">
           <label for="nadplataMies">Nadpłata miesięczna (zł)</label>
-          <input type="number" id="nadplataMies" value="500" min="0" step="100" inputmode="decimal" />
+          <input type="number" id="nadplataMies" placeholder="np. 500" min="0" step="100" inputmode="decimal" />
         </div>
       </div>
 
       <div class="pole">
         <label for="nadplataJedn">Nadpłata jednorazowa na start (zł)</label>
-        <input type="number" id="nadplataJedn" value="0" min="0" step="1000" inputmode="decimal" />
+        <input type="number" id="nadplataJedn" placeholder="0" min="0" step="1000" inputmode="decimal" />
       </div>
 
       <div class="pole">
@@ -175,12 +175,21 @@ import { ROK } from '../lib/params2026';
   function przelicz() {
     aktualizujProgress();
     const kapital = Math.max(0, Number($('kapital').value) || 0);
-    const oproc = Math.max(0, Number($('oproc').value) || 0) / 100;
-    const okresMies = Math.max(1, Math.round(Number($('lata').value) || 1) * 12);
+    const oprocProc = Math.max(0, Number($('oproc').value) || 0);
+    const oproc = oprocProc / 100;
+    const lataWpisane = Math.max(0, Number($('lata').value) || 0);
+    const okresMies = Math.max(1, Math.round(lataWpisane || 1) * 12);
     const nadplataMies = Math.max(0, Number($('nadplataMies').value) || 0);
     const nadplataJednorazowa = Math.max(0, Number($('nadplataJedn').value) || 0);
     const tryb = (document.querySelector('input[name="tryb"]:checked') as HTMLInputElement)
       .value as 'okres' | 'rata';
+
+    if (kapital <= 0 || oprocProc <= 0 || lataWpisane <= 0) {
+      const pola = ['oszczednosc', 'rata', 'odsetkiBez', 'odsetkiZ', 'skrocenie', 'koniec'];
+      pola.forEach((id) => ($(id).textContent = '—'));
+      $('podsumowanie').textContent = 'Wpisz dane kredytu, aby zobaczyć wynik.';
+      return;
+    }
 
     const w = symulujNadplate({
       kapital,

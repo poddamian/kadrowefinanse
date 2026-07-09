@@ -27,12 +27,12 @@ const min = ZDROWOTNA.minimalna.toFixed(2).replace('.', ',');
     <form class="formularz" id="frm" autocomplete="off">
       <div class="pole">
         <label for="dochod">Dochód miesięczny (zł) — skala i liniowy</label>
-        <input type="number" id="dochod" value="12000" min="0" step="500" inputmode="decimal" />
+        <input type="number" id="dochod" placeholder="np. 12000" min="0" step="500" inputmode="decimal" />
         <span class="hint">Przychód minus koszty i składki społeczne</span>
       </div>
       <div class="pole">
         <label for="przychod">Przychód roczny (zł) — ryczałt</label>
-        <input type="number" id="przychod" value="144000" min="0" step="10000" inputmode="decimal" />
+        <input type="number" id="przychod" placeholder="np. 144000" min="0" step="10000" inputmode="decimal" />
         <span class="hint">Progi: do 60 000 · do 300 000 · powyżej 300 000</span>
       </div>
     </form>
@@ -139,6 +139,35 @@ const min = ZDROWOTNA.minimalna.toFixed(2).replace('.', ',');
     const dochod = Math.max(0, Number($('dochod').value) || 0);
     const przychodRok = Math.max(0, Number($('przychod').value) || 0);
 
+    if (dochod > 0) {
+      $('skala').textContent = zlGr(Math.max(dochod * ZDROWOTNA.skalaProc, ZDROWOTNA.minimalna));
+      $('liniowy').textContent = zlGr(Math.max(dochod * ZDROWOTNA.liniowyProc, ZDROWOTNA.minimalna));
+    } else {
+      $('skala').textContent = '—';
+      $('liniowy').textContent = '—';
+    }
+
+    if (przychodRok > 0) {
+      const ryczalt =
+        przychodRok <= 60000
+          ? ZDROWOTNA.ryczalt.do60k
+          : przychodRok <= 300000
+            ? ZDROWOTNA.ryczalt.do300k
+            : ZDROWOTNA.ryczalt.ponad300k;
+      const prog =
+        przychodRok <= 60000 ? 'próg do 60 tys.' : przychodRok <= 300000 ? 'próg do 300 tys.' : 'próg powyżej 300 tys.';
+      $('ryczalt').textContent = zlGr(ryczalt);
+      $('ryczaltProg').textContent = `(${prog})`;
+    } else {
+      $('ryczalt').textContent = '—';
+      $('ryczaltProg').textContent = '';
+    }
+
+    if (dochod <= 0 || przychodRok <= 0) {
+      $('opis').textContent = 'Wpisz dochód i przychód, aby porównać formy.';
+      return;
+    }
+
     const skala = Math.max(dochod * ZDROWOTNA.skalaProc, ZDROWOTNA.minimalna);
     const liniowy = Math.max(dochod * ZDROWOTNA.liniowyProc, ZDROWOTNA.minimalna);
     const ryczalt =
@@ -147,13 +176,6 @@ const min = ZDROWOTNA.minimalna.toFixed(2).replace('.', ',');
         : przychodRok <= 300000
           ? ZDROWOTNA.ryczalt.do300k
           : ZDROWOTNA.ryczalt.ponad300k;
-    const prog =
-      przychodRok <= 60000 ? 'próg do 60 tys.' : przychodRok <= 300000 ? 'próg do 300 tys.' : 'próg powyżej 300 tys.';
-
-    $('skala').textContent = zlGr(skala);
-    $('liniowy').textContent = zlGr(liniowy);
-    $('ryczalt').textContent = zlGr(ryczalt);
-    $('ryczaltProg').textContent = `(${prog})`;
 
     const najnizsza = Math.min(skala, liniowy, ryczalt);
     const forma = najnizsza === ryczalt ? 'ryczałcie' : najnizsza === liniowy ? 'podatku liniowym' : 'skali';

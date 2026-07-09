@@ -1,10 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { PLACA_MINIMALNA, ZUS_DUZY_PODSTAWA, WSPOLCZYNNIK_URLOPOWY, ZDROWOTNA } from '../lib/params2026';
+import { PLACA_MINIMALNA } from '../lib/params2026';
 ---
 
 <Layout
-  title="KadroweFinanse — polskie kalkulatory finansowe i kadrowe 2026"
+  title="Kadrowe Finanse — polskie kalkulatory finansowe i kadrowe 2026"
   description="Darmowe kalkulatory: B2B czy umowa o pracę, nadpłata kredytu, ekwiwalent za urlop, składka zdrowotna 2026. Bez rejestracji, obliczenia w przeglądarce, aktualne stawki."
 >
   <section>
@@ -18,45 +18,45 @@ import { PLACA_MINIMALNA, ZUS_DUZY_PODSTAWA, WSPOLCZYNNIK_URLOPOWY, ZDROWOTNA } 
 
     <div class="siatka-kart">
       <a href="/b2b-czy-uop/" class="karta-narzedzia">
-        <span class="brew">duży ZUS: podstawa {ZUS_DUZY_PODSTAWA} zł</span>
         <h3>B2B czy umowa o pracę?</h3>
         <p>
           Porównaj netto „na rękę” z etatu i faktury — skala, liniowy albo ryczałt, z
           pełnym rozbiciem składek i podatku.
         </p>
+        <span class="karta-cta">Otwórz kalkulator →</span>
       </a>
 
       <a href="/nadplata-kredytu/" class="karta-narzedzia">
-        <span class="brew">rata annuitetowa · symulacja m/m</span>
         <h3>Nadpłata kredytu</h3>
         <p>
           Zobacz, ile odsetek oszczędzisz i o ile lat skrócisz kredyt, nadpłacając co
           miesiąc albo jednorazowo.
         </p>
+        <span class="karta-cta">Otwórz kalkulator →</span>
       </a>
 
       <a href="/ekwiwalent-za-urlop/" class="karta-narzedzia">
-        <span class="brew">współczynnik {WSPOLCZYNNIK_URLOPOWY.toString().replace('.', ',')}</span>
         <h3>Ekwiwalent za urlop</h3>
         <p>
           Ile pracodawca musi wypłacić za niewykorzystany urlop przy rozwiązaniu umowy —
           z aktualnym współczynnikiem.
         </p>
+        <span class="karta-cta">Otwórz kalkulator →</span>
       </a>
 
       <a href="/skladka-zdrowotna/" class="karta-narzedzia">
-        <span class="brew">min. {ZDROWOTNA.minimalna.toFixed(2).replace('.', ',')} zł/mies.</span>
         <h3>Składka zdrowotna</h3>
         <p>
           Policz miesięczną składkę zdrowotną przedsiębiorcy — skala, liniowy i ryczałt,
           z progami przychodów.
         </p>
+        <span class="karta-cta">Otwórz kalkulator →</span>
       </a>
     </div>
   </section>
 
   <section class="tresc">
-    <h2>Dlaczego KadroweFinanse?</h2>
+    <h2>Dlaczego Kadrowe Finanse?</h2>
     <p>
       Większość kalkulatorów w polskim internecie to albo ciężkie portale kadrowe pełne
       reklam, albo strony, które nie nadążają za zmianami przepisów. My robimy jedną
