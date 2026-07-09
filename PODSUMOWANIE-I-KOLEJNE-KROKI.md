@@ -1,6 +1,13 @@
 # KadroweFinanse — podsumowanie stanu i kolejne kroki
 
-Data: 2026-07-07 (zaktualizowano 2026-07-08: zmiana nazwy z PoliczTo na KadroweFinanse, wybrano domenę kadrowefinanse.pl)
+Zaktualizowano 2026-07-09: strona działa pod https://kadrowefinanse.pl i https://www.kadrowefinanse.pl (Cloudflare Pages, projekt `kadrowefinanse`, deploy typu direct upload — patrz "Deploy" niżej). Poczta na domenie (MX/IMAP/SMTP) nie została ruszona i nadal działa.
+
+## Status wdrożenia
+
+- Projekt Cloudflare Pages **`kadrowefinanse`** utworzony w koncie `Poddamian@gmail.com's Account`.
+- Custom domains `kadrowefinanse.pl` i `www.kadrowefinanse.pl` podpięte i aktywne (status `active`, certyfikat SSL wystawiony).
+- Rekordy DNS apex i `www` zmienione z A (stary hosting lh.pl) na CNAME → `kadrowefinanse.pages.dev`, proxy przez Cloudflare. Pozostałe rekordy pocztowe (MX, `mail.`/`imap.`/`smtp.`/`pop3.`, SPF) nie zostały zmienione.
+- **Deploy jest na razie ręczny (direct upload przez `wrangler pages deploy dist`), NIE jest jeszcze podłączony do GitHub** — `git push` sam z siebie NIE aktualizuje strony. Żeby to zmienić, trzeba w dashboardzie Cloudflare Pages → projekt `kadrowefinanse` → Settings → Builds & deployments połączyć z repo `poddamian/kadrowefinanse` (branch `master`, build `npm run build`, output `dist`), co przełączy projekt na automatyczne deploye przy pushu.
 
 ## Co jest gotowe
 
@@ -12,38 +19,33 @@ Data: 2026-07-07 (zaktualizowano 2026-07-08: zmiana nazwy z PoliczTo na KadroweF
 
 Silnik obliczeniowy (`src/lib/podatki.ts`) ma 26 testów regresji (`npm run test:calc`) — wszystkie przechodzą, wartości zweryfikowane ręcznie.
 
-### 4 strony zaufania (gotowe, wymagają jednej poprawki)
+### 4 strony zaufania
 - `/o-nas/`
-- `/kontakt/` — ✅ e-mail zaktualizowany na `kontakt@kadrowefinanse.pl` (zakłada, że skrzynka na tej domenie zostanie utworzona po zakupie)
+- `/kontakt/` — e-mail `kontakt@kadrowefinanse.pl`
 - `/polityka-prywatnosci/`
 - `/regulamin/`
 
 ### Design system
-Papierowa "księga rachunkowa": zieleń butelkowa + bursztyn, Manrope + IBM Plex Mono. Przeprowadzony audyt UX/UI (frontend-design + ui-ux-pro-max):
-- Dodano progress indicator do wszystkich 4 kalkulatorów (pasek postępu wypełniania formularza)
-- Naprawiono touch targety (segmenty, przełącznik chorobowe) do min. 44px
-- Naprawiono animację progress bara (transform zamiast width — wydajność)
-- Kontrast kolorów zweryfikowany matematycznie (WCAG AA/AAA spełnione)
+Papierowa "księga rachunkowa": zieleń butelkowa + bursztyn, Manrope + IBM Plex Mono. Progress indicator w kalkulatorach, touch targety min. 44px, kontrast WCAG AA/AAA.
 
 ## Plan artykułów
 
-Zaktualizowano 2026-07-08: pełny plan **16 artykułów** (5 klastrów tematycznych, keywords, harmonogram publikacji 2026-07-14 do 2026-10-27) — patrz plik `Plan artykulow blogowych.md` w katalogu nadrzędnym `DO ADSENSE`. Ta sekcja z 4 artykułami jest nieaktualna, zastąpiona tamtym planem.
+Pełny plan **16 artykułów** (5 klastrów, keywords, harmonogram 2026-07-14 do 2026-10-27) — patrz `Plan artykulow blogowych.md` w katalogu nadrzędnym `DO ADSENSE`.
 
-**Artykuł #1 napisany 2026-07-08** (przed terminem 2026-07-14): `/blog/b2b-czy-umowa-o-prace-2026/` — case study z wykresem SVG, linkuje wzajemnie z `/b2b-czy-uop/`. Strona listy `/blog/` gotowa, link w stopce dodany.
+**Napisane (4/16):**
+1. `/blog/b2b-czy-umowa-o-prace-2026/` (2026-07-08, przed terminem)
+2. `/blog/skladka-zdrowotna-2026-przewodnik/` (2026-07-09, przed terminem)
+3. `/blog/nadplata-kredytu-hipotecznego-okres-czy-rata/` (2026-07-09, przed terminem)
+4. `/blog/ekwiwalent-za-urlop-jak-liczyc/` (2026-07-09, przed terminem)
 
-## Otwarte pytania / decyzje do podjęcia jutro
-
-1. ~~**E-mail kontaktowy**~~ — ✅ ustalony: `kontakt@kadrowefinanse.pl`
-2. ~~**Architektura artykułów**~~ — ✅ zdecydowane: zwykłe strony `.astro` w `src/pages/blog/` (routing `/blog/nazwa-artykulu/`), bez content collections — spójnie z resztą serwisu.
-3. ~~**Domena**~~ — ✅ wybrana: **kadrowefinanse.pl** (2026-07-08)
-4. **Hosting** — Cloudflare Pages (rekomendacja, darmowy) — czy zaczynamy `git init` i podłączenie?
+Wszystkie 4 pillar artykuły klastrów A–D gotowe — każdy linkuje wzajemnie ze swoim kalkulatorem. Strona listy `/blog/` zaktualizowana.
 
 ## Kolejne kroki (w kolejności)
 
-1. Napisać pozostałe 15 artykułów wg harmonogramu w `Plan artykulow blogowych.md` (artykuł #1 gotowy)
-2. `git init` + repozytorium + Cloudflare Pages
-3. Sitemap, schema.org (structured data dla kalkulatorów), Google Search Console
-4. Dopiero po tym: zgłoszenie do Google AdSense
+1. **Podłączyć Cloudflare Pages do GitHub** (dashboard → projekt `kadrowefinanse` → Settings → Builds & deployments), żeby `git push` automatycznie deployował — na razie trzeba ręcznie `wrangler pages deploy dist`.
+2. Napisać pozostałe 12 artykułów wg harmonogramu w `Plan artykulow blogowych.md` (satelity klastrów A–D + klaster E).
+3. Sitemap, schema.org (structured data kalkulatorów), Google Search Console.
+4. Dopiero po tym: zgłoszenie do Google AdSense.
 
 ## Jak wznowić pracę lokalnie
 
@@ -53,3 +55,22 @@ npm run dev
 ```
 
 Otwórz http://localhost:4321
+
+## Deploy
+
+Dopóki GitHub nie jest podłączony (patrz punkt 1 wyżej), deploy jest ręczny:
+
+```
+npm run build
+npx wrangler pages deploy dist --project-name kadrowefinanse --branch master
+```
+
+Wymaga zmiennej środowiskowej `CLOUDFLARE_API_TOKEN` (uprawnienia: Account → Cloudflare Pages: Edit, Zone → DNS: Edit, Zone → Zone: Read, zakres: konto + strefa `kadrowefinanse.pl`).
+
+Warto też commitować do gita niezależnie od deployu, żeby historia była spójna:
+
+```
+git add -A
+git commit -m "opis zmiany"
+git push
+```

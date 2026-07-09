@@ -1,0 +1,193 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, WSPOLCZYNNIK_URLOPOWY } from '../../lib/params2026';
+import { ekwiwalent, zlGr } from '../../lib/podatki';
+
+const aktualizacja = '9 lipca 2026';
+const wsp = WSPOLCZYNNIK_URLOPOWY.toString().replace('.', ',');
+
+// Case study: 8000 zł podstawy, pełny etat, różne liczby dni
+const dni10 = ekwiwalent(8000, 10, 1);
+const dni20 = ekwiwalent(8000, 20, 1);
+const dni26 = ekwiwalent(8000, 26, 1);
+// Wpływ wymiaru etatu przy tej samej pensji i 10 dniach
+const polEtatu = ekwiwalent(4000, 10, 0.5);
+---
+
+<Layout
+  title={`Ekwiwalent za niewykorzystany urlop ${ROK} — jak liczyć i kiedy się należy`}
+  description={`Krok po kroku: jak liczyć ekwiwalent za niewykorzystany urlop w ${ROK} r. (współczynnik ${wsp}), przykłady liczbowe i zasady wypłaty przy rozwiązaniu umowy o pracę.`}
+>
+  <span class="brew">stawki {ROK} · współczynnik {wsp}</span>
+  <h1>Ekwiwalent za niewykorzystany urlop — jak liczyć i kiedy się należy</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Kończysz pracę, a w kalendarzu zostało kilkanaście dni niewykorzystanego urlopu?
+      Pracodawca ma obowiązek wypłacić Ci ich równowartość w pieniądzu — to właśnie ekwiwalent
+      za urlop. Wyjaśniamy krok po kroku, jak dokładnie liczy się ta kwota, na przykładach
+      liczbowych zgodnych z naszym{' '}
+      <a href="/ekwiwalent-za-urlop/">kalkulatorem ekwiwalentu za urlop</a>.
+    </p>
+
+    <h2>Wzór na ekwiwalent — krok po kroku</h2>
+    <p>Wyliczenie ekwiwalentu przebiega w czterech krokach:</p>
+    <ol>
+      <li>
+        <strong>Współczynnik urlopowy.</strong> Na {ROK} r. wynosi <strong>{wsp}</strong> — to
+        średnia miesięczna liczba dni roboczych w roku: [365 dni − (52 niedziele + 10 świąt + 52
+        dni wolne od pracy)] ÷ 12 miesięcy. Przy niepełnym etacie współczynnik mnoży się przez
+        wymiar etatu (np. przy 1/2 etatu: {wsp} × 0,5).
+      </li>
+      <li>
+        <strong>Stawka dzienna.</strong> Podstawę wynagrodzenia (składniki stałe z miesiąca
+        nabycia prawa do ekwiwalentu + średnia składników zmiennych, np. premii, z ostatnich 3
+        miesięcy) dzieli się przez współczynnik urlopowy.
+      </li>
+      <li>
+        <strong>Stawka godzinowa.</strong> Stawkę dzienną dzieli się przez dobową normę czasu
+        pracy — standardowo 8 godzin.
+      </li>
+      <li>
+        <strong>Kwota ekwiwalentu.</strong> Stawkę godzinową mnoży się przez liczbę godzin
+        niewykorzystanego urlopu (1 dzień urlopu = 8 godzin przy pełnym etacie).
+      </li>
+    </ol>
+
+    <h2>Przykład: 8 000 zł podstawy, różna liczba dni urlopu</h2>
+    <p>
+      Przy pełnym etacie i podstawie 8 000 zł miesięcznie współczynnik {wsp} daje stawkę dzienną{' '}
+      {zlGr(dni10.stawkaDzienna)} i stawkę godzinową {zlGr(dni10.stawkaGodzinowa)}. Zobacz, jak
+      rośnie kwota ekwiwalentu wraz z liczbą niewykorzystanych dni:
+    </p>
+
+    <table>
+      <caption>Ekwiwalent brutto przy podstawie 8 000 zł/mies., pełny etat. Stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Dni niewykorzystanego urlopu</th>
+          <th class="liczba">Godziny</th>
+          <th class="liczba">Ekwiwalent brutto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10 dni</td>
+          <td class="mono">{dni10.godzinyUrlopu} h</td>
+          <td class="mono">{zlGr(dni10.ekwiwalentBrutto)}</td>
+        </tr>
+        <tr>
+          <td>20 dni</td>
+          <td class="mono">{dni20.godzinyUrlopu} h</td>
+          <td class="mono">{zlGr(dni20.ekwiwalentBrutto)}</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>26 dni (pełny roczny limit)</td>
+          <td class="mono">{dni26.godzinyUrlopu} h</td>
+          <td class="mono">{zlGr(dni26.ekwiwalentBrutto)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 300" role="img" aria-label="Wykres słupkowy: ekwiwalent brutto rośnie proporcjonalnie z liczbą dni niewykorzystanego urlopu — 10, 20 i 26 dni przy podstawie 8000 zł.">
+        <title>Ekwiwalent brutto w zależności od liczby dni urlopu ({ROK})</title>
+        <line x1="40" y1="260" x2="620" y2="260" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="100" y="180" width="90" height="80" fill="#1e5b43" rx="2" />
+        <text x="145" y="170" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(dni10.ekwiwalentBrutto)}</text>
+        <text x="145" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">10 dni</text>
+
+        <rect x="275" y="100" width="90" height="160" fill="#c96f1e" rx="2" />
+        <text x="320" y="90" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(dni20.ekwiwalentBrutto)}</text>
+        <text x="320" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">20 dni</text>
+
+        <rect x="450" y="52" width="90" height="208" fill="#2f7a5a" rx="2" />
+        <text x="495" y="42" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(dni26.ekwiwalentBrutto)}</text>
+        <text x="495" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">26 dni</text>
+      </svg>
+      <figcaption>
+        Ekwiwalent rośnie liniowo z liczbą dni — każdy niewykorzystany dzień urlopu to dodatkowa
+        stawka dzienna {zlGr(dni10.stawkaDzienna)} brutto przy tej podstawie.
+      </figcaption>
+    </figure>
+
+    <h2>Wpływ wymiaru etatu na wysokość ekwiwalentu</h2>
+    <p>
+      Przy niepełnym etacie współczynnik urlopowy jest proporcjonalnie niższy, ale też podstawa
+      wynagrodzenia zwykle jest niższa — oba efekty się nakładają. Przykładowo przy 1/2 etatu i
+      pensji 4 000 zł (czyli połowie poprzedniego przykładu) za 10 dni niewykorzystanego urlopu
+      ekwiwalent wynosi <strong>{zlGr(polEtatu.ekwiwalentBrutto)}</strong> — dokładnie połowę
+      kwoty z pełnego etatu przy tej samej liczbie dni, bo zarówno podstawa, jak i wymiar urlopu
+      są proporcjonalnie mniejsze.
+    </p>
+
+    <h2>Kiedy ekwiwalent się należy, a kiedy nie</h2>
+    <p>
+      Ekwiwalent przysługuje <strong>wyłącznie przy rozwiązaniu lub wygaśnięciu umowy o
+      pracę</strong> — niezależnie od tego, czy to wypowiedzenie ze strony pracownika,
+      pracodawcy, czy porozumienie stron. W trakcie trwania zatrudnienia pracodawca nie może
+      zastąpić urlopu wypłatą pieniężną — urlop trzeba wykorzystać w naturze. Wyjątkiem jest
+      urlop bezpośrednio poprzedzający rozwiązanie umowy, jeśli pracodawca zobowiąże pracownika
+      do jego wykorzystania w okresie wypowiedzenia — wtedy ekwiwalent za te dni nie przysługuje,
+      bo urlop został faktycznie wykorzystany.
+    </p>
+    <p>
+      Wypłata następuje w <strong>ostatnim dniu zatrudnienia</strong>, razem z ostatnim
+      wynagrodzeniem. Od kwoty brutto ekwiwalentu pracodawca potrąca standardowe składki ZUS i
+      zaliczkę na PIT — dokładnie tak, jak od zwykłego wynagrodzenia za pracę.
+    </p>
+
+    <h2>Co wchodzi w podstawę ekwiwalentu</h2>
+    <p>
+      Do podstawy wlicza się <strong>składniki stałe</strong> wynagrodzenia z miesiąca nabycia
+      prawa do ekwiwalentu (np. pensja zasadnicza, stałe dodatki) oraz{' '}
+      <strong>średnią składników zmiennych</strong> z ostatnich 3 miesięcy (premie uznaniowe,
+      nadgodziny, dodatki za pracę w porze nocnej). Jeśli składniki zmienne są przyznawane za
+      okresy dłuższe niż miesiąc, do podstawy wlicza się średnią z ostatnich 12 miesięcy. W razie
+      wątpliwości co do tego, co dokładnie wchodzi w podstawę w Twoim przypadku, warto
+      skonsultować się z działem kadr — zasady różnią się w zależności od struktury
+      wynagrodzenia w danej firmie.
+    </p>
+    <p>
+      Chcesz sprawdzić dokładną kwotę dla swojej sytuacji? Wpisz swoje wynagrodzenie, liczbę dni
+      i wymiar etatu w{' '}
+      <a href="/ekwiwalent-za-urlop/">kalkulatorze ekwiwalentu za urlop</a> i zobacz pełne
+      wyliczenie z rozbiciem na stawkę dzienną i godzinową.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Jak liczyć ekwiwalent za urlop w {ROK} roku, krok po kroku?</p>
+    <p>
+      Podstawę wynagrodzenia dzielisz przez współczynnik urlopowy {wsp} (proporcjonalnie do
+      wymiaru etatu), wynik dzielisz przez 8 godzin normy dobowej, a otrzymaną stawkę godzinową
+      mnożysz przez liczbę godzin niewykorzystanego urlopu (dni × 8 godzin przy pełnym etacie).
+    </p>
+
+    <p class="faq-pytanie">Czym jest współczynnik ekwiwalentu urlopowego i skąd się bierze?</p>
+    <p>
+      To przeciętna miesięczna liczba dni roboczych w danym roku kalendarzowym — liczona jako
+      liczba dni w roku pomniejszona o niedziele, święta i dodatkowe dni wolne (soboty przy
+      5-dniowym tygodniu pracy), podzielona przez 12 miesięcy. Ogłasza go corocznie
+      rozporządzenie w sprawie szczegółowych zasad udzielania urlopu wypoczynkowego, więc zmienia
+      się z roku na rok wraz z liczbą dni świątecznych wypadających w dni robocze.
+    </p>
+
+    <p class="faq-pytanie">Czy pracodawca musi wypłacić ekwiwalent od razu po zwolnieniu?</p>
+    <p>
+      Tak — ekwiwalent za niewykorzystany urlop wypłaca się w dniu ustania stosunku pracy, razem
+      z ostatnią wypłatą wynagrodzenia. Opóźnienie w wypłacie traktowane jest jak opóźnienie w
+      wypłacie wynagrodzenia i uprawnia pracownika do odsetek ustawowych oraz — w skrajnych
+      przypadkach — roszczeń wobec pracodawcy.
+    </p>
+
+    <div class="zastrzezenie">
+      Kalkulator i artykuł pokazują kwotę brutto wg zasad rozporządzenia urlopowego. W przypadku
+      nietypowych składników wynagrodzenia (premie roczne, prowizje, praca zmianowa) podstawę
+      ustala się indywidualnie — w razie wątpliwości skonsultuj się z działem kadr. Stawki na{' '}
+      {ROK} r. Nie stanowi porady prawnej.
+    </div>
+  </div>
+</Layout>

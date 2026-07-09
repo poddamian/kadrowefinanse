@@ -1,0 +1,176 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+import { symulujNadplate, zl, zlGr } from '../../lib/podatki';
+
+const aktualizacja = '9 lipca 2026';
+
+// Case study: 400 000 zł, 7,20%, 25 lat, nadpłata 500 zł/mies.
+const wOkres = symulujNadplate({
+  kapital: 400000,
+  oprocentowanie: 0.072,
+  okresMies: 300,
+  nadplataMies: 500,
+  nadplataJednorazowa: 0,
+  tryb: 'okres',
+});
+const wRata = symulujNadplate({
+  kapital: 400000,
+  oprocentowanie: 0.072,
+  okresMies: 300,
+  nadplataMies: 500,
+  nadplataJednorazowa: 0,
+  tryb: 'rata',
+});
+
+function okresSlownie(mies: number): string {
+  const lata = Math.floor(mies / 12);
+  const m = mies % 12;
+  const czesci = [];
+  if (lata > 0) czesci.push(`${lata} ${lata === 1 ? 'rok' : lata < 5 ? 'lata' : 'lat'}`);
+  if (m > 0) czesci.push(`${m} mies.`);
+  return czesci.join(' i ') || '0 mies.';
+}
+---
+
+<Layout
+  title="Nadpłata kredytu hipotecznego — skrócić okres czy zmniejszyć ratę?"
+  description="Porównanie dwóch trybów nadpłaty kredytu hipotecznego na przykładzie 400 000 zł: skrócenie okresu vs zmniejszenie raty. Ile realnie oszczędzasz w każdym wariancie."
+>
+  <span class="brew">case study · 400 000 zł, 25 lat, 7,20%</span>
+  <h1>Nadpłata kredytu hipotecznego — skrócić okres czy zmniejszyć ratę?</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Nadpłacasz kredyt hipoteczny i bank pyta: skrócić okres spłaty czy zmniejszyć ratę? To nie
+      jest pytanie retoryczne — obie opcje dają inny efekt finansowy, a wybór zależy od tego, czy
+      liczy się dla Ciebie minimalny koszt kredytu, czy bieżąca płynność budżetu. Sprawdziliśmy to
+      liczbowo na przykładzie, tym samym silnikiem co nasz{' '}
+      <a href="/nadplata-kredytu/">kalkulator nadpłaty kredytu</a>.
+    </p>
+
+    <h2>Case study: 400 000 zł, 25 lat, oprocentowanie 7,20%</h2>
+    <p>
+      Punkt startowy: kredyt o pozostałym kapitale 400 000 zł, oprocentowanie nominalne 7,20%
+      rocznie, pozostały okres 25 lat (300 miesięcy). Rata bazowa bez żadnych nadpłat wynosi{' '}
+      <strong>{zlGr(wOkres.rataBazowa)}</strong> miesięcznie. Zakładamy stałą nadpłatę{' '}
+      <strong>500 zł miesięcznie</strong> od pierwszego miesiąca, w dwóch wariantach.
+    </p>
+
+    <table>
+      <caption>Efekt nadpłaty 500 zł/mies. w dwóch trybach — kredyt 400 000 zł, 25 lat, 7,20%.</caption>
+      <thead>
+        <tr>
+          <th>Wariant</th>
+          <th class="liczba">Oszczędność na odsetkach</th>
+          <th class="liczba">Skrócenie / nowa rata</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="wyroznione">
+          <td>Skrócenie okresu</td>
+          <td class="mono">{zl(wOkres.oszczednosc)}</td>
+          <td class="mono">krócej o {okresSlownie(wOkres.skrocenieMies)}</td>
+        </tr>
+        <tr>
+          <td>Zmniejszenie raty</td>
+          <td class="mono">{zl(wRata.oszczednosc)}</td>
+          <td class="mono">rata spada do {zlGr(wRata.rataPoNadplacie)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 300" role="img" aria-label="Wykres słupkowy porównujący oszczędność na odsetkach przy skróceniu okresu i przy zmniejszeniu raty, dla nadpłaty 500 zł miesięcznie.">
+        <title>Oszczędność na odsetkach: skrócenie okresu vs zmniejszenie raty</title>
+        <line x1="40" y1="260" x2="620" y2="260" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="130" y="70" width="120" height="190" fill="#1e5b43" rx="2" />
+        <text x="190" y="60" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zl(wOkres.oszczednosc)}</text>
+        <text x="190" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">Skrócenie okresu</text>
+
+        <rect x="390" y="146" width="120" height="114" fill="#c96f1e" rx="2" />
+        <text x="450" y="136" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zl(wRata.oszczednosc)}</text>
+        <text x="450" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">Zmniejszenie raty</text>
+      </svg>
+      <figcaption>
+        Przy tej samej nadpłacie 500 zł/mies. skrócenie okresu daje wyraźnie większą oszczędność
+        na odsetkach niż zmniejszenie raty — kapitał znika szybciej, więc bank nalicza odsetki
+        krócej.
+      </figcaption>
+    </figure>
+
+    <h2>Dlaczego skrócenie okresu zawsze oszczędza więcej</h2>
+    <p>
+      Różnica bierze się z mechaniki odsetek: naliczane są od <strong>aktualnego salda
+      kapitału</strong>, więc im szybciej saldo spada do zera, tym mniej odsetek zapłacisz łącznie.
+      Przy skróceniu okresu rata zostaje na dotychczasowym poziomie, a cała nadpłata idzie w
+      kapitał — spłata kończy się szybciej. Przy zmniejszeniu raty bank co miesiąc przelicza nową,
+      niższą ratę na pozostały pierwotny okres — kapitał też spada szybciej niż bez nadpłat, ale
+      wolniej niż przy trybie „skrócenie", bo część korzyści konsumuje niższa rata już od
+      następnego miesiąca.
+    </p>
+
+    <h2>Kiedy mimo wszystko wybrać niższą ratę</h2>
+    <p>
+      Matematyka jednoznacznie faworyzuje skrócenie okresu, ale nie zawsze to najlepszy wybór.
+      Zmniejszenie raty ma sens, gdy priorytetem jest <strong>bufor bezpieczeństwa</strong> — np.
+      spodziewasz się spadku dochodów, planujesz inny duży wydatek, albo po prostu wolisz niższe
+      stałe obciążenie budżetu przy niepewnej sytuacji zawodowej. Niższa rata to mniejsze ryzyko
+      problemów ze spłatą w trudniejszym miesiącu, kosztem części potencjalnej oszczędności.
+    </p>
+
+    <h2>Czy bank może pobrać opłatę za nadpłatę?</h2>
+    <p>
+      Dla kredytów hipotecznych zaciągniętych po 22 lipca 2017 r. (ustawa o kredycie hipotecznym)
+      bank może pobrać rekompensatę za nadpłatę tylko w ciągu pierwszych 36 miesięcy od
+      uruchomienia kredytu, i tylko przy oprocentowaniu zmiennym. Po tym okresie każda nadpłata —
+      częściowa czy całkowita — jest bezpłatna. Zawsze warto to zweryfikować w swojej umowie
+      przed złożeniem dyspozycji nadpłaty, zwłaszcza przy kredytach zaciągniętych niedawno.
+    </p>
+    <p>
+      Osobną kwestią jest sam poziom oprocentowania — jeśli Twój kredyt oparty jest o WIBOR, a
+      zastanawiasz się, jak zmiana wskaźnika referencyjnego wpłynie na ratę, sprawdzimy to
+      dokładniej w osobnym artykule o WIBOR i WIRON.
+    </p>
+    <p>
+      Powyższe liczby to punkt startowy, nie gotowa rekomendacja — wpisz parametry swojego
+      kredytu w{' '}
+      <a href="/nadplata-kredytu/">kalkulatorze nadpłaty</a>
+      {' '}i zobacz symulację miesiąc po miesiącu dla obu trybów.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy warto nadpłacać kredyt hipoteczny przy wysokim oprocentowaniu?</p>
+    <p>
+      Im wyższe oprocentowanie, tym większa realna oszczędność z nadpłaty — bo każda nadpłacona
+      złotówka „nie generuje" odsetek liczonych po tej wysokiej stawce. Warto jednak najpierw
+      porównać oprocentowanie kredytu z potencjalnym zyskiem z innej formy oszczędzania (np. lokaty,
+      obligacje) — jeśli alternatywa daje wyższą stopę zwrotu niż oprocentowanie kredytu, nadpłata
+      niekoniecznie jest najlepszym wykorzystaniem środków.
+    </p>
+
+    <p class="faq-pytanie">Czy można łączyć nadpłatę jednorazową z regularną nadpłatą miesięczną?</p>
+    <p>
+      Tak, i to zwykle najskuteczniejsza strategia — jednorazowa nadpłata (np. z premii czy
+      trzynastki) obniża saldo kapitału od razu, a comiesięczna nadpłata systematycznie przyspiesza
+      spłatę dalej. W kalkulatorze możesz ustawić obie wartości jednocześnie i zobaczyć łączny
+      efekt.
+    </p>
+
+    <p class="faq-pytanie">Co się dzieje z ratą, jeśli nadpłacam co miesiąc w trybie „zmniejsz ratę"?</p>
+    <p>
+      Rata jest przeliczana na nowo po każdej nadpłacie na pozostały pierwotny okres — czyli
+      systematycznie maleje z miesiąca na miesiąc, w przeciwieństwie do trybu „skróć okres", gdzie
+      rata pozostaje stała przez cały czas trwania kredytu.
+    </p>
+
+    <div class="zastrzezenie">
+      Symulacja zakłada stałe oprocentowanie przez cały okres i raty równe (annuitetowe).
+      Rzeczywiste oprocentowanie zmienne (WIBOR/WIRON) będzie się zmieniać w czasie, więc traktuj
+      wynik jako przybliżenie edukacyjne. Stawki na {ROK} r. Nie stanowi porady finansowej.
+    </div>
+  </div>
+</Layout>
