@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ROK } from '../lib/params2026';
+---
+
+<Layout
+  title="O nas — KadroweFinanse"
+  description="KadroweFinanse to zestaw darmowych kalkulatorów finansowych i kadrowych dla Polski. Bez rejestracji, bez wysyłania danych — wszystko liczy się w Twojej przeglądarce."
+  aktywna="/o-nas/"
+>
+  <h1>O nas</h1>
+  <div class="tresc" style="margin-top: 0;">
+    <h2>Główne informacje</h2>
+    <p>
+      Serwis KadroweFinanse powstał z prostego powodu: polskie przepisy podatkowe i składkowe zmieniają się
+      co roku, a znalezienie rzetelnego kalkulatora — bez zakładania konta, bez podawania e-maila,
+      bez czekania na wynik „na maila” — było trudniejsze niż powinno. Naszym celem jest ograniczenie
+      błędów w codziennych wyliczeniach finansowych i kadrowych, którymi ludzie posługują się przy
+      ważnych decyzjach.
+    </p>
+    <h2>Możliwości</h2>
+    <p>
+      Budujemy zestaw kalkulatorów dla osób, które chcą szybko sprawdzić konkretną liczbę:
+      ile zostaje na rękę na etacie vs. na działalności, ile wynosi ekwiwalent za urlop,
+      ile faktycznie oszczędzisz nadpłacając kredyt, ile wynosi składka zdrowotna. Każdy kalkulator
+      aktualizujemy pod kątem obowiązujących stawek — obecnie {ROK} rok.
+    </p>
+    <h2>Bezpieczeństwo</h2>
+    <p>
+      Wszystkie obliczenia wykonują się lokalnie, w Twojej przeglądarce — przetwarzanie danych
+      odbywa się „w locie”, bez wysyłania ich na serwer. Nie mamy dostępu do Twoich zarobków
+      ani innych danych wpisanych w formularzach i nigdzie ich nie zapisujemy. Kod źródłowy
+      wzorów podatkowych trzymamy w jednym miejscu i weryfikujemy ręcznie wyliczonymi przykładami,
+      żeby uniknąć pomyłek przy zmianie przepisów.
+    </p>
+    <h2>Grupy docelowe</h2>
+    <p>
+      Z kalkulatorów korzystają pracownicy porównujący formy zatrudnienia, przedsiębiorcy
+      liczący składki i podatki, osoby planujące nadpłatę kredytu oraz każdy, kto chce szybko
+      zweryfikować liczbę z umowy, listy płac czy oferty banku.
+    </p>
+    <h2>Czego nie robimy</h2>
+    <p>
+      Nie jesteśmy biurem rachunkowym ani doradcą podatkowym. Kalkulatory mają charakter
+      poglądowy — pomagają oszacować rząd wielkości i zrozumieć mechanikę wyliczeń, ale
+      w indywidualnych i granicznych przypadkach (np. ulgi, wspólne rozliczenie, nietypowe
+      formy zatrudnienia) warto skonsultować się z księgowym.
+    </p>
+    <h2>Kontakt</h2>
+    <div class="zastrzezenie">
+      Masz pytanie, uwagę lub znalazłeś błąd w wyliczeniach? Napisz do nas —
+      <a href="/kontakt/">dane kontaktowe znajdziesz tutaj</a>.
+    </div>
+  </div>
+</Layout>

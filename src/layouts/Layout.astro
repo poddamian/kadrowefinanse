@@ -1,0 +1,101 @@
+---
+import '@fontsource-variable/manrope';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/700.css';
+import '../styles/global.css';
+import CookieConsent from '../components/CookieConsent.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Ścieżka bieżącej strony do zaznaczenia w menu, np. "/b2b-czy-uop/" */
+  aktywna?: string;
+}
+
+const { title, description, aktywna = '' } = Astro.props;
+
+const narzedzia = [
+  { url: '/b2b-czy-uop/', nazwa: 'B2B czy UoP' },
+  { url: '/nadplata-kredytu/', nazwa: 'Nadpłata kredytu' },
+  { url: '/ekwiwalent-za-urlop/', nazwa: 'Ekwiwalent za urlop' },
+  { url: '/skladka-zdrowotna/', nazwa: 'Składka zdrowotna' },
+];
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pl_PL" />
+  </head>
+  <body>
+    <header class="naglowek">
+      <div class="kontener naglowek-wiersz">
+        <a href="/" class="logo">Kadrowe<b>Finanse</b></a>
+        <button class="menu-toggle" aria-label="Przełącz menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="menu" aria-label="Kalkulatory" id="menu-mobile">
+          {
+            narzedzia.map((n) => (
+              <a href={n.url} aria-current={aktywna === n.url ? 'page' : undefined}>
+                {n.nazwa}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </header>
+
+    <script>
+      const menuToggle = document.querySelector('.menu-toggle');
+      const menu = document.getElementById('menu-mobile');
+
+      menuToggle?.addEventListener('click', () => {
+        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', String(!isExpanded));
+        menu?.classList.toggle('aktywne');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.naglowek')) {
+          menuToggle?.setAttribute('aria-expanded', 'false');
+          menu?.classList.remove('aktywne');
+        }
+      });
+    </script>
+
+    <main class="kontener">
+      <slot />
+    </main>
+
+    <footer class="stopka">
+      <div class="kontener">
+        <div class="stopka-linki">
+          <a href="/blog/">Blog</a>
+          <a href="/o-nas/">O nas</a>
+          <a href="/kontakt/">Kontakt</a>
+          <a href="/polityka-prywatnosci/">Polityka prywatności</a>
+          <a href="/regulamin/">Regulamin</a>
+          <a href="#" id="stopka-cookie-ustawienia">Ustawienia cookies</a>
+        </div>
+        <p>
+          © {new Date().getFullYear()} KadroweFinanse. Kalkulatory mają charakter poglądowy i nie
+          stanowią porady podatkowej, prawnej ani finansowej. Wszystkie obliczenia wykonują
+          się w Twojej przeglądarce — nie wysyłamy żadnych danych na serwer.
+        </p>
+      </div>
+    </footer>
+
+    <CookieConsent />
+  </body>
+</html>

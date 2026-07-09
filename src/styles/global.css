@@ -1,0 +1,572 @@
+/* ── System projektowy: „nowoczesna księga rachunkowa” ─────────────────
+   Papierowa chłodna biel + butelkowa zieleń atramentu + bursztyn.
+   Liczby zawsze mono z cyframi tabelarycznymi (IBM Plex Mono).       */
+
+:root {
+  --papier: #f6f8f5;
+  --karta: #ffffff;
+  --atrament: #16281f;
+  --atrament-2: #4a5d53;
+  --butelka: #1e5b43;
+  --butelka-glebia: #143d2e;
+  --mieta: #e3efe7;
+  --mieta-linia: #c7dccf;
+  --bursztyn: #c96f1e;
+  --bursztyn-tlo: #faf0e3;
+  --czerwien: #b3372f;
+
+  --font-ui: 'Manrope Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  --promien: 10px;
+  --cien: 0 1px 2px rgb(22 40 31 / 0.06), 0 4px 16px rgb(22 40 31 / 0.05);
+  --max-tresc: 1080px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  background: var(--papier);
+  color: var(--atrament);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Typografia ── */
+h1,
+h2,
+h3 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 0.5em;
+}
+h1 {
+  font-size: clamp(1.75rem, 4.5vw, 2.6rem);
+}
+h2 {
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+}
+h3 {
+  font-size: 1.1rem;
+}
+p {
+  margin: 0 0 1em;
+}
+a {
+  color: var(--butelka);
+}
+a:hover {
+  color: var(--butelka-glebia);
+}
+
+.mono,
+output {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* „Brew” — mała etykieta nad nagłówkiem, niesie realny parametr (np. stawkę) */
+.brew {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--butelka);
+  background: var(--mieta);
+  border: 1px solid var(--mieta-linia);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Szkielet strony ── */
+.kontener {
+  max-width: var(--max-tresc);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+header.naglowek {
+  background: var(--karta);
+  border-bottom: 1px solid var(--mieta-linia);
+  position: relative;
+}
+.naglowek-wiersz {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+}
+.logo {
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--atrament);
+}
+.logo b {
+  color: var(--butelka);
+}
+nav.menu {
+  display: flex;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+}
+nav.menu a {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--atrament-2);
+}
+nav.menu a:hover,
+nav.menu a[aria-current='page'] {
+  color: var(--butelka);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin: 0;
+  width: 44px;
+  height: 44px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  z-index: 10;
+}
+.menu-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--atrament);
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+  nav.menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 9;
+    flex-direction: column;
+    gap: 0;
+    background: var(--karta);
+    border-bottom: 1px solid var(--mieta-linia);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  nav.menu a {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--mieta-linia);
+    font-size: 0.95rem;
+  }
+  nav.menu.aktywne {
+    max-height: 500px;
+  }
+}
+
+main {
+  padding: 2.25rem 0 3.5rem;
+}
+
+footer.stopka {
+  background: var(--butelka-glebia);
+  color: #dcebe2;
+  padding: 2rem 0;
+  font-size: 0.85rem;
+}
+footer.stopka a {
+  color: #fff;
+}
+.stopka-linki {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+/* ── Progress indicator ── */
+.progres {
+  background: var(--karta);
+  border: 1px solid var(--mieta-linia);
+  border-radius: var(--promien);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.progres-bar {
+  height: 6px;
+  background: var(--mieta);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 0.65rem;
+}
+.progres-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--butelka), var(--butelka-glebia));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.progres-tekst {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--atrament-2);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Układ kalkulatora: formularz + pasek wyniku ── */
+.kalkulator {
+  display: grid;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (min-width: 860px) {
+  .kalkulator {
+    grid-template-columns: minmax(0, 1fr) 400px;
+  }
+  .pasek-otoczka {
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+/* Formularz */
+form.formularz {
+  background: var(--karta);
+  border: 1px solid var(--mieta-linia);
+  border-radius: var(--promien);
+  box-shadow: var(--cien);
+  padding: 1.5rem;
+  display: grid;
+  gap: 1.1rem;
+}
+.pole {
+  display: grid;
+  gap: 0.3rem;
+}
+.pole label {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.pole .hint {
+  font-size: 0.78rem;
+  color: var(--atrament-2);
+  font-weight: 400;
+}
+input[type='number'],
+select {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  padding: 0.6rem 0.7rem;
+  border: 1.5px solid var(--mieta-linia);
+  border-radius: 8px;
+  background: var(--papier);
+  color: var(--atrament);
+  width: 100%;
+}
+input[type='number']:focus,
+select:focus {
+  outline: 2px solid var(--butelka);
+  outline-offset: 1px;
+  border-color: var(--butelka);
+}
+.pole-wiersz {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+@media (max-width: 480px) {
+  .pole-wiersz {
+    grid-template-columns: 1fr;
+  }
+}
+.przelacznik {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.6rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.przelacznik input {
+  accent-color: var(--butelka);
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Segmentowane przyciski wyboru (forma opodatkowania, tryb) */
+.segmenty {
+  display: flex;
+  border: 1.5px solid var(--mieta-linia);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.segmenty label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 44px;
+  padding: 0.75rem 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--karta);
+  color: var(--atrament-2);
+  border-right: 1px solid var(--mieta-linia);
+}
+.segmenty label:last-child {
+  border-right: 0;
+}
+.segmenty input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.segmenty input:checked + label,
+.segmenty label:has(input:checked) {
+  background: var(--butelka);
+  color: #fff;
+}
+.segmenty input:focus-visible + label {
+  outline: 2px solid var(--bursztyn);
+  outline-offset: -2px;
+}
+
+/* ── PASEK WYNAGRODZEŃ — element podpisu ─────────────────────────────
+   Wynik stylizowany na odcinek wypłaty: perforacja u góry,
+   rozbicie pozycji jak na pasku, mono z tabelarycznymi cyframi.    */
+.pasek {
+  background: var(--karta);
+  border: 1px solid var(--mieta-linia);
+  border-radius: var(--promien);
+  box-shadow: var(--cien);
+  overflow: hidden;
+}
+.pasek-naglowek {
+  background: var(--butelka);
+  color: #fff;
+  padding: 0.8rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  justify-content: space-between;
+}
+.pasek-cialo {
+  padding: 1.1rem 1.25rem 1.25rem;
+  /* perforacja odcinka */
+  border-top: 2px dashed var(--mieta-linia);
+  background-image: radial-gradient(circle at 0 0, var(--papier) 6px, transparent 6px),
+    radial-gradient(circle at 100% 0, var(--papier) 6px, transparent 6px);
+  background-repeat: no-repeat;
+  background-position:
+    -6px -6px,
+    calc(100% + 6px) -6px;
+}
+.pasek table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.pasek td {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--mieta);
+}
+.pasek td:last-child {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.pasek tr.ujemna td:last-child {
+  color: var(--czerwien);
+}
+.pasek tr.suma td {
+  border-bottom: 0;
+  padding-top: 0.8rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+.pasek .wynik-glowny {
+  margin: 0.5rem 0 0.25rem;
+  text-align: center;
+}
+.pasek .wynik-glowny .kwota {
+  display: block;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.9rem, 6vw, 2.5rem);
+  font-weight: 700;
+  color: var(--butelka);
+  letter-spacing: -0.02em;
+}
+.pasek .wynik-glowny .etykieta {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--atrament-2);
+}
+.pasek .roznica {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--bursztyn-tlo);
+  border: 1px solid #ecd9bd;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  text-align: center;
+}
+.pasek .roznica b {
+  font-family: var(--font-mono);
+  color: var(--bursztyn);
+}
+
+/* ── Karty na stronie głównej ── */
+.siatka-kart {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  margin-top: 1.5rem;
+}
+.karta-narzedzia {
+  display: block;
+  background: var(--karta);
+  border: 1px solid var(--mieta-linia);
+  border-radius: var(--promien);
+  box-shadow: var(--cien);
+  padding: 1.25rem;
+  text-decoration: none;
+  color: var(--atrament);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.karta-narzedzia:hover {
+  transform: translateY(-2px);
+  border-color: var(--butelka);
+  color: var(--atrament);
+}
+.karta-narzedzia h3 {
+  margin: 0.5rem 0 0.35rem;
+}
+.karta-narzedzia p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--atrament-2);
+}
+
+/* ── Sekcja treści pod kalkulatorem (artykuł/FAQ) ── */
+.tresc {
+  max-width: 720px;
+  margin-top: 3rem;
+}
+.tresc h2 {
+  margin-top: 2rem;
+}
+.tresc table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.92rem;
+}
+.tresc caption {
+  caption-side: bottom;
+  text-align: left;
+  font-size: 0.78rem;
+  color: var(--atrament-2);
+  padding-top: 0.5rem;
+}
+.tresc th,
+.tresc td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--mieta-linia);
+  text-align: left;
+}
+.tresc th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--atrament-2);
+  border-bottom: 2px solid var(--mieta-linia);
+}
+.tresc td.mono,
+.tresc td.liczba {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.tresc th.liczba {
+  text-align: right;
+}
+.tresc tr.wyroznione td {
+  font-weight: 700;
+  color: var(--butelka);
+}
+.tresc figure {
+  margin: 1.75rem 0;
+}
+.tresc figure svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.tresc figcaption {
+  font-size: 0.8rem;
+  color: var(--atrament-2);
+  margin-top: 0.5rem;
+}
+.faq-pytanie {
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.zastrzezenie {
+  margin-top: 2.5rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--mieta);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: var(--atrament-2);
+}
+
+/* ── Dostępność / ruch ── */
+:focus-visible {
+  outline: 2px solid var(--butelka);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

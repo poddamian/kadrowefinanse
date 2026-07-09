@@ -1,0 +1,37 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const artykuly = [
+  {
+    url: '/blog/b2b-czy-umowa-o-prace-2026/',
+    tytul: 'B2B czy umowa o pracę — co się bardziej opłaca w 2026 roku?',
+    opis:
+      'Porównanie netto z etatu i z B2B przy 4 poziomach zarobków, liczone tym samym silnikiem co kalkulator. Od jakiej kwoty B2B zaczyna się opłacać.',
+    brew: 'case study · 4 poziomy zarobków',
+  },
+];
+---
+
+<Layout
+  title={`Blog — poradniki finansowo-kadrowe ${ROK}`}
+  description="Artykuły o podatkach, ZUS, składce zdrowotnej i kredytach — wyliczenia na przykładach, oparte na tych samych wzorach co nasze kalkulatory."
+>
+  <h1>Blog</h1>
+  <p style="max-width: 640px; color: var(--atrament-2);">
+    Poradniki i wyliczenia na przykładach — o podatkach, ZUS, składce zdrowotnej i kredytach.
+    Każdy artykuł opiera się na tych samych wzorach co nasze kalkulatory.
+  </p>
+
+  <div class="siatka-kart">
+    {
+      artykuly.map((a) => (
+        <a href={a.url} class="karta-narzedzia">
+          <span class="brew">{a.brew}</span>
+          <h3>{a.tytul}</h3>
+          <p>{a.opis}</p>
+        </a>
+      ))
+    }
+  </div>
+</Layout>

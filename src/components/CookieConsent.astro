@@ -1,0 +1,298 @@
+---
+// Baner zgody na cookies + Google Consent Mode v2.
+// Ustawia domyślny stan zgody PRZED załadowaniem GA4/AdSense, żeby te skrypty
+// (gdy zostaną dodane) respektowały wybór użytkownika od pierwszego odpalenia.
+---
+
+<div id="cookie-baner" class="cookie-baner" hidden>
+  <div class="cookie-karta">
+    <p class="cookie-tekst">
+      Używamy plików cookie do analizy ruchu i wyświetlania reklam. Kalkulatory działają
+      w 100% lokalnie w Twojej przeglądarce — cookie dotyczą wyłącznie analityki i reklam.
+      Szczegóły w <a href="/polityka-prywatnosci/">polityce prywatności</a>.
+    </p>
+    <div class="cookie-przyciski">
+      <button type="button" id="cookie-ustawienia-btn" class="cookie-btn cookie-btn-text">
+        Ustawienia
+      </button>
+      <button type="button" id="cookie-odrzuc-btn" class="cookie-btn cookie-btn-outline">
+        Tylko niezbędne
+      </button>
+      <button type="button" id="cookie-akceptuj-btn" class="cookie-btn cookie-btn-solid">
+        Akceptuj wszystkie
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="cookie-modal" class="cookie-modal" hidden>
+  <div class="cookie-modal-karta" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-tytul">
+    <h2 id="cookie-modal-tytul">Ustawienia cookie</h2>
+    <p class="cookie-modal-opis">
+      Wybierz, na co się zgadzasz. Zmiany możesz wprowadzić w każdej chwili, klikając
+      „Ustawienia cookies” w stopce strony.
+    </p>
+
+    <label class="cookie-opcja">
+      <input type="checkbox" checked disabled />
+      <span>
+        <strong>Niezbędne</strong>
+        <small>Zapisują tylko Twój wybór zgody. Zawsze aktywne.</small>
+      </span>
+    </label>
+
+    <label class="cookie-opcja">
+      <input type="checkbox" id="cookie-toggle-analityka" checked />
+      <span>
+        <strong>Analityka</strong>
+        <small>Anonimowe statystyki odwiedzin i popularności kalkulatorów (Google Analytics).</small>
+      </span>
+    </label>
+
+    <label class="cookie-opcja">
+      <input type="checkbox" id="cookie-toggle-reklamy" checked />
+      <span>
+        <strong>Reklamy</strong>
+        <small>Personalizacja reklam wyświetlanych w serwisie (Google AdSense).</small>
+      </span>
+    </label>
+
+    <div class="cookie-modal-przyciski">
+      <button type="button" id="cookie-modal-zapisz-btn" class="cookie-btn cookie-btn-solid">
+        Zapisz wybór
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  type ZgodaStan = 'granted' | 'denied';
+  interface Zgoda {
+    analityka: ZgodaStan;
+    reklamy: ZgodaStan;
+  }
+
+  const KLUCZ = 'cookie-zgoda-v1';
+
+  declare global {
+    interface Window {
+      dataLayer: unknown[];
+      gtag: (...args: unknown[]) => void;
+    }
+  }
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag() {
+    window.dataLayer.push(arguments);
+  };
+
+  // Domyślnie odmawiamy zgody, dopóki użytkownik nie zdecyduje (Consent Mode v2).
+  window.gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+  });
+
+  function wczytajZgode(): Zgoda | null {
+    try {
+      const surowa = localStorage.getItem(KLUCZ);
+      return surowa ? (JSON.parse(surowa) as Zgoda) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function zapiszZgode(zgoda: Zgoda) {
+    localStorage.setItem(KLUCZ, JSON.stringify(zgoda));
+    window.gtag('consent', 'update', {
+      ad_storage: zgoda.reklamy,
+      ad_user_data: zgoda.reklamy,
+      ad_personalization: zgoda.reklamy,
+      analytics_storage: zgoda.analityka,
+    });
+  }
+
+  const baner = document.getElementById('cookie-baner') as HTMLDivElement;
+  const modal = document.getElementById('cookie-modal') as HTMLDivElement;
+  const toggleAnalityka = document.getElementById('cookie-toggle-analityka') as HTMLInputElement;
+  const toggleReklamy = document.getElementById('cookie-toggle-reklamy') as HTMLInputElement;
+
+  function otworzBaner() {
+    baner.hidden = false;
+  }
+  function zamknijBaner() {
+    baner.hidden = true;
+  }
+  function otworzModal() {
+    const zapisana = wczytajZgode();
+    toggleAnalityka.checked = zapisana ? zapisana.analityka === 'granted' : true;
+    toggleReklamy.checked = zapisana ? zapisana.reklamy === 'granted' : true;
+    modal.hidden = false;
+  }
+  function zamknijModal() {
+    modal.hidden = true;
+  }
+
+  const istniejacaZgoda = wczytajZgode();
+  if (istniejacaZgoda) {
+    zapiszZgode(istniejacaZgoda);
+  } else {
+    otworzBaner();
+  }
+
+  document.getElementById('cookie-akceptuj-btn')?.addEventListener('click', () => {
+    zapiszZgode({ analityka: 'granted', reklamy: 'granted' });
+    zamknijBaner();
+  });
+
+  document.getElementById('cookie-odrzuc-btn')?.addEventListener('click', () => {
+    zapiszZgode({ analityka: 'denied', reklamy: 'denied' });
+    zamknijBaner();
+  });
+
+  document.getElementById('cookie-ustawienia-btn')?.addEventListener('click', () => {
+    otworzModal();
+  });
+
+  document.getElementById('cookie-modal-zapisz-btn')?.addEventListener('click', () => {
+    zapiszZgode({
+      analityka: toggleAnalityka.checked ? 'granted' : 'denied',
+      reklamy: toggleReklamy.checked ? 'granted' : 'denied',
+    });
+    zamknijModal();
+    zamknijBaner();
+  });
+
+  document.getElementById('stopka-cookie-ustawienia')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    otworzModal();
+  });
+</script>
+
+<style>
+  .cookie-baner[hidden],
+  .cookie-modal[hidden] {
+    display: none;
+  }
+  .cookie-baner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+  .cookie-karta {
+    max-width: 960px;
+    width: 100%;
+    background: var(--karta);
+    border: 1px solid var(--mieta-linia);
+    border-radius: var(--promien);
+    box-shadow: var(--cien);
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+  .cookie-tekst {
+    flex: 1 1 320px;
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--atrament-2);
+  }
+  .cookie-przyciski {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .cookie-btn {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .cookie-btn-solid {
+    background: var(--butelka);
+    color: #fff;
+    border: 1.5px solid var(--butelka);
+  }
+  .cookie-btn-solid:hover {
+    background: var(--butelka-glebia);
+    border-color: var(--butelka-glebia);
+  }
+  .cookie-btn-outline {
+    background: transparent;
+    color: var(--atrament);
+    border: 1.5px solid var(--mieta-linia);
+  }
+  .cookie-btn-outline:hover {
+    border-color: var(--butelka);
+    color: var(--butelka);
+  }
+  .cookie-btn-text {
+    background: none;
+    border: none;
+    color: var(--atrament-2);
+    text-decoration: underline;
+    padding: 0.6rem 0.25rem;
+  }
+
+  .cookie-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgb(22 40 31 / 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .cookie-modal-karta {
+    max-width: 480px;
+    width: 100%;
+    background: var(--karta);
+    border-radius: var(--promien);
+    box-shadow: var(--cien);
+    padding: 1.5rem;
+  }
+  .cookie-modal-opis {
+    font-size: 0.85rem;
+    color: var(--atrament-2);
+  }
+  .cookie-opcja {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--mieta-linia);
+    cursor: pointer;
+  }
+  .cookie-opcja input {
+    margin-top: 0.2rem;
+    accent-color: var(--butelka);
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+  }
+  .cookie-opcja span {
+    display: block;
+  }
+  .cookie-opcja small {
+    display: block;
+    color: var(--atrament-2);
+    font-size: 0.78rem;
+    margin-top: 0.15rem;
+  }
+  .cookie-modal-przyciski {
+    margin-top: 1.25rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+</style>

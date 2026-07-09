@@ -1,0 +1,207 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, ZUS_DUZY_PODSTAWA, PLACA_MINIMALNA } from '../../lib/params2026';
+
+const aktualizacja = '8 lipca 2026';
+---
+
+<Layout
+  title={`B2B czy umowa o pracę — co się bardziej opłaca w ${ROK} roku?`}
+  description={`Porównanie netto z etatu i z B2B przy 4 poziomach zarobków (6, 10, 15 i 20 tys. zł), liczone tym samym silnikiem co nasz kalkulator. Sprawdź, od jakiej kwoty B2B zaczyna się opłacać.`}
+>
+  <span class="brew">stawki {ROK} · duży ZUS od {ZUS_DUZY_PODSTAWA} zł podstawy</span>
+  <h1>B2B czy umowa o pracę — co się bardziej opłaca w {ROK} roku?</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Ta sama kwota na umowie o pracę i na fakturze B2B daje zupełnie różne kwoty „na rękę” —
+      a różnica wcale nie jest stała. Sprawdziliśmy to na czterech poziomach zarobków, dokładnie
+      tymi samymi wzorami, które stoją za naszym <a href="/b2b-czy-uop/">kalkulatorem B2B vs umowa o pracę</a>.
+      Wniosek z góry: przy niskich i średnich zarobkach zwykle wygrywa etat, a B2B zaczyna się
+      naprawdę opłacać dopiero od pewnego progu.
+    </p>
+
+    <h2>Co dokładnie porównujemy</h2>
+    <p>
+      Żeby porównanie było uczciwe, przyjęliśmy stały zestaw założeń — te same, na których
+      opiera się kalkulator:
+    </p>
+    <ul>
+      <li><strong>Etat:</strong> pełny etat, standardowe koszty uzyskania przychodu, skala podatkowa 12/32%.</li>
+      <li><strong>B2B:</strong> podatek liniowy 19%, <strong>duży ZUS</strong> (podstawa {ZUS_DUZY_PODSTAWA} zł), dobrowolna składka chorobowa, koszty firmowe 500 zł/mies.</li>
+      <li>Dla uproszczenia przyjęliśmy, że <strong>kwota brutto na etacie równa się kwocie na fakturze B2B</strong> — to porównanie edukacyjne. W praktyce stawka na fakturze zwykle różni się od brutto etatu, dlatego wartościowsze jest podstawienie własnych, realnych liczb w kalkulatorze.</li>
+    </ul>
+
+    <h2>Case study: ile zostaje na rękę przy różnych zarobkach</h2>
+    <p>
+      Poniżej zestawienie netto miesięcznie dla czterech poziomów zarobków — od 6 do 20 tys. zł
+      brutto/przychodu miesięcznie.
+    </p>
+
+    <table>
+      <caption>Netto miesięczne: etat (skala 12/32) vs B2B (liniowy 19%, duży ZUS, chorobowe). Stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Brutto / przychód</th>
+          <th class="liczba">Netto etat</th>
+          <th class="liczba">Netto B2B</th>
+          <th class="liczba">Różnica (B2B − etat)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>6 000 zł</td>
+          <td class="mono">4 420 zł</td>
+          <td class="mono">2 544 zł</td>
+          <td class="mono">−1 876 zł</td>
+        </tr>
+        <tr>
+          <td>10 000 zł</td>
+          <td class="mono">7 147 zł</td>
+          <td class="mono">5 784 zł</td>
+          <td class="mono">−1 363 zł</td>
+        </tr>
+        <tr>
+          <td>15 000 zł</td>
+          <td class="mono">10 017 zł</td>
+          <td class="mono">9 685 zł</td>
+          <td class="mono">−331 zł</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>20 000 zł</td>
+          <td class="mono">12 562 zł</td>
+          <td class="mono">13 537 zł</td>
+          <td class="mono">+975 zł</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 360" role="img" aria-label="Wykres słupkowy: netto miesięczne z etatu i z B2B przy zarobkach 6, 10, 15 i 20 tysięcy złotych. Przy 6, 10 i 15 tysiącach etat daje więcej netto; przy 20 tysiącach B2B zaczyna wygrywać.">
+        <title>Netto z etatu vs B2B przy różnych poziomach zarobków ({ROK})</title>
+
+        <rect x="50" y="15" width="16" height="16" fill="#1e5b43" />
+        <text x="72" y="27" font-family="Manrope Variable, sans-serif" font-size="13" fill="#16281f">Netto z etatu (skala 12/32)</text>
+        <rect x="290" y="15" width="16" height="16" fill="#c96f1e" />
+        <text x="312" y="27" font-family="Manrope Variable, sans-serif" font-size="13" fill="#16281f">Netto z B2B (liniowy, duży ZUS)</text>
+
+        <line x1="40" y1="320" x2="620" y2="320" stroke="#c7dccf" stroke-width="1" />
+
+        <!-- 6000 zł -->
+        <rect x="50" y="232" width="50" height="88" fill="#1e5b43" rx="2" />
+        <text x="75" y="222" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">4 420</text>
+        <rect x="110" y="269" width="50" height="51" fill="#c96f1e" rx="2" />
+        <text x="135" y="259" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">2 544</text>
+        <text x="105" y="340" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">6 000 zł</text>
+
+        <!-- 10000 zł -->
+        <rect x="200" y="177" width="50" height="143" fill="#1e5b43" rx="2" />
+        <text x="225" y="167" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">7 147</text>
+        <rect x="260" y="204" width="50" height="116" fill="#c96f1e" rx="2" />
+        <text x="285" y="194" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">5 784</text>
+        <text x="255" y="340" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">10 000 zł</text>
+
+        <!-- 15000 zł -->
+        <rect x="350" y="120" width="50" height="200" fill="#1e5b43" rx="2" />
+        <text x="375" y="110" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">10 017</text>
+        <rect x="410" y="126" width="50" height="194" fill="#c96f1e" rx="2" />
+        <text x="435" y="116" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">9 685</text>
+        <text x="405" y="340" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">15 000 zł</text>
+
+        <!-- 20000 zł -->
+        <rect x="500" y="69" width="50" height="251" fill="#1e5b43" rx="2" />
+        <text x="525" y="59" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">12 562</text>
+        <rect x="560" y="49" width="50" height="271" fill="#c96f1e" rx="2" />
+        <text x="585" y="39" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">13 537</text>
+        <text x="555" y="340" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">20 000 zł</text>
+      </svg>
+      <figcaption>
+        Netto miesięczne z etatu i z B2B (liniowy, duży ZUS, dobrowolne chorobowe) przy 6, 10, 15
+        i 20 tys. zł brutto/przychodu. Dopiero przy 20 tys. zł B2B zaczyna dawać więcej na rękę.
+      </figcaption>
+    </figure>
+
+    <p>
+      Przy 6 000 zł etat daje o 1 876 zł miesięcznie więcej niż B2B. Przy 10 000 zł przewaga
+      etatu topnieje do 1 363 zł, a przy 15 000 zł to już tylko 331 zł na korzyść etatu — praktycznie
+      remis. Dopiero przy 20 000 zł B2B wychodzi na prowadzenie: 975 zł więcej miesięcznie, czyli
+      niemal 11 700 zł rocznie.
+    </p>
+
+    <h2>Dlaczego B2B zaczyna się opłacać dopiero przy wyższych zarobkach</h2>
+    <p>
+      Powód jest prosty: <strong>duży ZUS to koszt stały</strong>, niezależny od tego, ile
+      zarobisz w danym miesiącu. Przy chorobowym to ok. 1 927 zł miesięcznie — przy przychodzie
+      6 000 zł to prawie jedna trzecia kwoty, a przy 20 000 zł to już tylko niecałe 10%. Do tego
+      dochodzi podatek liniowy 19% płacony <strong>od pierwszej złotówki dochodu</strong>, bez
+      kwoty wolnej — podczas gdy etat korzysta z kwoty wolnej 30 000 zł rocznie i niższej stawki
+      12% do progu 120 000 zł. Te dwa efekty razem sprawiają, że przy niskich i średnich
+      zarobkach etat jest tańszy w obciążeniach, a B2B doganiaje go dopiero, gdy skala przychodów
+      zacznie „rozcieńczać” stały koszt ZUS.
+    </p>
+    <p>
+      Jeśli zarabiasz poniżej ok. 16–17 tys. zł brutto miesięcznie, samo przejście na B2B na
+      dużym ZUS raczej Ci się finansowo nie opłaci — chyba że skorzystasz z{' '}
+      <strong>preferencyjnego ZUS</strong> lub <strong>ulgi na start</strong>, które znacząco
+      obniżają ten stały koszt w pierwszych miesiącach lub latach działalności. Sprawdź swój
+      dokładny przypadek w <a href="/b2b-czy-uop/">kalkulatorze B2B vs umowa o pracę</a> — możesz
+      przełączyć wariant ZUS i od razu zobaczyć, jak przesuwa się próg opłacalności.
+    </p>
+
+    <h2>Czego ten wykres nie pokazuje — ryzyka po stronie B2B</h2>
+    <p>
+      Wyższe netto to nie cała historia. Na etacie masz płatny urlop (ok. 26 dni rocznie),
+      płatne zwolnienie lekarskie, okres wypowiedzenia i potencjalną odprawę. Na B2B tych
+      świadczeń nie ma — jeśli zachorujesz albo zechcesz wziąć urlop, nie zarabiasz. Wielu
+      doradców finansowych rekomenduje doliczenie do progu opłacalności B2B dodatkowych
+      10–15%, żeby pokryć to ryzyko. Warto też pamiętać, że{' '}
+      <strong>preferencyjny ZUS i ulga na start kiedyś się kończą</strong> — po tym okresie
+      składki rosną skokowo do poziomu dużego ZUS, co może odwrócić opłacalność z dnia na dzień.
+      Osobną kwestią jest też składka zdrowotna, która różni się mocno między skalą, liniowym
+      i ryczałtem — dokładne wyliczenie znajdziesz w{' '}
+      <a href="/skladka-zdrowotna/">kalkulatorze składki zdrowotnej</a>.
+    </p>
+    <p>
+      Powyższe liczby to punkt startowy do rozmowy z księgowym, nie ostateczna rekomendacja.
+      Wpisz swoje realne kwoty — brutto z etatu, stawkę na fakturze, koszty firmowe — w{' '}
+      <a href="/b2b-czy-uop/">kalkulatorze</a> i sprawdź, gdzie dokładnie wypada Twój próg
+      opłacalności.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Ile trzeba zarabiać na B2B, żeby się opłacało bardziej niż etat?</p>
+    <p>
+      Przy dużym ZUS i podatku liniowym próg opłacalności w naszych wyliczeniach wypada w
+      okolicach 16–17 tys. zł brutto/przychodu miesięcznie. Dokładna wartość zależy od kosztów
+      firmowych, wybranego wariantu ZUS i formy opodatkowania — sprawdź to dla swoich liczb w
+      kalkulatorze.
+    </p>
+
+    <p class="faq-pytanie">Czy różnica wyglądałaby inaczej przy ryczałcie zamiast liniowego?</p>
+    <p>
+      Tak. Ryczałt inaczej liczy składkę zdrowotną (ryczałtowo, wg progu przychodu) i inaczej
+      podatek (od przychodu, nie od dochodu pomniejszonego o koszty), więc próg opłacalności może
+      wypaść inaczej — zwłaszcza przy niskich kosztach firmowych. W kalkulatorze możesz
+      przełączyć formę opodatkowania na ryczałt i od razu porównać.
+    </p>
+
+    <p class="faq-pytanie">Co się zmienia, jeśli korzystam z preferencyjnego ZUS?</p>
+    <p>
+      Preferencyjny ZUS znacząco obniża stały miesięczny koszt (podstawa składek to tylko 30%
+      płacy minimalnej, czyli {(0.3 * PLACA_MINIMALNA).toFixed(2).replace('.', ',')} zł zamiast
+      {' '}{ZUS_DUZY_PODSTAWA} zł), więc próg opłacalności B2B przesuwa się wyraźnie w dół — dla
+      wielu osób w pierwszych 24 miesiącach działalności B2B może się opłacać już przy znacznie
+      niższych zarobkach. To jednak okres przejściowy: po jego zakończeniu obciążenia rosną
+      skokowo do poziomu dużego ZUS.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i ilustracyjny — konkretne kwoty zależą od Twojej sytuacji
+      (koszty firmowe, wariant ZUS, ulgi, wspólne rozliczenie). Nie stanowi porady podatkowej ani
+      prawnej. Stawki na {ROK} r. Przy decyzji o formie zatrudnienia skonsultuj się z księgowym
+      lub doradcą podatkowym.
+    </div>
+  </div>
+</Layout>

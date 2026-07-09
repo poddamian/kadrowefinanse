@@ -1,0 +1,266 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ROK, ZUS_DUZY_PODSTAWA, ZUS_PREF_PODSTAWA, STAWKI_RYCZALTU, ZDROWOTNA } from '../lib/params2026';
+---
+
+<Layout
+  title={`Kalkulator B2B czy umowa o pracę ${ROK} — porównaj netto`}
+  description={`Porównaj wynagrodzenie netto na etacie i na B2B (skala, liniowy, ryczałt) ze stawkami ${ROK}. Pełne rozbicie ZUS, składki zdrowotnej i PIT — bez rejestracji.`}
+  aktywna="/b2b-czy-uop/"
+>
+  <span class="brew">stawki {ROK} · duży ZUS od {ZUS_DUZY_PODSTAWA} zł podstawy</span>
+  <h1>B2B czy umowa o pracę — co się bardziej opłaca?</h1>
+  <p style="max-width: 640px; color: var(--atrament-2);">
+    Wpisz kwotę brutto z etatu i kwotę netto z faktury. Kalkulator pokaże, ile realnie
+    zostaje „na rękę” w obu wariantach — z pełnym rozbiciem składek i podatków.
+  </p>
+
+  <div class="kalkulator">
+    <div class="progres">
+      <div class="progres-bar">
+        <div class="progres-fill" id="progressFill"></div>
+      </div>
+      <p class="progres-tekst" id="progressTekst">Wpisz kwoty, aby rozpocząć</p>
+    </div>
+
+    <form class="formularz" id="frm" autocomplete="off">
+      <div class="pole-wiersz">
+        <div class="pole">
+          <label for="brutto">Etat: brutto (zł/mies.)</label>
+          <input type="number" id="brutto" value="10000" min="0" step="100" inputmode="decimal" />
+        </div>
+        <div class="pole">
+          <label for="faktura">B2B: netto na fakturze (zł/mies.)</label>
+          <input type="number" id="faktura" value="12000" min="0" step="100" inputmode="decimal" />
+        </div>
+      </div>
+
+      <div class="pole">
+        <label>Forma opodatkowania B2B</label>
+        <div class="segmenty" role="radiogroup" aria-label="Forma opodatkowania">
+          <label><input type="radio" name="forma" value="liniowy" checked /> Liniowy 19%</label>
+          <label><input type="radio" name="forma" value="skala" /> Skala 12/32</label>
+          <label><input type="radio" name="forma" value="ryczalt" /> Ryczałt</label>
+        </div>
+      </div>
+
+      <div class="pole" id="poleRyczalt" hidden>
+        <label for="stawkaR">Stawka ryczałtu</label>
+        <select id="stawkaR">
+          {STAWKI_RYCZALTU.map((s) => (
+            <option value={s.stawka} selected={s.stawka === 0.12}>{s.opis}</option>
+          ))}
+        </select>
+      </div>
+
+      <div class="pole">
+        <label>Składki ZUS przedsiębiorcy</label>
+        <div class="segmenty" role="radiogroup" aria-label="Wariant ZUS">
+          <label><input type="radio" name="zus" value="duzy" checked /> Duży ZUS</label>
+          <label><input type="radio" name="zus" value="preferencyjny" /> Preferencyjny</label>
+          <label><input type="radio" name="zus" value="ulgaNaStart" /> Ulga na start</label>
+        </div>
+        <span class="hint">
+          Duży ZUS: podstawa {ZUS_DUZY_PODSTAWA} zł · preferencyjny: {ZUS_PREF_PODSTAWA.toFixed(2).replace('.', ',')} zł
+          (pierwsze 24 mies.) · ulga na start: tylko zdrowotna (6 mies.)
+        </span>
+      </div>
+
+      <div class="pole-wiersz">
+        <div class="pole">
+          <label for="koszty">Koszty firmowe (zł/mies.)</label>
+          <input type="number" id="koszty" value="500" min="0" step="100" inputmode="decimal" />
+          <span class="hint">Księgowość, sprzęt, paliwo… (nie obniżają ryczałtu)</span>
+        </div>
+        <div class="pole" style="align-self: end;">
+          <label class="przelacznik">
+            <input type="checkbox" id="chorobowe" checked />
+            Dobrowolne chorobowe
+          </label>
+        </div>
+      </div>
+    </form>
+
+    <div class="pasek-otoczka">
+      <div class="pasek" aria-live="polite">
+        <div class="pasek-naglowek">
+          <span>Porównanie netto</span>
+          <span>{ROK}</span>
+        </div>
+        <div class="pasek-cialo">
+          <table>
+            <thead>
+              <tr>
+                <td></td>
+                <td style="font-weight:700; font-family: var(--font-ui);">Etat</td>
+                <td style="font-weight:700; font-family: var(--font-ui);">B2B</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Przychód</td>
+                <td class="mono" id="uopBrutto">—</td>
+                <td class="mono" id="b2bPrzychod">—</td>
+              </tr>
+              <tr class="ujemna">
+                <td>Składki społeczne</td>
+                <td class="mono" id="uopSpoleczne">—</td>
+                <td class="mono" id="b2bSpoleczne">—</td>
+              </tr>
+              <tr class="ujemna">
+                <td>Zdrowotna</td>
+                <td class="mono" id="uopZdrowotna">—</td>
+                <td class="mono" id="b2bZdrowotna">—</td>
+              </tr>
+              <tr class="ujemna">
+                <td>Podatek</td>
+                <td class="mono" id="uopPit">—</td>
+                <td class="mono" id="b2bPodatek">—</td>
+              </tr>
+              <tr class="ujemna">
+                <td>Koszty firmowe</td>
+                <td class="mono">—</td>
+                <td class="mono" id="b2bKoszty">—</td>
+              </tr>
+              <tr class="suma">
+                <td>Netto</td>
+                <td class="mono" id="uopNetto">—</td>
+                <td class="mono" id="b2bNetto">—</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="roznica" id="roznica">Wpisz kwoty, aby zobaczyć porównanie.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="tresc">
+    <h2>Jak liczymy?</h2>
+    <p>
+      <strong>Etat:</strong> od brutto odejmujemy składki pracownika (emerytalna 9,76%,
+      rentowa 1,5%, chorobowa 2,45%), składkę zdrowotną 9% oraz zaliczkę PIT wg skali
+      12/32% z kwotą wolną 30 000 zł i kosztami uzyskania 250 zł/mies. Uwzględniamy limit
+      30-krotności przy wysokich pensjach. Wynik to średnia miesięczna z rozliczenia
+      rocznego — dlatego przy pensjach przekraczających próg 120 000 zł rocznie zobaczysz
+      realny efekt drugiej stawki.
+    </p>
+    <p>
+      <strong>B2B:</strong> od przychodu odejmujemy koszty, składki społeczne ZUS (wg
+      wybranego wariantu), składkę zdrowotną zależną od formy opodatkowania (skala: 9%
+      dochodu, liniowy: 4,9% — min. {ZDROWOTNA.minimalna.toFixed(2).replace('.', ',')} zł/mies.,
+      ryczałt: stawka wg progu przychodów) oraz podatek. Na liniowym uwzględniamy
+      odliczenie zdrowotnej do {ZDROWOTNA.liniowyLimitOdliczenia.toLocaleString('pl-PL')} zł rocznie,
+      na ryczałcie — odliczenie 50% zapłaconej zdrowotnej od przychodu.
+    </p>
+    <h2>O czym pamiętać przy zmianie etatu na B2B?</h2>
+    <p>
+      Wyższe netto na B2B to nie wszystko: tracisz płatny urlop (ok. 26 dni), płatne L4
+      (chyba że opłacasz chorobowe), okres wypowiedzenia i odprawy. Do realnego porównania
+      warto doliczyć po stronie B2B koszt ok. 10–15% na pokrycie tych ryzyk — oraz
+      pamiętać, że preferencyjny ZUS i ulga na start kiedyś się kończą, a wtedy składki
+      rosną skokowo.
+    </p>
+    <p>
+      Chcesz zobaczyć, jak ta różnica zmienia się przy różnych zarobkach? Sprawdziliśmy to na
+      czterech poziomach wynagrodzeń w artykule{' '}
+      <a href="/blog/b2b-czy-umowa-o-prace-2026/">B2B czy umowa o pracę — co się bardziej opłaca w {ROK} roku?</a>
+    </p>
+    <div class="zastrzezenie">
+      Kalkulator ma charakter poglądowy i przyjmuje uproszczenia (m.in. standardowe koszty
+      uzyskania, brak PPK, ulg podatkowych i wspólnego rozliczenia). Stawki na {ROK} r.
+      Nie stanowi porady podatkowej — przy decyzji o formie zatrudnienia skonsultuj się z
+      księgowym lub doradcą podatkowym.
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { uopNetto, b2bNetto, zlGr, type FormaOpodatkowania, type WariantZus } from '../lib/podatki';
+
+  const $ = (id: string) => document.getElementById(id) as HTMLInputElement;
+  const radio = (name: string) =>
+    (document.querySelector(`input[name="${name}"]:checked`) as HTMLInputElement)?.value;
+
+  function aktualizujProgress() {
+    const brutto = Math.max(0, Number($('brutto').value) || 0);
+    const faktura = Math.max(0, Number($('faktura').value) || 0);
+    const forma = radio('forma');
+    const zus = radio('zus');
+
+    let krok = 0;
+    if (brutto > 0) krok++;
+    if (faktura > 0) krok++;
+    if (forma) krok++;
+    if (zus) krok++;
+    if (brutto > 0 && faktura > 0 && forma && zus) krok = 5;
+
+    const procent = (krok / 5) * 100;
+    const teksty = [
+      'Wpisz kwoty, aby rozpocząć',
+      'Wpisz kwotę na B2B',
+      'Wszystkie dane na miejscu',
+      'Wszystkie dane na miejscu',
+      'Wszystkie dane na miejscu',
+      '✓ Gotowe — zobacz wynik',
+    ];
+
+    const fillEl = document.getElementById('progressFill') as HTMLElement;
+    const tekstEl = document.getElementById('progressTekst') as HTMLElement;
+    if (fillEl) fillEl.style.transform = `scaleX(${procent / 100})`;
+    if (tekstEl) tekstEl.textContent = teksty[krok];
+  }
+
+  function przelicz() {
+    aktualizujProgress();
+    const brutto = Math.max(0, Number($('brutto').value) || 0);
+    const faktura = Math.max(0, Number($('faktura').value) || 0);
+    const koszty = Math.max(0, Number($('koszty').value) || 0);
+    const forma = radio('forma') as FormaOpodatkowania;
+    const zus = radio('zus') as WariantZus;
+    const chorobowe = $('chorobowe').checked;
+    const stawkaR = Number(($('stawkaR') as unknown as HTMLSelectElement).value);
+
+    ($('poleRyczalt') as HTMLElement).hidden = forma !== 'ryczalt';
+
+    const u = uopNetto(brutto);
+    const b = b2bNetto({
+      przychodMies: faktura,
+      kosztyMies: koszty,
+      forma,
+      stawkaRyczaltu: stawkaR,
+      zus,
+      chorobowe,
+    });
+
+    const pokaz = (id: string, v: number, minus = false) => {
+      $(id).textContent = (minus && v > 0 ? '−' : '') + zlGr(v);
+    };
+
+    pokaz('uopBrutto', u.bruttoMies);
+    pokaz('uopSpoleczne', u.spoleczneMies, true);
+    pokaz('uopZdrowotna', u.zdrowotnaMies, true);
+    pokaz('uopPit', u.pitMies, true);
+    pokaz('uopNetto', u.nettoMies);
+
+    pokaz('b2bPrzychod', b.przychodMies);
+    pokaz('b2bSpoleczne', b.zusSpoleczneMies, true);
+    pokaz('b2bZdrowotna', b.zdrowotnaMies, true);
+    pokaz('b2bPodatek', b.podatekMies, true);
+    pokaz('b2bKoszty', b.kosztyMies, true);
+    pokaz('b2bNetto', b.nettoMies);
+
+    const diff = b.nettoMies - u.nettoMies;
+    const el = $('roznica');
+    if (Math.abs(diff) < 1) {
+      el.innerHTML = 'Oba warianty dają praktycznie <b>tyle samo</b> na rękę.';
+    } else if (diff > 0) {
+      el.innerHTML = `Na B2B zostaje <b>${zlGr(diff)}</b> więcej miesięcznie (${zlGr(diff * 12)} rocznie).`;
+    } else {
+      el.innerHTML = `Na etacie zostaje <b>${zlGr(-diff)}</b> więcej miesięcznie (${zlGr(-diff * 12)} rocznie).`;
+    }
+  }
+
+  document.getElementById('frm')!.addEventListener('input', przelicz);
+  przelicz();
+</script>
