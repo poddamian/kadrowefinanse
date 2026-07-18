@@ -7,6 +7,14 @@
  * - Składka zdrowotna 2026: infakt.pl, zus.pl (koniec preferencji 75% min. wynagrodzenia)
  * - Skala PIT: pit.pl, e-pity.pl
  * - Współczynnik ekwiwalentu: gofin.pl, prawo.pl
+ *
+ * UWAGA — zmiana roku (np. 2026 → 2027): NIE wystarczy zmienić samo ROK.
+ * Każda stawka poniżej jest wartością prawnie wiążącą tylko dla 2026 r. i w kolejnym
+ * roku będzie inna (nowa płaca minimalna, nowe podstawy ZUS, ew. inne progi PIT).
+ * Podmiana samego ROK bez realnej weryfikacji każdej stawki ze źródłem pokazywałaby
+ * użytkownikom błędne wyliczenia pod poprawną datą — gorzej niż stare dane 2026.
+ * Przy starcie nowego roku: zweryfikować i podmienić każdą wartość osobno,
+ * zaktualizować komentarz "Źródła" powyżej, dopiero potem zmienić ROK.
  */
 
 export const ROK = 2026;
