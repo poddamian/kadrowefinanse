@@ -271,8 +271,14 @@ footer.stopka a {
 @media (min-width: 860px) {
   .kalkulator {
     grid-template-columns: minmax(0, 1fr) 400px;
+    grid-template-areas:
+      "progres form"
+      "wynik form";
   }
+  .progres { grid-area: progres; }
+  form.formularz { grid-area: form; }
   .pasek-otoczka {
+    grid-area: wynik;
     position: sticky;
     top: 1rem;
   }
