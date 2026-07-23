@@ -1,0 +1,240 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, ZUS_PREF_PODSTAWA, ZUS_DUZY_PODSTAWA, ZUS_STAWKI } from '../../lib/params2026';
+import { zlGr } from '../../lib/podatki';
+
+const aktualizacja = '23 lipca 2026';
+
+const round2 = (x: number) => Math.round(x * 100) / 100;
+
+/** Podstawa Małego ZUS Plus: 50% przeciętnego miesięcznego dochodu z poprzedniego roku, w granicach min/maks. */
+function podstawaMalyZus(dochodSredniMies: number): number {
+  const podstawa = 0.5 * dochodSredniMies;
+  return round2(Math.min(Math.max(podstawa, ZUS_PREF_PODSTAWA), ZUS_DUZY_PODSTAWA));
+}
+
+/** Składki społeczne (bez Funduszu Pracy — tak jak na preferencyjnym ZUS) dla danej podstawy. */
+function skladkiSpoleczne(podstawa: number, chorobowe: boolean): number {
+  let suma = podstawa * (ZUS_STAWKI.emerytalna + ZUS_STAWKI.rentowa + ZUS_STAWKI.wypadkowa);
+  if (chorobowe) suma += podstawa * ZUS_STAWKI.chorobowa;
+  return round2(suma);
+}
+
+const skladkiDuzyZus = round2(
+  ZUS_DUZY_PODSTAWA * (ZUS_STAWKI.emerytalna + ZUS_STAWKI.rentowa + ZUS_STAWKI.wypadkowa + ZUS_STAWKI.chorobowa + ZUS_STAWKI.funduszPracy),
+);
+
+const dochody = [4000, 6000, 8000];
+const wiersze = dochody.map((d) => {
+  const podstawa = podstawaMalyZus(d);
+  const skladki = skladkiSpoleczne(podstawa, true);
+  return {
+    dochod: d,
+    podstawa,
+    skladki,
+    oszczednoscMies: round2(skladkiDuzyZus - skladki),
+  };
+});
+
+const tytul = `Mały ZUS Plus ${ROK} — kto może skorzystać i ile zaoszczędzi`;
+const opis = `Warunki Małego ZUS Plus w ${ROK} r. (limit przychodu 120 000 zł, nowe zasady 36 miesięcy w każdym 60-miesięcznym okresie) i realne oszczędności na składkach społecznych przy 3 poziomach dochodu.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-07-23',
+  dateModified: '2026-07-23',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/maly-zus-plus-2026/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">stawki {ROK} · nowe zasady 36/60 miesięcy</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Mały ZUS Plus to jedyna ulga w składkach społecznych dostępna dla przedsiębiorców, którzy
+      wyczerpali już preferencyjny ZUS, a nadal mają niski przychód. Od 1 stycznia {ROK} r. zmieniły
+      się też zasady liczenia okresu korzystania z ulgi — dotyczy to zwłaszcza tych, którzy
+      korzystali z niej już wcześniej. Sprawdzamy warunki i liczymy realne oszczędności tym samym
+      silnikiem co nasz <a href="/skladka-zdrowotna/">kalkulator składki zdrowotnej</a>. Jeśli
+      dopiero zaczynasz działalność, zobacz najpierw{' '}
+      <a href="/blog/preferencyjny-zus-ulga-na-start/">ulgę na start i preferencyjny ZUS</a>.
+    </p>
+
+    <h2>Warunki skorzystania z Małego ZUS Plus</h2>
+    <ul>
+      <li>
+        <strong>Limit przychodu:</strong> roczny przychód z działalności gospodarczej w
+        poprzednim roku kalendarzowym nie mógł przekroczyć <strong>120 000 zł</strong>. Kto
+        prowadził firmę krócej niż cały rok, liczy limit proporcjonalnie: (120 000 / 365) ×
+        liczba dni prowadzenia działalności.
+      </li>
+      <li>
+        <strong>Minimalny okres prowadzenia działalności:</strong> firma musiała działać przez co
+        najmniej 60 dni kalendarzowych w poprzednim roku.
+      </li>
+      <li>
+        <strong>Brak ustawowych wyłączeń:</strong> tak jak przy preferencyjnym ZUS, z ulgi nie
+        skorzystają osoby rozliczające się kartą podatkową z jednoczesnym zwolnieniem z VAT, ani
+        te, które w bieżącym lub poprzednim roku wykonywały dla byłego pracodawcy te same
+        czynności, co w ramach stosunku pracy.
+      </li>
+      <li>
+        <strong>Zgłoszenie w ZUS:</strong> przystąpienie do Małego ZUS Plus wymaga samodzielnego
+        zgłoszenia (wyrejestrowanie z dotychczasowego kodu i zgłoszenie z nowym) w ciągu 7 dni od
+        rozpoczęcia korzystania z ulgi.
+      </li>
+    </ul>
+
+    <h2>Nowe zasady od {ROK} r.: 36 miesięcy w każdym okresie 60 miesięcy</h2>
+    <p>
+      Do końca 2025 r. limit wynosił 36 miesięcy ulgi w ciągu ostatnich 60 miesięcy prowadzenia
+      działalności, liczonych łącznie od startu firmy — kto wykorzystał limit wcześniej, tracił
+      prawo do ulgi na dłużej. Od 1 stycznia {ROK} r. zasada działa inaczej: pierwszy 60-miesięczny
+      okres liczy się od miesiąca, w którym przedsiębiorca zaczął korzystać z ulgi po grudniu
+      2025 r., a każdy kolejny okres startuje na nowo po zakończeniu poprzedniego. W praktyce
+      oznacza to <strong>reset licznika</strong> — wcześniejsze miesiące korzystania z Małego ZUS
+      Plus (sprzed {ROK} r.) nie są już wliczane do nowego okresu.
+    </p>
+    <p>
+      Niewykorzystane miesiące nie przechodzą jednak na kolejny okres — kto w danym 60-miesięcznym
+      cyklu skorzystał tylko z 10 miesięcy ulgi, nie odzyska brakujących 26 miesięcy później. Limit
+      liczy się w pełnych miesiącach kalendarzowych, w których ulga faktycznie obowiązywała
+      choćby przez jeden dzień.
+    </p>
+
+    <h2>Jak liczy się podstawa składek</h2>
+    <p>
+      W przeciwieństwie do dużego i preferencyjnego ZUS, gdzie podstawa jest stałą kwotą, na
+      Małym ZUS Plus podstawa zależy od <strong>przeciętnego miesięcznego dochodu</strong> z
+      poprzedniego roku kalendarzowego (przychód minus koszty minus zapłacone składki społeczne,
+      podzielone przez liczbę miesięcy prowadzenia działalności). Podstawa wynosi{' '}
+      <strong>50% tego dochodu</strong>, ale nie mniej niż {zlGr(ZUS_PREF_PODSTAWA)} (30% płacy
+      minimalnej — tyle samo co na preferencyjnym ZUS) i nie więcej niż {zlGr(ZUS_DUZY_PODSTAWA)}{' '}
+      (60% prognozowanego przeciętnego wynagrodzenia — tyle samo co na dużym ZUS).
+    </p>
+
+    <h2>Case study: ile realnie oszczędzasz</h2>
+    <p>
+      Poniżej porównanie miesięcznych składek społecznych (emerytalna, rentowa, wypadkowa,
+      dobrowolna chorobowa — Mały ZUS Plus, tak jak preferencyjny, nie obejmuje Funduszu Pracy)
+      na Małym ZUS Plus względem pełnego, „dużego ZUS", przy trzech poziomach przeciętnego
+      miesięcznego dochodu z poprzedniego roku:
+    </p>
+
+    <table>
+      <caption>Mały ZUS Plus vs duży ZUS — podstawa i składki społeczne, stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Przeciętny dochód mies.</th>
+          <th class="liczba">Podstawa (50%, w granicach)</th>
+          <th class="liczba">Składki społeczne</th>
+          <th class="liczba">Oszczędność vs duży ZUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {wiersze.map((w, i) => (
+          <tr class={i === 1 ? 'wyroznione' : ''}>
+            <td>{w.dochod.toLocaleString('pl-PL')} zł</td>
+            <td class="mono">{zlGr(w.podstawa)}</td>
+            <td class="mono">{zlGr(w.skladki)}</td>
+            <td class="mono">{zlGr(w.oszczednoscMies)} / mies.</td>
+          </tr>
+        ))}
+        <tr>
+          <td colspan="2">Duży ZUS (podstawa {zlGr(ZUS_DUZY_PODSTAWA)})</td>
+          <td class="mono">{zlGr(skladkiDuzyZus)}</td>
+          <td class="mono">—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 300" role="img" aria-label="Wykres słupkowy: składki społeczne na Małym ZUS Plus rosną wraz z dochodem, ale pozostają wyraźnie niższe niż na dużym ZUS.">
+        <title>Składki społeczne — Mały ZUS Plus a duży ZUS ({ROK})</title>
+        <line x1="40" y1="260" x2="620" y2="260" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="70" y="188" width="70" height="72" fill="#1e5b43" rx="2" />
+        <text x="105" y="178" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">{zlGr(wiersze[0].skladki)}</text>
+        <text x="105" y="278" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="11" fill="#4a5d53">dochód 4000 zł</text>
+
+        <rect x="210" y="151" width="70" height="109" fill="#c96f1e" rx="2" />
+        <text x="245" y="141" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">{zlGr(wiersze[1].skladki)}</text>
+        <text x="245" y="278" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="11" fill="#4a5d53">dochód 6000 zł</text>
+
+        <rect x="350" y="114" width="70" height="146" fill="#2f7a5a" rx="2" />
+        <text x="385" y="104" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">{zlGr(wiersze[2].skladki)}</text>
+        <text x="385" y="278" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="11" fill="#4a5d53">dochód 8000 zł</text>
+
+        <rect x="490" y="40" width="80" height="220" fill="#6b1e1e" rx="2" />
+        <text x="530" y="30" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">{zlGr(skladkiDuzyZus)}</text>
+        <text x="530" y="278" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="11" fill="#4a5d53">duży ZUS</text>
+      </svg>
+      <figcaption>
+        Przy niskim dochodzie z poprzedniego roku (4000 zł/mies.) Mały ZUS Plus daje ponad{' '}
+        {zlGr(wiersze[0].oszczednoscMies)} miesięcznie mniej składek społecznych niż duży ZUS —
+        to ponad {(Math.round((wiersze[0].oszczednoscMies * 12) / 100) / 10).toFixed(1).replace('.', ',')} tys. zł rocznie.
+      </figcaption>
+    </figure>
+
+    <p>
+      Im wyższy był dochód w poprzednim roku, tym mniejsza korzyść — powyżej pewnego progu
+      podstawa i tak dochodzi do maksimum {zlGr(ZUS_DUZY_PODSTAWA)}, czyli zrównuje się ze
+      składkami dużego ZUS. Dlatego ulga najbardziej opłaca się firmom o niewielkiej, ale stabilnej
+      rentowności — nie tym, które właśnie dynamicznie rosną i za rok i tak przekroczą limit
+      120 000 zł przychodu.
+    </p>
+
+    <h2>Co po wyczerpaniu 36 miesięcy</h2>
+    <p>
+      Po wykorzystaniu limitu w danym 60-miesięcznym okresie przedsiębiorca wraca do pełnych
+      składek liczonych od podstawy dużego ZUS — bez okresu przejściowego, podobnie jak przy
+      przejściu z preferencyjnego ZUS. Jeśli w tym momencie przychód nadal jest niski, warto
+      sprawdzić, czy zmiana formy opodatkowania złagodzi skutek dla składki zdrowotnej — zobacz{' '}
+      <a href="/blog/jak-obnizyc-skladke-zdrowotna/">jak obniżyć składkę zdrowotną</a>. Po
+      zakończeniu 60-miesięcznego okresu licznik startuje od nowa i przy spełnieniu warunków można
+      ponownie skorzystać z ulgi przez kolejne maksymalnie 36 miesięcy.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy Mały ZUS Plus obniża też składkę zdrowotną?</p>
+    <p>
+      Nie — Mały ZUS Plus dotyczy wyłącznie składek społecznych (emerytalnej, rentowej,
+      wypadkowej, chorobowej). Składka zdrowotna liczy się dokładnie tak samo, jak na dużym ZUS —
+      według formy opodatkowania. Pełne zasady znajdziesz w{' '}
+      <a href="/blog/skladka-zdrowotna-2026-przewodnik/">przewodniku po składce zdrowotnej {ROK}</a>.
+    </p>
+
+    <p class="faq-pytanie">Ile zapłacę składek na Małym ZUS Plus — jest na to kalkulator?</p>
+    <p>
+      Dokładna kwota zależy od przeciętnego miesięcznego dochodu z poprzedniego roku
+      kalendarzowego, więc różni się dla każdej firmy — sam ZUS udostępnia w tym celu specjalny
+      kalkulator na PUE/eZUS. Powyższa tabela pokazuje mechanizm i rząd wielkości oszczędności na
+      trzech przykładowych poziomach dochodu.
+    </p>
+
+    <p class="faq-pytanie">Czy wcześniejsze korzystanie z Małego ZUS Plus przed {ROK} r. przepada?</p>
+    <p>
+      Tak, w sensie limitu — nowe zasady liczą pierwszy 60-miesięczny okres od miesiąca, w którym
+      przedsiębiorca zaczął (lub zacznie) korzystać z ulgi po grudniu 2025 r. Miesiące
+      wykorzystane wcześniej nie są odejmowane od nowego limitu 36 miesięcy, co w praktyce działa
+      na korzyść osób, które wcześniej zbliżały się do starego limitu.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy — stawki na {ROK} r. Nie stanowi porady podatkowej ani z
+      zakresu ubezpieczeń społecznych. Przed zgłoszeniem do Małego ZUS Plus i wyliczeniem
+      dokładnej podstawy składek skonsultuj się z ZUS lub księgowym.
+    </div>
+  </div>
+</Layout>
