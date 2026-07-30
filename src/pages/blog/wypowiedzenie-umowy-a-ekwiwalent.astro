@@ -1,0 +1,200 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, WSPOLCZYNNIK_URLOPOWY } from '../../lib/params2026';
+import { ekwiwalent, zlGr } from '../../lib/podatki';
+
+const aktualizacja = '30 lipca 2026';
+const wsp = WSPOLCZYNNIK_URLOPOWY.toString().replace('.', ',');
+
+// Case study: wypowiedzenie z 3-mies. okresem, podstawa 7000 zł, 18 dni zaległego/bieżącego urlopu
+const podstawa = 7000;
+const dniUrlopu = 18;
+const wynik = ekwiwalent(podstawa, dniUrlopu, 1);
+
+const tytul = `Wypowiedzenie umowy o pracę a wypłata ekwiwalentu — krok po kroku (${ROK})`;
+const opis = `Kiedy pracodawca musi wypłacić ekwiwalent za urlop po wypowiedzeniu, jak urlop w okresie wypowiedzenia wpływa na tę kwotę i czym różni się to od odprawy — z przykładem liczbowym na ${ROK} r.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-08-06',
+  dateModified: '2026-08-06',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/wypowiedzenie-umowy-a-ekwiwalent/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">poradnik · krok po kroku</span>
+  <h1>Wypowiedzenie umowy o pracę a wypłata ekwiwalentu — krok po kroku</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Dostałeś lub złożyłeś wypowiedzenie i zostało Ci kilkanaście dni niewykorzystanego urlopu?
+      To, czy w ogóle dostaniesz za nie ekwiwalent, zależy od tego, co dzieje się w okresie
+      wypowiedzenia — czy urlop zostanie wykorzystany, czy nie. Wyjaśniamy krok po kroku, kiedy
+      ekwiwalent się należy i jak go policzyć, na przykładzie zgodnym z naszym{' '}
+      <a href="/ekwiwalent-za-urlop/">kalkulatorem ekwiwalentu za urlop</a>. Sam wzór na
+      wyliczenie kwoty opisaliśmy szczegółowo w{' '}
+      <a href="/blog/ekwiwalent-za-urlop-jak-liczyc/">Ekwiwalent za niewykorzystany urlop — jak liczyć i kiedy się należy</a>.
+    </p>
+
+    <h2>Krok 1: sprawdź, czy pracodawca może wysłać Cię na urlop w okresie wypowiedzenia</h2>
+    <p>
+      Pracodawca ma prawo <strong>jednostronnie zobowiązać</strong> pracownika do wykorzystania
+      urlopu wypoczynkowego (zaległego i bieżącego, proporcjonalnie do przepracowanej części roku)
+      w okresie wypowiedzenia — pracownik nie musi się na to zgadzać, wystarczy polecenie
+      pracodawcy. Dotyczy to zarówno wypowiedzenia złożonego przez pracodawcę, jak i przez
+      pracownika.
+    </p>
+    <p>
+      Jeśli urlop zostanie w ten sposób wykorzystany w naturze, <strong>ekwiwalent za te dni nie
+      przysługuje</strong> — bo prawo do urlopu zostało zrealizowane, a nie zamienione na
+      pieniądze. Ekwiwalent pojawia się dopiero za dni, których nie da się już wykorzystać do
+      końca okresu wypowiedzenia.
+    </p>
+
+    <h2>Krok 2: policz, ile dni urlopu zmieści się w okresie wypowiedzenia</h2>
+    <p>
+      Okres wypowiedzenia zależy od stażu pracy u danego pracodawcy: 2 tygodnie (poniżej 6
+      miesięcy), 1 miesiąc (od 6 miesięcy do 3 lat) lub 3 miesiące (co najmniej 3 lata). Im
+      dłuższy okres wypowiedzenia, tym większa szansa, że cały zaległy i bieżący urlop uda się
+      wykorzystać w naturze — i tym mniejszy ekwiwalent na koniec.
+    </p>
+    <p>
+      Przy krótkim, np. 2-tygodniowym okresie wypowiedzenia, zmieści się w nim najwyżej kilka dni
+      urlopu (w dni robocze), więc pozostała część — zwłaszcza zaległy urlop z poprzedniego roku —
+      zwykle zostaje wypłacona jako ekwiwalent.
+    </p>
+
+    <h2>Krok 3: policz ekwiwalent za dni, które zostały niewykorzystane</h2>
+    <p>
+      Przykład: pracownik z podstawą wynagrodzenia {podstawa.toLocaleString('pl-PL')} zł, pełny
+      etat, ma 3-miesięczny okres wypowiedzenia. W jego trakcie pracodawca zdążył wysłać go na
+      część urlopu, ale na koniec zostaje niewykorzystane <strong>{dniUrlopu} dni</strong>{' '}
+      (np. zaległy urlop sprzed reorganizacji grafiku). Licząc według współczynnika urlopowego{' '}
+      {wsp} na {ROK} r.:
+    </p>
+
+    <table>
+      <caption>Ekwiwalent za {dniUrlopu} dni niewykorzystanego urlopu przy podstawie {podstawa.toLocaleString('pl-PL')} zł, pełny etat.</caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th class="liczba">Wartość</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Stawka dzienna</td>
+          <td class="mono">{zlGr(wynik.stawkaDzienna)}</td>
+        </tr>
+        <tr>
+          <td>Stawka godzinowa</td>
+          <td class="mono">{zlGr(wynik.stawkaGodzinowa)}</td>
+        </tr>
+        <tr>
+          <td>Godziny niewykorzystanego urlopu ({dniUrlopu} dni × 8 h)</td>
+          <td class="mono">{wynik.godzinyUrlopu} h</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>Ekwiwalent brutto</td>
+          <td class="mono">{zlGr(wynik.ekwiwalentBrutto)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 260" role="img" aria-label="Schemat: w okresie wypowiedzenia część urlopu jest wykorzystana w naturze na polecenie pracodawcy, a pozostała część zamieniana jest na ekwiwalent pieniężny w dniu rozwiązania umowy.">
+        <title>Urlop w okresie wypowiedzenia — wykorzystany vs ekwiwalent</title>
+        <rect x="40" y="60" width="560" height="60" fill="#1e5b43" rx="4" />
+        <text x="320" y="95" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="15" fill="#f5efe6">Cały należny urlop (zaległy + bieżący)</text>
+
+        <rect x="40" y="150" width="360" height="50" fill="#2f7a5a" rx="4" />
+        <text x="220" y="180" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#f5efe6">Wykorzystany w naturze w okresie wypowiedzenia</text>
+
+        <rect x="400" y="150" width="200" height="50" fill="#c96f1e" rx="4" />
+        <text x="500" y="175" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">{zlGr(wynik.ekwiwalentBrutto)}</text>
+        <text x="500" y="192" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="11" fill="#16281f">Ekwiwalent</text>
+      </svg>
+      <figcaption>
+        Im dłuższy okres wypowiedzenia, tym większą część urlopu pracodawca zdąży wykorzystać w
+        naturze — proporcjonalnie mniejszy jest wtedy ekwiwalent do wypłaty na koniec.
+      </figcaption>
+    </figure>
+
+    <h2>Ekwiwalent a odprawa — to nie to samo</h2>
+    <p>
+      Ekwiwalent za urlop i odprawa pieniężna to dwa <strong>niezależne</strong> świadczenia,
+      które mogą, ale nie muszą, wystąpić razem:
+    </p>
+    <ul>
+      <li>
+        <strong>Ekwiwalent za urlop</strong> przysługuje każdemu pracownikowi przy rozwiązaniu
+        umowy, jeśli zostały niewykorzystane dni urlopu — niezależnie od przyczyny rozwiązania
+        umowy.
+      </li>
+      <li>
+        <strong>Odprawa</strong> przysługuje tylko w określonych sytuacjach — najczęściej przy
+        zwolnieniach grupowych lub indywidualnych z przyczyn niedotyczących pracownika (ustawa o
+        zwolnieniach grupowych), i jej wysokość zależy od stażu pracy, a nie od liczby dni
+        urlopu.
+      </li>
+    </ul>
+    <p>
+      Pracownik zwolniony z przyczyn leżących po stronie pracodawcy może więc otrzymać{' '}
+      <strong>jednocześnie</strong> ekwiwalent za niewykorzystany urlop i odprawę — to dwie
+      osobne pozycje na ostatnim rozliczeniu, liczone według zupełnie innych zasad.
+    </p>
+
+    <h2>Kiedy ekwiwalent musi zostać wypłacony</h2>
+    <p>
+      Niezależnie od długości okresu wypowiedzenia i trybu rozwiązania umowy, ekwiwalent za
+      niewykorzystany urlop wypłaca się w <strong>ostatnim dniu zatrudnienia</strong>, razem z
+      ostatnią wypłatą wynagrodzenia — tak samo jak przy każdym innym rozwiązaniu umowy o pracę.
+      Więcej o zasadach wyliczenia podstawy i o tym, co się liczy do ekwiwalentu, znajdziesz w{' '}
+      <a href="/blog/ekwiwalent-za-urlop-jak-liczyc/">artykule o wzorze na ekwiwalent</a>, a o
+      zasadach dotyczących urlopu zaległego i proporcjonalnego — w{' '}
+      <a href="/blog/urlop-proporcjonalny-na-zadanie-zalegly/">Urlop na żądanie, zaległy, proporcjonalny — kompendium</a>.
+    </p>
+    <p>
+      Chcesz sprawdzić dokładną kwotę dla swojej sytuacji? Wpisz podstawę wynagrodzenia, liczbę
+      dni niewykorzystanego urlopu i wymiar etatu w{' '}
+      <a href="/ekwiwalent-za-urlop/">kalkulatorze ekwiwalentu za urlop</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy pracodawca musi wysłać mnie na urlop w okresie wypowiedzenia?</p>
+    <p>
+      Nie musi, ale ma do tego prawo — może jednostronnie zobowiązać pracownika do wykorzystania
+      zaległego i bieżącego urlopu w okresie wypowiedzenia, bez konieczności uzyskania jego
+      zgody. Jeśli tego nie zrobi, niewykorzystane dni zamieniane są na ekwiwalent pieniężny.
+    </p>
+
+    <p class="faq-pytanie">Czy dostanę ekwiwalent i odprawę jednocześnie?</p>
+    <p>
+      Tak, jeśli spełniasz warunki obu świadczeń — to niezależne pozycje. Ekwiwalent wynika z
+      niewykorzystanego urlopu, odprawa z przyczyny rozwiązania umowy (np. zwolnienia grupowe).
+      Brak prawa do odprawy nie wpływa na prawo do ekwiwalentu i odwrotnie.
+    </p>
+
+    <p class="faq-pytanie">Co jeśli pracodawca nie wypłaci ekwiwalentu w dniu rozwiązania umowy?</p>
+    <p>
+      Opóźnienie traktowane jest jak opóźnienie w wypłacie wynagrodzenia — przysługują odsetki
+      ustawowe za zwłokę, a w razie sporu pracownik może dochodzić należności przed sądem pracy.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy — szczegółowe zasady zależą od konkretnej umowy, regulaminu
+      pracy i przyczyny rozwiązania stosunku pracy. Stawki i przykład liczbowy na {ROK} r. Nie
+      stanowi porady prawnej — w razie wątpliwości skonsultuj się z działem kadr lub prawnikiem.
+    </div>
+  </div>
+</Layout>
