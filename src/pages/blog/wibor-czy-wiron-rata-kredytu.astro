@@ -1,0 +1,218 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+import { rataAnnuitetowa, zl, zlGr } from '../../lib/podatki';
+
+const aktualizacja = '30 lipca 2026';
+
+const kapital = 400000;
+const okresMies = 300; // 25 lat
+const oproWibor = 0.0785; // WIBOR 3M ~5,85% + marża 2%
+const oproWiron = 0.0745; // WIRON 1mc śr. skł. ~5,45% + marża 2%
+const roznicaPunkty = (oproWibor - oproWiron) * 100;
+
+const rataWibor = rataAnnuitetowa(kapital, oproWibor, okresMies);
+const rataWiron = rataAnnuitetowa(kapital, oproWiron, okresMies);
+const roznicaRata = rataWibor - rataWiron;
+const roznicaRoczna = roznicaRata * 12;
+const roznicaCalyOkres = roznicaRata * okresMies;
+
+// pomocniczo: rata przy każdym 0,1 pp w okolicy WIRON, do wykresu
+const oproPlus01 = oproWiron + 0.001;
+const ratyWzrost01 = rataAnnuitetowa(kapital, oproPlus01, okresMies) - rataWiron;
+
+const tytul = `WIBOR czy WIRON — jak zmiana wskaźnika wpływa na Twoją ratę kredytu w ${ROK}`;
+const opis = 'Czym różni się WIBOR od WIRON, kiedy nastąpi zamiana wskaźnika w umowach kredytowych i jak nawet niewielka różnica w oprocentowaniu przekłada się na wysokość raty — na przykładzie liczbowym.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-07-30',
+  dateModified: '2026-07-30',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/wibor-czy-wiron-rata-kredytu/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">case study · kredyt 400 000 zł, 25 lat</span>
+  <h1>WIBOR czy WIRON — jak zmiana wskaźnika wpływa na Twoją ratę</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Banki stopniowo zastępują WIBOR nowym wskaźnikiem WIRON w umowach kredytów hipotecznych ze
+      zmiennym oprocentowaniem. Dla większości kredytobiorców zmiana nie oznacza rewolucji w
+      wysokości raty — liczy się różnica między starym a nowym wskaźnikiem, nie sama zmiana
+      nazwy. Poniżej wyjaśniamy, na czym polega różnica i ile realnie może zmienić się rata,
+      liczona tym samym silnikiem co nasz{' '}
+      <a href="/nadplata-kredytu/">kalkulator nadpłaty kredytu</a>. Jeśli zastanawiasz się też,
+      czy przy okazji zmiany warunków warto nadpłacić kredyt, zobacz{' '}
+      <a href="/blog/nadplata-kredytu-hipotecznego-okres-czy-rata/">Nadpłata kredytu hipotecznego — skrócić okres czy zmniejszyć ratę?</a>{' '}
+      oraz{' '}
+      <a href="/blog/rekomendacja-s-wczesniejsza-splata-kredytu/">Rekomendacja S i wcześniejsza spłata kredytu</a>.
+    </p>
+
+    <h2>Czym jest WIBOR i dlaczego go zastępujemy</h2>
+    <p>
+      WIBOR (Warszawski Indeks Biorący Oprocentowanie) to wskaźnik referencyjny, na podstawie
+      którego banki ustalały oprocentowanie zmienne kredytów — do raty dodawana jest zwykle
+      wartość WIBOR 3M lub 6M plus stała marża banku. Problem w tym, że WIBOR opiera się w dużej
+      mierze na deklaracjach banków o transakcjach, a nie na rzeczywistych transakcjach rynku
+      międzybankowego — Unia Europejska wymaga, by kluczowe wskaźniki referencyjne były oparte na
+      danych transakcyjnych. Dlatego Polska, podobnie jak inne kraje zastępujące LIBOR czy EONIA,
+      wdraża reformę wskaźników stóp procentowych.
+    </p>
+
+    <h2>Czym różni się WIRON od WIBOR</h2>
+    <p>
+      WIRON (Warszawski Indeks Rynku Overnight) opiera się na rzeczywistych transakcjach
+      overnight (jednodniowych) na rynku międzybankowym, a nie na deklaracjach banków. Kluczowe
+      różnice praktyczne:
+    </p>
+    <ul>
+      <li>WIBOR jest wskaźnikiem <strong>terminowym</strong> (3M, 6M) — znany z góry na cały okres odsetkowy.</li>
+      <li>
+        WIRON jest wskaźnikiem <strong>overnight</strong> — w umowach kredytowych stosuje się jego
+        wersję <strong>składaną</strong> (skumulowaną z dnia na dzień) za dany okres, więc
+        dokładna wysokość raty jest znana dopiero pod koniec okresu, a nie na jego początku.
+      </li>
+      <li>
+        Historycznie WIRON bywał nieco niższy od WIBOR o tym samym terminie, ale różnica zmienia
+        się w czasie i zależy od bieżącej sytuacji na rynku pieniężnym — nie ma gwarancji, że tak
+        pozostanie.
+      </li>
+    </ul>
+
+    <h2>Kiedy nastąpi zamiana w Twojej umowie</h2>
+    <p>
+      Zamiana WIBOR na WIRON w istniejących umowach kredytowych nie odbywa się automatycznie z
+      dnia na dzień dla wszystkich klientów naraz — banki wdrażają ją etapami, zgodnie z mapą
+      drogową nadzorowaną przez Komitet Sterujący Narodowej Grupy Roboczej ds. reformy
+      wskaźników referencyjnych. W praktyce dla kredytobiorcy oznacza to:
+    </p>
+    <ul>
+      <li>bank ma obowiązek <strong>poinformować</strong> o zmianie wskaźnika z odpowiednim wyprzedzeniem,</li>
+      <li>
+        zamiana odbywa się z zastosowaniem <strong>korekty (spreadu korygującego)</strong>, której
+        celem jest, by w dniu zamiany rata nie zmieniła się skokowo tylko z powodu samej zmiany
+        wskaźnika,
+      </li>
+      <li>dalsze zmiany raty po zamianie wynikają już wyłącznie z wahań WIRON, tak jak wcześniej wynikały z wahań WIBOR.</li>
+    </ul>
+    <p>
+      Dokładny termin zamiany dla konkretnego kredytu podaje bank w komunikacie lub aneksie do
+      umowy — warto go zachować i porównać oprocentowanie przed i po zamianie.
+    </p>
+
+    <h2>Case study: ile zmienia ratę różnica 0,4 pkt proc.</h2>
+    <p>
+      Kredyt {kapital.toLocaleString('pl-PL')} zł na {okresMies / 12} lat. Załóżmy, że
+      oprocentowanie oparte na WIBOR 3M + marża wynosi{' '}
+      <strong>{(oproWibor * 100).toFixed(2)}%</strong>, a po zamianie na WIRON + ta sama marża
+      (z korektą) oprocentowanie spada do <strong>{(oproWiron * 100).toFixed(2)}%</strong> — różnica{' '}
+      {roznicaPunkty.toFixed(2)} pkt proc.
+    </p>
+
+    <table>
+      <caption>Rata przy dwóch wskaźnikach referencyjnych. Kredyt {kapital.toLocaleString('pl-PL')} zł, {okresMies / 12} lat.</caption>
+      <thead>
+        <tr>
+          <th>Wskaźnik</th>
+          <th class="liczba">Oprocentowanie</th>
+          <th class="liczba">Rata miesięczna</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>WIBOR 3M + marża</td>
+          <td class="mono">{(oproWibor * 100).toFixed(2)}%</td>
+          <td class="mono">{zlGr(rataWibor)}</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>WIRON 1M skł. + marża</td>
+          <td class="mono">{(oproWiron * 100).toFixed(2)}%</td>
+          <td class="mono">{zlGr(rataWiron)}</td>
+        </tr>
+        <tr>
+          <td>Różnica raty</td>
+          <td class="mono">—</td>
+          <td class="mono">{zlGr(roznicaRata)} / mies.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 300" role="img" aria-label="Wykres słupkowy porównujący ratę kredytu przy oprocentowaniu opartym na WIBOR i na WIRON — różnica około 90 złotych miesięcznie.">
+        <title>Rata przy WIBOR vs WIRON</title>
+        <line x1="40" y1="260" x2="620" y2="260" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="140" y="40" width="90" height="220" fill="#b3372f" rx="2" />
+        <text x="185" y="30" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(rataWibor)}</text>
+        <text x="185" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">WIBOR</text>
+
+        <rect x="380" y="66" width="90" height="194" fill="#1e5b43" rx="2" />
+        <text x="425" y="56" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(rataWiron)}</text>
+        <text x="425" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">WIRON</text>
+      </svg>
+      <figcaption>
+        Różnica {roznicaPunkty.toFixed(2)} pkt proc. w oprocentowaniu przekłada się na ok.{' '}
+        {zl(roznicaRata)} miesięcznie, czyli {zl(roznicaRoczna)} rocznie i{' '}
+        {zl(roznicaCalyOkres)} w całym {okresMies / 12}-letnim okresie kredytowania — przy
+        założeniu, że różnica utrzyma się przez cały okres, co w praktyce jest mało
+        prawdopodobne, bo oba wskaźniki zmieniają się w czasie.
+      </figcaption>
+    </figure>
+
+    <p>
+      Dla orientacji: każde <strong>0,1 pkt proc.</strong> zmiany oprocentowania przy tym kredycie
+      to ok. <strong>{zlGr(ratyWzrost01)}</strong> miesięcznie w racie. Warto o tym pamiętać,
+      czytając komunikaty banków — liczy się nie sama nazwa wskaźnika, tylko liczba punktów
+      procentowych różnicy między starym a nowym oprocentowaniem w dniu zamiany.
+    </p>
+    <p>
+      Chcesz sprawdzić, jak zmiana oprocentowania (niezależnie od przyczyny) wpłynie na Twój
+      harmonogram spłaty albo czy warto nadpłacić kredyt przy okazji zamiany wskaźnika? Wpisz
+      parametry swojego kredytu w{' '}
+      <a href="/nadplata-kredytu/">kalkulatorze nadpłaty</a> i porównaj oba scenariusze.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy muszę podpisywać aneks, żeby przejść z WIBOR na WIRON?</p>
+    <p>
+      To zależy od zapisów Twojej umowy i sposobu wdrożenia zmiany przez bank — część banków
+      stosuje zmianę na mocy ustawy (tzw. mechanizm zastępczy) bez konieczności podpisywania
+      aneksu, inne proponują aneks. W obu przypadkach bank ma obowiązek wcześniej Cię
+      poinformować o terminie i sposobie zamiany.
+    </p>
+
+    <p class="faq-pytanie">Czy WIRON zawsze będzie niższy niż WIBOR?</p>
+    <p>
+      Nie ma takiej gwarancji. Historycznie WIRON bywał niższy, ale oba wskaźniki odzwierciedlają
+      sytuację na rynku pieniężnym i mogą się zmieniać względem siebie w obu kierunkach w
+      kolejnych latach.
+    </p>
+
+    <p class="faq-pytanie">Czy zamiana wskaźnika zmieni wysokość mojej marży?</p>
+    <p>
+      Sama zamiana referencyjnego wskaźnika nie powinna zmieniać marży banku ustalonej w umowie —
+      celem reformy i spreadu korygującego jest właśnie to, by w dniu zamiany rata nie zmieniła
+      się skokowo wyłącznie z powodu zmiany nazwy wskaźnika. Marża może się zmienić tylko z innych
+      przyczyn przewidzianych w umowie (np. po zmianie ubezpieczenia niskiego wkładu).
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy — dokładne wartości WIBOR i WIRON zmieniają się codziennie,
+      a szczegółowe zasady i terminy zamiany wskaźnika zależą od Twojej umowy i banku. Przykład
+      liczbowy ma charakter ilustracyjny, na stawki orientacyjne {ROK} r. Nie stanowi porady
+      finansowej ani prawnej — przed podjęciem decyzji sprawdź aktualne wskaźniki i warunki w
+      swojej umowie lub skontaktuj się z bankiem.
+    </div>
+  </div>
+</Layout>
