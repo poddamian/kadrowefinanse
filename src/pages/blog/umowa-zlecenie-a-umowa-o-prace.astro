@@ -1,0 +1,235 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, UOP } from '../../lib/params2026';
+import { uopNetto, pitSkala, zlGr } from '../../lib/podatki';
+
+const aktualizacja = '30 lipca 2026';
+
+const round2 = (x: number) => Math.round(x * 100) / 100;
+
+interface WynikZlecenie {
+  bruttoMies: number;
+  spoleczneMies: number;
+  zdrowotnaMies: number;
+  pitMies: number;
+  nettoMies: number;
+}
+
+/** Uproszczone netto z umowy zlecenia: jedyny tytuł ubezpieczenia, bez dobrowolnego chorobowego, KUP 20%. */
+function zlecenieNetto(bruttoMies: number): WynikZlecenie {
+  const bruttoRok = bruttoMies * 12;
+  const emerytalna = bruttoRok * UOP.emerytalna;
+  const rentowa = bruttoRok * UOP.rentowa;
+  const spoleczne = emerytalna + rentowa;
+  const zdrowotna = (bruttoRok - spoleczne) * UOP.zdrowotna;
+  const kup = bruttoRok * 0.2;
+  const podstawaPit = Math.max(0, Math.round(bruttoRok - spoleczne - kup));
+  const pit = Math.round(pitSkala(podstawaPit));
+  const netto = bruttoRok - spoleczne - zdrowotna - pit;
+  return {
+    bruttoMies: round2(bruttoMies),
+    spoleczneMies: round2(spoleczne / 12),
+    zdrowotnaMies: round2(zdrowotna / 12),
+    pitMies: round2(pit / 12),
+    nettoMies: round2(netto / 12),
+  };
+}
+
+const brutto = 6000;
+const uop = uopNetto(brutto);
+const zlec = zlecenieNetto(brutto);
+const roznicaMies = uop.nettoMies - zlec.nettoMies;
+const roznicaRoczna = roznicaMies * 12;
+
+const tytul = `Umowa zlecenie a umowa o pracę — różnice w składkach i podatkach ${ROK}`;
+const opis = `Ile na rękę wychodzi z umowy zlecenia w porównaniu z umową o pracę przy tym samym brutto, jakie składki ZUS obowiązują zleceniobiorcę i czy zlecenie liczy się do stażu pracy — na przykładzie liczbowym ${ROK} r.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-07-30',
+  dateModified: '2026-07-30',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/umowa-zlecenie-a-umowa-o-prace/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">case study · brutto {brutto.toLocaleString('pl-PL')} zł</span>
+  <h1>Umowa zlecenie a umowa o pracę — różnice w składkach i podatkach</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Umowa zlecenie to nie to samo co umowa o pracę — różni się zarówno wysokością składek ZUS,
+      jak i tym, co dokładnie się należy poza wynagrodzeniem (urlop, ochrona przed
+      wypowiedzeniem, staż pracy). Sprawdzamy na przykładzie liczbowym, ile realnie zostaje na
+      rękę przy tym samym brutto, licząc tym samym silnikiem co nasz{' '}
+      <a href="/b2b-czy-uop/">kalkulator B2B vs umowa o pracę</a>. Jeśli porównujesz też opcję
+      działalności gospodarczej, zobacz{' '}
+      <a href="/blog/b2b-czy-umowa-o-prace-2026/">B2B czy umowa o pracę — co się bardziej opłaca w {ROK} roku?</a>
+    </p>
+
+    <h2>Składki ZUS — co jest obowiązkowe, a co dobrowolne</h2>
+    <p>
+      Przy umowie zlecenia (jeśli to jedyny tytuł ubezpieczenia zleceniobiorcy, np. nie jest on
+      jednocześnie zatrudniony na etacie ani studentem do 26. roku życia) obowiązkowe są:
+    </p>
+    <ul>
+      <li><strong>składka emerytalna</strong> — {(UOP.emerytalna * 100).toFixed(2)}% podstawy, tak samo jak na etacie,</li>
+      <li><strong>składka rentowa</strong> — {(UOP.rentowa * 100).toFixed(2)}% podstawy, tak samo jak na etacie,</li>
+      <li><strong>składka zdrowotna</strong> — {(UOP.zdrowotna * 100).toFixed(0)}% podstawy (brutto pomniejszone o składki społeczne).</li>
+    </ul>
+    <p>
+      <strong>Składka chorobowa jest dobrowolna</strong> — zleceniobiorca może, ale nie musi jej
+      opłacać. Bez niej nie przysługuje wynagrodzenie ani zasiłek chorobowy za czas niezdolności
+      do pracy. To kluczowa różnica względem etatu, gdzie składka chorobowa jest obowiązkowa i
+      finansowana przez pracodawcę.
+    </p>
+    <p>
+      Osobną kwestią jest tzw. <strong>zbieg tytułów ubezpieczenia</strong> — jeśli zleceniobiorca
+      ma już etat (z wynagrodzeniem co najmniej na poziomie płacy minimalnej) albo jest studentem
+      poniżej 26. roku życia, składki społeczne od zlecenia mogą być w ogóle nienależne albo
+      dobrowolne. Poniższy przykład zakłada najprostszy przypadek: zlecenie jako jedyny tytuł
+      ubezpieczenia, bez dobrowolnego chorobowego.
+    </p>
+
+    <h2>Kalkulacja: {brutto.toLocaleString('pl-PL')} zł brutto — etat kontra zlecenie</h2>
+    <p>
+      Przy tym samym wynagrodzeniu brutto {zlGr(uop.bruttoMies)} miesięcznie wyższe koszty
+      uzyskania przychodu na zleceniu (standardowo 20% zamiast kwotowych {UOP.kupStandard} zł na
+      etacie) i brak obowiązkowej składki chorobowej dają inny wynik netto — w tym uproszczonym
+      scenariuszu (bez dobrowolnego chorobowego) zlecenie wychodzi nawet nieco korzystniej:
+    </p>
+
+    <table>
+      <caption>Etat vs zlecenie przy brutto {zlGr(brutto)}/mies. Stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th class="liczba">Umowa o pracę</th>
+          <th class="liczba">Umowa zlecenie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Składki społeczne</td>
+          <td class="mono">{zlGr(uop.spoleczneMies)}</td>
+          <td class="mono">{zlGr(zlec.spoleczneMies)}</td>
+        </tr>
+        <tr>
+          <td>Składka zdrowotna</td>
+          <td class="mono">{zlGr(uop.zdrowotnaMies)}</td>
+          <td class="mono">{zlGr(zlec.zdrowotnaMies)}</td>
+        </tr>
+        <tr>
+          <td>Zaliczka PIT</td>
+          <td class="mono">{zlGr(uop.pitMies)}</td>
+          <td class="mono">{zlGr(zlec.pitMies)}</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>Netto miesięcznie</td>
+          <td class="mono">{zlGr(uop.nettoMies)}</td>
+          <td class="mono">{zlGr(zlec.nettoMies)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 300" role="img" aria-label="Wykres słupkowy porównujący netto miesięczne z umowy o pracę i z umowy zlecenia przy tym samym brutto — zlecenie bez dobrowolnego chorobowego daje nieco więcej na rękę.">
+        <title>Netto: umowa o pracę vs umowa zlecenie</title>
+        <line x1="40" y1="260" x2="620" y2="260" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="140" y="41" width="90" height="219" fill="#1e5b43" rx="2" />
+        <text x="185" y="31" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(uop.nettoMies)}</text>
+        <text x="185" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">Umowa o pracę</text>
+
+        <rect x="380" y="30" width="90" height="230" fill="#c96f1e" rx="2" />
+        <text x="425" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(zlec.nettoMies)}</text>
+        <text x="425" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">Umowa zlecenie</text>
+      </svg>
+      <figcaption>
+        Przy tym samym brutto {zlGr(brutto)} zlecenie bez dobrowolnego chorobowego daje{' '}
+        {zlGr(Math.abs(roznicaMies))} więcej netto miesięcznie niż etat — to ok.{' '}
+        {zlGr(Math.abs(roznicaRoczna))} rocznie. Ta przewaga znika, jeśli zleceniobiorca opłaca
+        dobrowolne chorobowe, oraz nie uwzględnia braku płatnego urlopu i zasiłku chorobowego.
+      </figcaption>
+    </figure>
+
+    <h2>Zlecenie a staż pracy i inne uprawnienia pracownicze</h2>
+    <p>
+      Umowa zlecenie to umowa cywilnoprawna (Kodeks cywilny), a nie umowa o pracę (Kodeks pracy) —
+      dlatego nie wlicza się do stażu pracy w rozumieniu Kodeksu pracy (np. do wymiaru urlopu
+      wypoczynkowego czy nagrody jubileuszowej u kolejnego pracodawcy). Zleceniobiorcy nie
+      przysługuje też:
+    </p>
+    <ul>
+      <li>płatny urlop wypoczynkowy (chyba że strony umówią się na przerwę bez wynagrodzenia — to nie to samo co urlop pracowniczy),</li>
+      <li>okres wypowiedzenia w rozumieniu Kodeksu pracy — zasady rozwiązania zlecenia określa umowa lub Kodeks cywilny,</li>
+      <li>ochrona przed zwolnieniem (np. w okresie ciąży czy przed emeryturą) na zasadach analogicznych do etatu.</li>
+    </ul>
+    <p>
+      Z drugiej strony zlecenie jest zwykle elastyczniejsze do rozwiązania dla obu stron i nie
+      wymaga formalnego trybu wypowiedzenia — co bywa zaletą przy pracy dorywczej lub projektowej.
+    </p>
+
+    <h2>Dlaczego zlecenie wychodzi tu korzystniej — i czego to nie pokazuje</h2>
+    <p>
+      Wyższe netto na zleceniu w tym przykładzie bierze się z dwóch efektów: wyższych kosztów
+      uzyskania przychodu (20% brutto zamiast kwotowych {UOP.kupStandard} zł), co obniża podstawę
+      opodatkowania, oraz braku obowiązkowej składki chorobowej (na etacie to
+      {' '}{(UOP.chorobowa * 100).toFixed(2)}% brutto). Przewaga netto rośnie jeszcze bardziej, gdy
+      zleceniobiorca ma już opłacone składki z innego tytułu (np. pełny etat gdzie indziej) i od
+      zlecenia płaci tylko składkę zdrowotną, albo gdy jest studentem do 26. roku życia — wtedy
+      składki społeczne od zlecenia w ogóle nie są odprowadzane.
+    </p>
+    <p>
+      To wyliczenie nie pokazuje jednak ceny tej przewagi: bez dobrowolnego chorobowego
+      zleceniobiorca nie ma prawa do zasiłku chorobowego, nie ma płatnego urlopu i nie buduje
+      stażu pracy w rozumieniu Kodeksu pracy. Dla wielu osób te świadczenia są warte więcej niż
+      różnica {zlGr(Math.abs(roznicaMies))} miesięcznie.
+    </p>
+    <p>
+      Chcesz porównać własne liczby? Wpisz brutto z etatu w{' '}
+      <a href="/b2b-czy-uop/">kalkulatorze B2B vs umowa o pracę</a> — zobaczysz dokładne
+      rozbicie składek i podatku dla umowy o pracę, które możesz zestawić z wyliczeniem powyżej
+      dla zlecenia.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Ile na rękę wychodzi z umowy zlecenia w {ROK} roku?</p>
+    <p>
+      Zależy od tego, czy to jedyny tytuł ubezpieczenia zleceniobiorcy i czy opłaca dobrowolne
+      chorobowe. Przy {zlGr(brutto)} brutto i najprostszym scenariuszu (jedyny tytuł, bez
+      chorobowego) netto wynosi w naszym przykładzie {zlGr(zlec.nettoMies)} miesięcznie.
+    </p>
+
+    <p class="faq-pytanie">Czy umowa zlecenie liczy się do stażu pracy?</p>
+    <p>
+      Nie liczy się do stażu pracy w rozumieniu Kodeksu pracy (wymiar urlopu, uprawnienia
+      pracownicze). Liczy się natomiast do stażu ubezpieczeniowego w ZUS, jeśli odprowadzane były
+      od niej składki emerytalno-rentowe — ma to znaczenie przy ustalaniu prawa do przyszłej
+      emerytury.
+    </p>
+
+    <p class="faq-pytanie">Czy zleceniodawca musi płacić składki na Fundusz Pracy od zlecenia?</p>
+    <p>
+      Tak, jeśli podstawa wymiaru składek zleceniobiorcy w danym miesiącu osiąga co najmniej
+      wysokość płacy minimalnej — analogicznie jak przy dużym ZUS w działalności gospodarczej. To
+      koszt po stronie zleceniodawcy, nie wpływa bezpośrednio na kwotę netto zleceniobiorcy.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy — dokładna wysokość składek zależy od indywidualnej sytuacji
+      ubezpieczeniowej zleceniobiorcy (zbieg tytułów, wiek, status studenta), a wyliczenie
+      zakłada najprostszy scenariusz bez dobrowolnego chorobowego. Stawki na {ROK} r. Nie stanowi
+      porady podatkowej ani prawnej — w razie wątpliwości skonsultuj się z księgowym.
+    </div>
+  </div>
+</Layout>
