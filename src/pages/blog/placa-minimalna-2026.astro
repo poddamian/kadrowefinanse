@@ -1,0 +1,187 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, PLACA_MINIMALNA } from '../../lib/params2026';
+import { uopNetto, zlGr } from '../../lib/podatki';
+
+const aktualizacja = '27 sierpnia 2026';
+
+const minimalna = uopNetto(PLACA_MINIMALNA);
+const godzinowa = 31.4; // stawka minimalna godzinowa (zlecenie) 2026, zł
+
+const tytul = `Płaca minimalna ${ROK} — ile wynosi brutto i netto oraz jak wpływa na inne świadczenia`;
+const opis = `Ile wynosi minimalne wynagrodzenie za pracę w ${ROK} r. brutto i netto na rękę, jak przekłada się na stawkę godzinową na zleceniu oraz na jakie inne świadczenia (zasiłki, dodatki, wolne od egzekucji) wpływa jej wysokość.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-08-27',
+  dateModified: '2026-08-27',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/placa-minimalna-2026/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">poradnik · stawki {ROK}</span>
+  <h1>Płaca minimalna {ROK} — brutto, netto i wpływ na inne świadczenia</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Płaca minimalna to nie tylko najniższe legalne wynagrodzenie na etacie — jej wysokość
+      pośrednio wyznacza też szereg innych progów: minimalną podstawę preferencyjnego ZUS,
+      minimalną składkę zdrowotną ryczałtowców czy próg kwoty wolnej od potrąceń komorniczych.
+      Sprawdzamy, ile z {zlGr(PLACA_MINIMALNA)} brutto zostaje faktycznie na rękę w {ROK} roku i na
+      co jeszcze wpływa ta liczba.
+    </p>
+
+    <h2>Ile wynosi płaca minimalna w {ROK} roku</h2>
+    <p>
+      Od 1 stycznia {ROK} r. minimalne wynagrodzenie za pracę na pełnym etacie wynosi{' '}
+      <strong>{zlGr(PLACA_MINIMALNA)} brutto miesięcznie</strong>. Dla umów cywilnoprawnych
+      (zlecenie) obowiązuje minimalna stawka godzinowa — w {ROK} r. to ok.{' '}
+      {godzinowa.toFixed(2).replace('.', ',')} zł brutto za godzinę.
+    </p>
+
+    <h2>Ile na rękę z płacy minimalnej — wyliczenie</h2>
+    <p>
+      Licząc tym samym silnikiem co nasz{' '}
+      <a href="/b2b-czy-uop/">kalkulator B2B vs umowa o pracę</a>, z {zlGr(PLACA_MINIMALNA)}{' '}
+      brutto na standardowym etacie (koszty uzyskania 250 zł, bez ulg) zostaje na rękę:
+    </p>
+
+    <table>
+      <caption>Płaca minimalna {zlGr(PLACA_MINIMALNA)} brutto — rozbicie miesięczne, stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th class="liczba">Kwota</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Brutto</td>
+          <td class="mono">{zlGr(minimalna.bruttoMies)}</td>
+        </tr>
+        <tr>
+          <td>Składki społeczne (emerytalna, rentowa, chorobowa)</td>
+          <td class="mono">−{zlGr(minimalna.spoleczneMies)}</td>
+        </tr>
+        <tr>
+          <td>Składka zdrowotna</td>
+          <td class="mono">−{zlGr(minimalna.zdrowotnaMies)}</td>
+        </tr>
+        <tr>
+          <td>Zaliczka PIT</td>
+          <td class="mono">−{zlGr(minimalna.pitMies)}</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>Netto miesięcznie</td>
+          <td class="mono">{zlGr(minimalna.nettoMies)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 300" role="img" aria-label="Wykres słupkowy: płaca minimalna brutto w porównaniu z kwotą netto na rękę po odliczeniu składek i podatku.">
+        <title>Płaca minimalna: brutto vs netto</title>
+        <line x1="40" y1="260" x2="620" y2="260" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="140" y="30" width="90" height="230" fill="#1e5b43" rx="2" />
+        <text x="185" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(minimalna.bruttoMies)}</text>
+        <text x="185" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">Brutto</text>
+
+        <rect
+          x="380"
+          y={260 - (230 * minimalna.nettoMies) / minimalna.bruttoMies}
+          width="90"
+          height={(230 * minimalna.nettoMies) / minimalna.bruttoMies}
+          fill="#c96f1e"
+          rx="2"
+        />
+        <text x="425" y={260 - (230 * minimalna.nettoMies) / minimalna.bruttoMies - 10} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(minimalna.nettoMies)}</text>
+        <text x="425" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">Netto</text>
+      </svg>
+      <figcaption>
+        Z {zlGr(PLACA_MINIMALNA)} brutto na etacie zostaje {zlGr(minimalna.nettoMies)} netto — różnica
+        to składki społeczne, zdrowotna i zaliczka PIT.
+      </figcaption>
+    </figure>
+
+    <h2>Na co jeszcze wpływa wysokość płacy minimalnej</h2>
+    <p>
+      Płaca minimalna to nie tylko dolny próg wynagrodzenia — jej wysokość jest punktem
+      odniesienia dla wielu innych przepisów:
+    </p>
+    <ul>
+      <li>
+        <strong>Preferencyjny ZUS dla przedsiębiorców</strong> — podstawa składek to 30% płacy
+        minimalnej, więc jej wzrost oznacza wyższe składki dla osób na starcie działalności. Zobacz{' '}
+        <a href="/blog/preferencyjny-zus-ulga-na-start/">artykuł o preferencyjnym ZUS</a>.
+      </li>
+      <li>
+        <strong>Minimalna składka zdrowotna na skali i ryczałcie</strong> — liczona jako procent
+        płacy minimalnej, rośnie razem z nią.
+      </li>
+      <li>
+        <strong>Dodatek za pracę w porze nocnej</strong> — jego stawka godzinowa jest pochodną
+        wysokości płacy minimalnej.
+      </li>
+      <li>
+        <strong>Odprawa przy zwolnieniach grupowych</strong> — maksymalna wysokość odprawy to
+        15-krotność płacy minimalnej.
+      </li>
+      <li>
+        <strong>Kwota wolna od potrąceń komorniczych</strong> z wynagrodzenia za pracę odnosi się
+        wprost do wysokości płacy minimalnej netto.
+      </li>
+      <li>
+        <strong>Podstawa wymiaru zasiłku chorobowego</strong> — nie może być niższa niż płaca
+        minimalna pomniejszona o 13,71% (odpowiednik składek społecznych).
+      </li>
+    </ul>
+
+    <h2>Płaca minimalna a próg podatkowy</h2>
+    <p>
+      Przy pełnym etacie na płacy minimalnej roczne wynagrodzenie brutto ({zlGr(PLACA_MINIMALNA * 12)})
+      jest daleko poniżej pierwszego progu podatkowego (120 000 zł), więc cały dochód opodatkowany
+      jest stawką 12%. Kwota wolna od podatku (30 000 zł rocznie) sprawia, że efektywne
+      obciążenie podatkowe przy niskich zarobkach jest niższe niż nominalna stawka — więcej o tym
+      w artykule{' '}
+      <a href="/blog/kwota-wolna-progi-pit-2026/">o kwocie wolnej i progach PIT {ROK}</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Ile wynosi minimalne wynagrodzenie za pracę w {ROK} roku netto na rękę?</p>
+    <p>
+      Przy pełnym etacie, standardowych kosztach uzyskania przychodu i bez dodatkowych ulg z
+      {zlGr(PLACA_MINIMALNA)} brutto zostaje {zlGr(minimalna.nettoMies)} netto miesięcznie.
+    </p>
+
+    <p class="faq-pytanie">Czy płaca minimalna zmienia się w trakcie roku {ROK}?</p>
+    <p>
+      W poprzednich latach zdarzały się dwie waloryzacje w ciągu roku (styczeń i lipiec), gdy
+      inflacja była wysoka. Warto sprawdzić bieżące obwieszczenie Ministerstwa Rodziny i Polityki
+      Społecznej, jeśli planujesz budżet na drugą połowę roku.
+    </p>
+
+    <p class="faq-pytanie">Czy pracodawca może płacić poniżej płacy minimalnej za pełny etat?</p>
+    <p>
+      Nie — to wynagrodzenie gwarantowane ustawowo. Jeśli suma składników wynagrodzenia (bez
+      dodatku za staż pracy, nagród jubileuszowych i niektórych innych składników) wypadnie
+      niżej, pracodawca musi wyrównać różnicę.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy. Wyliczenie netto zakłada standardowe koszty uzyskania
+      przychodu i brak dodatkowych ulg podatkowych. Stawki na {ROK} r. Nie stanowi porady
+      podatkowej ani prawnej — w razie wątpliwości skonsultuj się z księgowym lub kadrową.
+    </div>
+  </div>
+</Layout>
