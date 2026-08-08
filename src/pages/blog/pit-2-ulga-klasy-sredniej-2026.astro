@@ -1,0 +1,158 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, PIT, UOP } from '../../lib/params2026';
+import { uopNetto, zlGr, zl } from '../../lib/podatki';
+
+const aktualizacja = '24 września 2026';
+
+const round2 = (x: number) => Math.round(x * 100) / 100;
+
+const brutto = 6000;
+const zPIT2 = uopNetto(brutto);
+
+// Bez złożonego PIT-2: zaliczka miesięczna liczona bez pomniejszenia o 1/12 kwoty zmniejszającej podatek
+const podstawaMies = Math.max(0, brutto - zPIT2.spoleczneMies - UOP.kupStandard);
+const zaliczkaBezPIT2 = round2(podstawaMies * PIT.stawka1);
+const nettoBezPIT2 = round2(brutto - zPIT2.spoleczneMies - zPIT2.zdrowotnaMies - zaliczkaBezPIT2);
+const roznicaMies = round2(zPIT2.nettoMies - nettoBezPIT2);
+const kwotaZmniejszajacaMies = round2(PIT.kwotaZmniejszajaca / 12);
+
+const tytul = `PIT-2 i ulga dla klasy średniej — co się zmieniło w ${ROK}`;
+const opis = `Jak działa oświadczenie PIT-2 i o ile zwiększa miesięczną wypłatę, oraz dlaczego ulga dla klasy średniej nie obowiązuje już w ${ROK} r. — z przykładem liczbowym.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-24',
+  dateModified: '2026-09-24',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/pit-2-ulga-klasy-sredniej-2026/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">case study · brutto {brutto.toLocaleString('pl-PL')} zł</span>
+  <h1>PIT-2 i ulga dla klasy średniej — co się zmieniło w {ROK}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      PIT-2 i ulga dla klasy średniej to dwa różne mechanizmy, które łatwo pomylić — jeden wciąż
+      obowiązuje i realnie zwiększa miesięczną wypłatę, drugi zniknął z przepisów już w połowie
+      2022 roku. Wyjaśniamy, jak to wygląda w {ROK} roku.
+    </p>
+
+    <h2>Czym jest PIT-2 i jak wpływa na wypłatę</h2>
+    <p>
+      PIT-2 to oświadczenie pracownika składane pracodawcy (płatnikowi), które upoważnia go do
+      pomniejszania miesięcznej zaliczki na podatek o 1/12 kwoty zmniejszającej podatek, czyli o{' '}
+      {zlGr(kwotaZmniejszajacaMies)}. Bez złożonego PIT-2 pracodawca oblicza zaliczkę PIT bez tego
+      pomniejszenia — pracownik dostaje niższą wypłatę w trakcie roku, ale odzyskuje różnicę przy
+      rocznym rozliczeniu PIT (jako nadpłatę do zwrotu).
+    </p>
+    <p>
+      Od 2023 roku kwotę zmniejszającą można podzielić maksymalnie między trzech płatników
+      (np. dwóch pracodawców i zleceniodawcę) — po 1/3 u każdego, albo złożyć PIT-2 tylko u
+      jednego. To ważne dla osób z więcej niż jednym źródłem dochodu na etacie lub zleceniu.
+    </p>
+
+    <h2>Przykład: {zlGr(brutto)} brutto z PIT-2 i bez PIT-2</h2>
+    <table>
+      <caption>Umowa o pracę, {zlGr(brutto)} brutto/mies., stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th class="liczba">Z PIT-2</th>
+          <th class="liczba">Bez PIT-2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Zaliczka PIT</td>
+          <td class="mono">{zlGr(zPIT2.pitMies)}</td>
+          <td class="mono">{zlGr(zaliczkaBezPIT2)}</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>Netto miesięcznie</td>
+          <td class="mono">{zlGr(zPIT2.nettoMies)}</td>
+          <td class="mono">{zlGr(nettoBezPIT2)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 300" role="img" aria-label="Wykres słupkowy porównujący miesięczne netto z PIT-2 i bez PIT-2 — złożenie PIT-2 daje wyższą wypłatę co miesiąc, różnica wyrównuje się dopiero w rocznym rozliczeniu.">
+        <title>Netto miesięczne: z PIT-2 vs bez PIT-2</title>
+        <line x1="40" y1="260" x2="620" y2="260" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="140" y="30" width="90" height="230" fill="#1e5b43" rx="2" />
+        <text x="185" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(zPIT2.nettoMies)}</text>
+        <text x="185" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">Z PIT-2</text>
+
+        <rect x="380" y={30 + (230 * roznicaMies) / zPIT2.nettoMies} width="90" height={230 - (230 * roznicaMies) / zPIT2.nettoMies} fill="#c96f1e" rx="2" />
+        <text x="425" y={20 + (230 * roznicaMies) / zPIT2.nettoMies} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{zlGr(nettoBezPIT2)}</text>
+        <text x="425" y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">Bez PIT-2</text>
+      </svg>
+      <figcaption>
+        Przy {zlGr(brutto)} brutto złożenie PIT-2 daje {zlGr(roznicaMies)} więcej netto miesięcznie.
+        Bez PIT-2 różnica nie przepada — wraca jako nadpłata w rocznym rozliczeniu PIT.
+      </figcaption>
+    </figure>
+
+    <h2>Ulga dla klasy średniej — dlaczego nie obowiązuje w {ROK} roku</h2>
+    <p>
+      Ulga dla klasy średniej funkcjonowała tylko od stycznia do czerwca 2022 roku, jako element
+      pierwszej wersji Polskiego Ładu — miała rekompensować osobom na etacie i przedsiębiorcom
+      na skali (zarabiającym w pewnym przedziale rocznych przychodów) utratę możliwości
+      odliczenia składki zdrowotnej od podatku. Od 1 lipca 2022 r. (tzw. Polski Ład 2.0)
+      ulga została <strong>całkowicie zniesiona</strong>, a w zamian obniżono stawkę pierwszego
+      progu podatkowego z 17% do 12%. Ta niższa stawka 12% obowiązuje nadal w {ROK} roku — to ona
+      jest dziś odpowiednikiem tamtej rekompensaty, tyle że wbudowanym w samą skalę, a nie
+      osobną ulgą do wyliczania.
+    </p>
+    <p>
+      W praktyce oznacza to, że w rozliczeniu za {ROK} rok ulgi dla klasy średniej nie wykazuje się
+      w żadnym formularzu PIT — nie istnieje w obecnym stanie prawnym.
+    </p>
+
+    <p>
+      Jeśli zastanawiasz się, jak stawka 12% i kwota wolna przekładają się na wysokość podatku przy
+      różnych poziomach zarobków, zobacz{' '}
+      <a href="/blog/kwota-wolna-progi-pit-2026/">artykuł o kwocie wolnej i progach PIT {ROK}</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy warto złożyć PIT-2 u dwóch pracodawców jednocześnie?</p>
+    <p>
+      Nie — kwotę zmniejszającą podatek można rozdzielić maksymalnie między trzech płatników, ale
+      łączna kwota odliczana miesięcznie nie może przekroczyć {zlGr(kwotaZmniejszajacaMies)}.
+      Złożenie PIT-2 w pełnej wysokości u obu pracodawców jednocześnie prowadzi do niedopłaty
+      podatku, którą trzeba będzie uregulować w rocznym rozliczeniu.
+    </p>
+
+    <p class="faq-pytanie">Czy ulga dla klasy średniej wróci w kolejnych latach?</p>
+    <p>
+      Obecnie nic na to nie wskazuje — od Polskiego Ładu 2.0 (lipiec 2022) rolę tamtej rekompensaty
+      pełni niższa stawka podatkowa 12% wbudowana w skalę, a nie osobna ulga.
+    </p>
+
+    <p class="faq-pytanie">Co się stanie, jeśli nie złożę PIT-2 w ogóle?</p>
+    <p>
+      Pracodawca będzie potrącał wyższą zaliczkę PIT przez cały rok (bez pomniejszenia o kwotę
+      zmniejszającą podatek), a nadpłatę odzyskasz dopiero po złożeniu rocznego zeznania PIT.
+      Nie tracisz prawa do kwoty wolnej — jedynie odzyskujesz ją później.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy. Przykład dotyczy standardowej umowy o pracę bez dodatkowych
+      ulg podatkowych. Stawki na {ROK} r. Nie stanowi porady podatkowej ani prawnej — w razie
+      wątpliwości skonsultuj się z księgowym lub działem kadr.
+    </div>
+  </div>
+</Layout>
