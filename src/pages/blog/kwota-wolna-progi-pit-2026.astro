@@ -1,0 +1,162 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, PIT, UOP } from '../../lib/params2026';
+import { uopNetto, zlGr, zl } from '../../lib/podatki';
+
+const aktualizacja = '10 września 2026';
+
+const poziomy = [5000, 10000, 16000].map((brutto) => {
+  const w = uopNetto(brutto);
+  const podstawaRoczna = Math.max(0, brutto * 12 - w.spoleczneMies * 12 - UOP.kupStandard * 12);
+  const efektywna = ((brutto - w.nettoMies) / brutto) * 100;
+  return { brutto, ...w, podstawaRoczna, efektywna };
+});
+
+// Brutto miesięczne, przy którym podstawa opodatkowania (brutto − społeczne − KUP) przekracza próg 120 000 zł/rok
+const progBruttoMies = Math.ceil((PIT.prog / 12 + UOP.kupStandard) / (1 - UOP.spoleczneRazem));
+
+const tytul = `Kwota wolna od podatku i progi PIT ${ROK} — jak wpływają na Twoją wypłatę`;
+const opis = `Ile wynosi kwota wolna od podatku i drugi próg PIT w ${ROK} r., od jakiego dochodu zaczyna obowiązywać stawka 32% i jak realnie zmienia się efektywne opodatkowanie wraz ze wzrostem zarobków — na przykładach liczbowych.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-10',
+  dateModified: '2026-09-10',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  url: 'https://kadrowefinanse.pl/blog/kwota-wolna-progi-pit-2026/',
+};
+---
+
+<Layout
+  title={tytul}
+  description={opis}
+  schema={schema}
+>
+  <span class="brew">case study · 3 poziomy zarobków</span>
+  <h1>Kwota wolna od podatku i progi PIT {ROK} — jak wpływają na wypłatę</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja}</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Skala podatkowa w {ROK} roku ma dwa progi: 12% do 120 000 zł dochodu rocznie i 32% od
+      nadwyżki ponad tę kwotę, a każdy podatnik korzysta z kwoty wolnej od podatku 30 000 zł
+      rocznie. Sprawdzamy na trzech poziomach zarobków, jak te progi realnie przekładają się na
+      wypłatę na rękę.
+    </p>
+
+    <h2>Kwota wolna od podatku {ROK} — ile wynosi i jak działa</h2>
+    <p>
+      Kwota wolna od podatku wynosi {zl(PIT.kwotaWolna)} rocznie. W praktyce nie jest odliczana
+      wprost od dochodu, tylko przełożona na tzw. <strong>kwotę zmniejszającą podatek</strong> —
+      {zl(PIT.kwotaZmniejszajaca)} rocznie ({zl(PIT.kwotaWolna)} × 12% = {zl(PIT.kwotaZmniejszajaca)}),
+      czyli {(PIT.kwotaZmniejszajaca / 12).toFixed(0)} zł miesięcznie. Ta kwota jest odejmowana
+      bezpośrednio od obliczonego podatku, a nie od podstawy opodatkowania.
+    </p>
+
+    <h2>Drugi próg podatkowy — od jakiego dochodu obowiązuje 32%</h2>
+    <p>
+      Próg 120 000 zł dotyczy <strong>podstawy opodatkowania</strong>, czyli dochodu po odliczeniu
+      składek społecznych i kosztów uzyskania przychodu — nie samego wynagrodzenia brutto. Na
+      etacie ze standardowymi kosztami uzyskania ({UOP.kupStandard} zł/mies.) i pełnym ZUS-em
+      oznacza to, że próg przekracza dopiero brutto rzędu {zlGr(progBruttoMies)} miesięcznie
+      (ok. {zl(progBruttoMies * 12)} rocznie) — czyli wyraźnie więcej niż nominalne 120 000 zł.
+    </p>
+
+    <h2>Ile realnie zostaje na rękę — trzy poziomy zarobków</h2>
+    <table>
+      <caption>Etat, standardowe KUP, stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Brutto/mies.</th>
+          <th class="liczba">Zaliczka PIT/mies.</th>
+          <th class="liczba">Netto/mies.</th>
+          <th class="liczba">Efektywne obciążenie*</th>
+        </tr>
+      </thead>
+      <tbody>
+        {poziomy.map((p) => (
+          <tr>
+            <td class="mono">{zlGr(p.brutto)}</td>
+            <td class="mono">{zlGr(p.pitMies)}</td>
+            <td class="mono">{zlGr(p.nettoMies)}</td>
+            <td class="mono">{p.efektywna.toFixed(1).replace('.', ',')}%</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p style="font-size: 0.85rem; color: var(--atrament-2);">
+      * Łącznie: składki społeczne, zdrowotna i zaliczka PIT jako % brutto — nie tylko sam podatek.
+    </p>
+
+    <figure>
+      <svg viewBox="0 0 640 300" role="img" aria-label="Wykres słupkowy efektywnego obciążenia (składki i podatek jako procent brutto) przy trzech poziomach zarobków — obciążenie rośnie wraz z zarobkami, wyraźniej po przekroczeniu drugiego progu PIT.">
+        <title>Efektywne obciążenie wg poziomu zarobków</title>
+        <line x1="40" y1="260" x2="620" y2="260" stroke="#c7dccf" stroke-width="1" />
+        {poziomy.map((p, i) => {
+          const x = 100 + i * 180;
+          const h = (p.efektywna / 45) * 220;
+          const y = 260 - h;
+          return (
+            <>
+              <rect x={x} y={y} width="90" height={h} fill={i === 2 ? '#c96f1e' : '#1e5b43'} rx="2" />
+              <text x={x + 45} y={y - 10} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{p.efektywna.toFixed(1).replace('.', ',')}%</text>
+              <text x={x + 45} y="280" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="13" fill="#4a5d53">{zlGr(p.brutto)}</text>
+            </>
+          );
+        })}
+      </svg>
+      <figcaption>
+        Efektywne obciążenie (składki + podatek jako % brutto) rośnie z zarobkami — najmocniej po
+        przekroczeniu drugiego progu PIT, gdzie nadwyżka dochodu jest opodatkowana stawką 32%
+        zamiast 12%.
+      </figcaption>
+    </figure>
+
+    <h2>Dlaczego obciążenie rośnie płynnie, a nie skokowo</h2>
+    <p>
+      Częsty błąd: przekroczenie progu 120 000 zł nie oznacza, że <em>cały</em> dochód zaczyna być
+      opodatkowany stawką 32% — tylko nadwyżka ponad próg. Reszta dochodu nadal jest opodatkowana
+      według niższej stawki 12%. Dlatego efektywne obciążenie rośnie płynnie, a nie skokowo, nawet
+      dla osób zarabiających wyraźnie powyżej progu.
+    </p>
+    <p>
+      Jeśli zastanawiasz się, jak forma zatrudnienia wpływa na wysokość podatku przy tych samych
+      zarobkach, zobacz{' '}
+      <a href="/blog/b2b-czy-umowa-o-prace-2026/">B2B czy umowa o pracę — co się bardziej opłaca w {ROK} roku?</a>{' '}
+      oraz{' '}
+      <a href="/blog/ryczalt-czy-liniowy-2026/">ryczałt czy podatek liniowy na B2B</a>, gdzie stawki
+      podatku i sposób liczenia podstawy są inne niż na skali.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Od jakiej kwoty zaczyna się drugi próg podatkowy w {ROK} roku?</p>
+    <p>
+      Nominalnie od 120 000 zł rocznej podstawy opodatkowania (nie brutto). Na etacie ze
+      standardowymi kosztami uzyskania odpowiada to ok. {zl(progBruttoMies * 12)} brutto rocznie,
+      czyli ok. {zlGr(progBruttoMies)} miesięcznie.
+    </p>
+
+    <p class="faq-pytanie">Czym różni się kwota wolna od kwoty zmniejszającej podatek?</p>
+    <p>
+      Kwota wolna ({zl(PIT.kwotaWolna)} rocznie) to poziom dochodu, od którego teoretycznie nie
+      płaci się podatku. Kwota zmniejszająca podatek ({zl(PIT.kwotaZmniejszajaca)} rocznie) to jej
+      praktyczne przełożenie na konkretną ulgę odejmowaną wprost od obliczonego podatku — to ona
+      pojawia się w rozliczeniu.
+    </p>
+
+    <p class="faq-pytanie">Czy kwota wolna od podatku dotyczy też działalności gospodarczej?</p>
+    <p>
+      Tak, ale tylko przy rozliczeniu na skali podatkowej. Nie obowiązuje przy podatku liniowym
+      (19% od pierwszej złotówki dochodu) ani na ryczałcie, gdzie podatek liczony jest inaczej.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy. Wyliczenia dotyczą umowy o pracę ze standardowymi kosztami
+      uzyskania przychodu, bez dodatkowych ulg. Stawki na {ROK} r. Nie stanowi porady podatkowej
+      ani prawnej — w razie wątpliwości skonsultuj się z księgowym.
+    </div>
+  </div>
+</Layout>
