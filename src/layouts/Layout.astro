@@ -47,6 +47,25 @@ const narzedzia = [
     <meta property="og:locale" content="pl_PL" />
     <script type="application/ld+json" set:html={JSON.stringify(organizacja)} />
     {schematy.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+
+    <script is:inline>
+      // Domyślny stan zgody (Consent Mode v2) MUSI być ustawiony przed
+      // załadowaniem skryptu AdSense, żeby reklamy respektowały wybór użytkownika.
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function gtag() {
+        window.dataLayer.push(arguments);
+      };
+      window.gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+      });
+    </script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7794725181982924"
+      crossorigin="anonymous"></script>
   </head>
   <body>
     <header class="naglowek">

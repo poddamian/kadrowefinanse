@@ -81,18 +81,8 @@
     }
   }
 
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag() {
-    window.dataLayer.push(arguments);
-  };
-
-  // Domyślnie odmawiamy zgody, dopóki użytkownik nie zdecyduje (Consent Mode v2).
-  window.gtag('consent', 'default', {
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-    analytics_storage: 'denied',
-  });
+  // Stan domyślny (denied) i stub gtag są już ustawione w <head> Layout.astro,
+  // przed załadowaniem skryptu AdSense.
 
   function wczytajZgode(): Zgoda | null {
     try {
