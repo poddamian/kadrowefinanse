@@ -16,6 +16,7 @@ interface Props {
 
 const { title, description, aktywna = '', schema } = Astro.props;
 const schematy = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+const canoniczny = new URL(Astro.url.pathname, Astro.site).href;
 
 const organizacja = {
   '@context': 'https://schema.org',
@@ -40,6 +41,7 @@ const narzedzia = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canoniczny} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
