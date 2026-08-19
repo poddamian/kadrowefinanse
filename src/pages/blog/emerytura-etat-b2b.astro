@@ -1,0 +1,159 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, ZUS_DUZY_PODSTAWA, ZUS_PREF_PODSTAWA, ZUS_STAWKI, UOP } from '../../lib/params2026';
+
+const aktualizacja = '19 sierpnia 2026';
+const tytul = 'Emerytura na etacie a na B2B — różnice w przyszłym świadczeniu';
+const opis = 'Ile kapitału emerytalnego rocznie odkłada pracownik, a ile przedsiębiorca na dużym i preferencyjnym ZUS — przy tych samych realnych zarobkach. Na przykładzie 10 000 zł.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-10-06',
+  dateModified: '2026-10-06',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/emerytura-etat-b2b/',
+};
+
+const emerytalnaStawka = UOP.emerytalna * 2; // pracownik + pracodawca, łącznie 19,52%
+const bruttoPrzyklad = 10000;
+const kapitalEtatRok = bruttoPrzyklad * 12 * emerytalnaStawka;
+const kapitalDuzyZusRok = ZUS_DUZY_PODSTAWA * 12 * ZUS_STAWKI.emerytalna;
+const kapitalPrefRok = ZUS_PREF_PODSTAWA * 12 * ZUS_STAWKI.emerytalna;
+
+const fmt0 = (n: number) => Math.round(n).toLocaleString('pl-PL') + ' zł';
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">składka emerytalna: 19,52% podstawy</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Wyższe netto na B2B to popularny argument za zmianą formy zatrudnienia — ale rzadko
+      ktoś liczy, co to robi z przyszłą emeryturą. Odpowiedź może zaskoczyć: przy tych
+      samych realnych zarobkach przedsiębiorca na dużym ZUS odkłada mniej kapitału
+      emerytalnego niż pracownik, a na preferencyjnym — znacznie mniej.
+    </p>
+
+    <h2>Jak liczy się przyszła emerytura</h2>
+    <p>
+      Polska emerytura (system zdefiniowanej składki) to w uproszczeniu: suma
+      zwaloryzowanego kapitału zgromadzonego na koncie i subkoncie w ZUS, podzielona
+      przez średnie dalsze trwanie życia w momencie przejścia na emeryturę (tablice GUS).
+      Im więcej kapitału zgromadzisz przez lata pracy, tym wyższe świadczenie. Kapitał
+      rośnie ze składki emerytalnej — <strong>19,52% podstawy wymiaru</strong>, niezależnie
+      od tego, czy jesteś na etacie, czy na działalności.
+    </p>
+    <p>
+      Kluczowa różnica leży w tym, <strong>co jest tą podstawą</strong>:
+    </p>
+    <ul>
+      <li>
+        <strong>Etat:</strong> podstawą jest Twoje rzeczywiste wynagrodzenie brutto (do
+        limitu 30-krotności przeciętnego wynagrodzenia rocznie). Im więcej zarabiasz, tym
+        więcej kapitału odkładasz.
+      </li>
+      <li>
+        <strong>B2B, duży ZUS:</strong> podstawą jest stała, zadeklarowana kwota
+        ({ZUS_DUZY_PODSTAWA.toLocaleString('pl-PL')} zł), <strong>niezależna od
+        realnego przychodu</strong>. Zarabiasz 8 czy 20 tys. zł miesięcznie — kapitał
+        emerytalny rośnie tak samo, chyba że dobrowolnie zadeklarujesz wyższą podstawę
+        (rzadko spotykane w praktyce).
+      </li>
+      <li>
+        <strong>B2B, preferencyjny ZUS:</strong> podstawa jest jeszcze niższa
+        ({ZUS_PREF_PODSTAWA.toFixed(2).replace('.', ',')} zł) — w pierwszych 24
+        miesiącach działalności kapitał emerytalny rośnie bardzo wolno.
+      </li>
+    </ul>
+
+    <h2>Przykład: 10 000 zł miesięcznie, cały rok</h2>
+    <table>
+      <caption>Roczny przyrost kapitału emerytalnego przy realnych zarobkach 10 000 zł/mies. Stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Wariant</th>
+          <th class="liczba">Podstawa składki</th>
+          <th class="liczba">Kapitał/rok</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="wyroznione">
+          <td>Etat, brutto 10 000 zł</td>
+          <td class="mono">10 000 zł/mies.</td>
+          <td class="mono">{fmt0(kapitalEtatRok)}</td>
+        </tr>
+        <tr>
+          <td>B2B, duży ZUS</td>
+          <td class="mono">{ZUS_DUZY_PODSTAWA.toLocaleString('pl-PL')} zł/mies.</td>
+          <td class="mono">{fmt0(kapitalDuzyZusRok)}</td>
+        </tr>
+        <tr>
+          <td>B2B, preferencyjny ZUS</td>
+          <td class="mono">{ZUS_PREF_PODSTAWA.toFixed(2).replace('.', ',')} zł/mies.</td>
+          <td class="mono">{fmt0(kapitalPrefRok)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 260" role="img" aria-label="Wykres: przy 10 000 zł miesięcznie etat odkłada rocznie 23 424 zł kapitału emerytalnego, B2B na dużym ZUS 13 241 zł, a B2B na preferencyjnym ZUS 3 376 zł.">
+        <title>Roczny przyrost kapitału emerytalnego — etat vs B2B</title>
+        <line x1="40" y1="220" x2="600" y2="220" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="90" y="55" width="90" height="165" fill="#1e5b43" rx="2" />
+        <text x="135" y="45" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">{fmt0(kapitalEtatRok)}</text>
+        <text x="135" y="240" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">Etat</text>
+
+        <rect x="280" y="126" width="90" height="94" fill="#c96f1e" rx="2" />
+        <text x="325" y="116" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">{fmt0(kapitalDuzyZusRok)}</text>
+        <text x="325" y="240" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">B2B, duży ZUS</text>
+
+        <rect x="470" y="196" width="90" height="24" fill="#c96f1e" rx="2" opacity="0.6" />
+        <text x="515" y="186" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#16281f">{fmt0(kapitalPrefRok)}</text>
+        <text x="515" y="240" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">B2B, pref. ZUS</text>
+      </svg>
+      <figcaption>
+        Przy identycznych realnych zarobkach etat odkłada niemal 7-krotnie więcej
+        kapitału emerytalnego rocznie niż B2B na preferencyjnym ZUS.
+      </figcaption>
+    </figure>
+
+    <h2>Co z tym zrobić</h2>
+    <p>
+      To nie oznacza, że B2B „psuje" emeryturę — oznacza, że wyższe bieżące netto trzeba
+      świadomie skompensować własnym oszczędzaniem, jeśli zależy Ci na porównywalnym
+      świadczeniu. W tym celu służą m.in. IKE i IKZE — sprawdź{' '}
+      <a href="/blog/ike-ikze-oszczedzanie-podatek/">IKE i IKZE — ile można zaoszczędzić na podatku</a>.
+      Zastanawiasz się ogólnie, czy B2B Ci się opłaca? Zobacz pełne porównanie netto w{' '}
+      <a href="/b2b-czy-uop/">kalkulatorze B2B vs umowa o pracę</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy mogę dobrowolnie zadeklarować wyższą podstawę składek na B2B?</p>
+    <p>
+      Tak — nie ma górnego limitu (poza 30-krotnością rocznie), możesz zadeklarować
+      dowolnie wyższą podstawę niż minimalna dla wybranego wariantu ZUS. Wiąże się to
+      oczywiście z wyższymi bieżącymi składkami, więc to bezpośredni kompromis między
+      netto dziś a kapitałem emerytalnym w przyszłości.
+    </p>
+
+    <p class="faq-pytanie">Czy okres na preferencyjnym ZUS można później „dogonić"?</p>
+    <p>
+      Nie da się cofnąć i dopłacić składek za miniony okres do wyższej podstawy. Można
+      za to skompensować niższy kapitał z tego okresu późniejszymi, wyższymi składkami
+      (np. po przejściu na duży ZUS) albo dodatkowym oszczędzaniem prywatnym.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i upraszcza mechanizm waloryzacji kapitału oraz
+      zasady ustalania wysokości emerytury. Stawki na {ROK} r. Nie stanowi porady
+      finansowej ani emerytalnej.
+    </div>
+  </div>
+</Layout>
