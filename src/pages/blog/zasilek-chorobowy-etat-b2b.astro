@@ -1,0 +1,178 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, ZUS_DUZY_PODSTAWA, ZUS_PREF_PODSTAWA } from '../../lib/params2026';
+
+const aktualizacja = '19 sierpnia 2026';
+const tytul = `Zasiłek chorobowy ${ROK} — ile wynosi i kto go wypłaca (etat vs B2B)`;
+const opis = `Ile realnie dostaniesz na zwolnieniu lekarskim na etacie i na B2B — porównanie podstawy wymiaru, stawek 80/100% i warunków nabycia prawa do zasiłku, na przykładzie liczbowym.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-08-25',
+  dateModified: '2026-08-25',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/zasilek-chorobowy-etat-b2b/',
+};
+
+const podstawaEtat = 6000 * 0.8629;
+const dziennaEtat = podstawaEtat / 30;
+const zasilekDzienEtat = dziennaEtat * 0.8;
+
+const podstawaDuzyZus = ZUS_DUZY_PODSTAWA * 0.8629;
+const dziennaDuzyZus = podstawaDuzyZus / 30;
+const zasilekDzienDuzyZus = dziennaDuzyZus * 0.8;
+
+const podstawaPref = ZUS_PREF_PODSTAWA * 0.8629;
+const dziennaPref = podstawaPref / 30;
+const zasilekDzienPref = dziennaPref * 0.8;
+
+const fmt = (n: number) => n.toFixed(2).replace('.', ',') + ' zł';
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">stawki {ROK} · podstawa pomniejszona o 13,71%</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Zwolnienie lekarskie nie oznacza tej samej kwoty na etacie i na działalności
+      gospodarczej — nawet przy identycznym „zarobku". Na etacie zasiłek liczy się od
+      Twojego rzeczywistego wynagrodzenia. Na B2B — od <strong>zadeklarowanej podstawy
+      składek</strong>, która przy dużym ZUS jest stała, a przy preferencyjnym — bardzo
+      niska. Sprawdźmy, ile to realnie robi za różnicy.
+    </p>
+
+    <h2>Ile wynosi zasiłek chorobowy</h2>
+    <p>
+      Zasiłek chorobowy wynosi <strong>80% podstawy wymiaru</strong> za każdy dzień
+      choroby (100% m.in. przy chorobie w ciąży, wypadku przy pracy w drodze do pracy,
+      badaniach dawcy). Podstawę wymiaru zawsze pomniejsza się o <strong>13,71%</strong> —
+      to odpowiednik składek społecznych i zdrowotnej finansowanych przez ubezpieczonego,
+      które i tak nie trafiłyby „na rękę". Zasada jest identyczna dla pracownika i
+      przedsiębiorcy — różni się tylko to, od jakiej kwoty się liczy.
+    </p>
+    <ul>
+      <li>
+        <strong>Etat:</strong> podstawą jest przeciętne miesięczne wynagrodzenie brutto z
+        ostatnich 12 miesięcy (lub krótszego okresu zatrudnienia). Pierwsze 33 dni choroby
+        w roku (14 dni po 50. roku życia) płaci pracodawca jako „wynagrodzenie
+        chorobowe" — wg tych samych stawek — dopiero potem wypłatę przejmuje ZUS jako
+        zasiłek.
+      </li>
+      <li>
+        <strong>B2B:</strong> zasiłek przysługuje tylko, jeśli opłacasz{' '}
+        <strong>dobrowolną składkę chorobową</strong> (2,45% podstawy). Podstawą wymiaru
+        jest przeciętna zadeklarowana podstawa składek z ostatnich 12 miesięcy — nie
+        Twój faktyczny przychód czy dochód.
+      </li>
+    </ul>
+
+    <h2>Przykład: 10 dni zwolnienia przy porównywalnym „zarobku"</h2>
+    <p>
+      Poniżej zasiłek za 10 dni choroby dla trzech sytuacji, wszystkie przy podobnym
+      poziomie zarobków (ok. 6 000 zł brutto/mies.), ale różnej podstawie składkowej.
+    </p>
+
+    <table>
+      <caption>Zasiłek chorobowy za 10 dni (80% podstawy, po pomniejszeniu 13,71%). Stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Wariant</th>
+          <th class="liczba">Podstawa składek</th>
+          <th class="liczba">Zasiłek dzienny</th>
+          <th class="liczba">Za 10 dni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Etat, brutto 6 000 zł</td>
+          <td class="mono">6 000,00 zł</td>
+          <td class="mono">{fmt(zasilekDzienEtat)}</td>
+          <td class="mono">{fmt(zasilekDzienEtat * 10)}</td>
+        </tr>
+        <tr>
+          <td>B2B, duży ZUS</td>
+          <td class="mono">{ZUS_DUZY_PODSTAWA.toLocaleString('pl-PL')} zł</td>
+          <td class="mono">{fmt(zasilekDzienDuzyZus)}</td>
+          <td class="mono">{fmt(zasilekDzienDuzyZus * 10)}</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>B2B, preferencyjny ZUS</td>
+          <td class="mono">{ZUS_PREF_PODSTAWA.toFixed(2).replace('.', ',')} zł</td>
+          <td class="mono">{fmt(zasilekDzienPref)}</td>
+          <td class="mono">{fmt(zasilekDzienPref * 10)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 260" role="img" aria-label="Wykres słupkowy: zasiłek chorobowy za 10 dni na etacie (1 380 zł), B2B na dużym ZUS (1 302 zł) i B2B na preferencyjnym ZUS (352 zł).">
+        <title>Zasiłek chorobowy za 10 dni — etat vs B2B ({ROK})</title>
+        <line x1="40" y1="220" x2="600" y2="220" stroke="#c7dccf" stroke-width="1" />
+        <rect x="90" y="60" width="90" height="160" fill="#1e5b43" rx="2" />
+        <text x="135" y="50" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{fmt(zasilekDzienEtat * 10)}</text>
+        <text x="135" y="240" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">Etat</text>
+
+        <rect x="280" y="65" width="90" height="155" fill="#1e5b43" rx="2" />
+        <text x="325" y="55" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{fmt(zasilekDzienDuzyZus * 10)}</text>
+        <text x="325" y="240" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">B2B, duży ZUS</text>
+
+        <rect x="470" y="175" width="90" height="45" fill="#c96f1e" rx="2" />
+        <text x="515" y="165" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{fmt(zasilekDzienPref * 10)}</text>
+        <text x="515" y="240" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">B2B, pref. ZUS</text>
+      </svg>
+      <figcaption>
+        Przy tym samym poziomie zarobków zasiłek na preferencyjnym ZUS jest niemal
+        4-krotnie niższy niż na etacie czy dużym ZUS — bo liczy się od zadeklarowanej
+        podstawy, nie od realnego przychodu.
+      </figcaption>
+    </figure>
+
+    <h2>Okres wyczekiwania — kiedy zasiłek zaczyna przysługiwać</h2>
+    <p>
+      Prawo do zasiłku nie powstaje od pierwszego dnia ubezpieczenia. Pracownik nabywa je
+      po <strong>30 dniach</strong> nieprzerwanego ubezpieczenia chorobowego (krócej lub od
+      razu w kilku szczególnych przypadkach, np. absolwenci w ciągu 90 dni od ukończenia
+      szkoły). Przedsiębiorca opłacający dobrowolną składkę chorobową czeka dłużej —{' '}
+      <strong>90 dni</strong> nieprzerwanego ubezpieczenia. Jeśli spóźnisz się z opłatą
+      składki chorobowej choćby o jeden dzień, ubezpieczenie się przerywa i okres
+      wyczekiwania liczy się od nowa.
+    </p>
+    <p>
+      Zastanawiasz się, czy przejście na B2B w ogóle Ci się opłaci, licząc też takie
+      ryzyka jak brak płatnego zwolnienia? Sprawdź pełne porównanie w{' '}
+      <a href="/b2b-czy-uop/">kalkulatorze B2B vs umowa o pracę</a>. Szczegóły
+      proceduralne zwolnień lekarskich na działalności — dokumenty, terminy, co się
+      dzieje po zawieszeniu firmy — opisujemy w{' '}
+      <a href="/blog/l4-na-dzialalnosci-gospodarczej/">L4 na działalności gospodarczej</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy mogę dostać zasiłek, jeśli dopiero zacząłem działalność?</p>
+    <p>
+      Nie od razu — musisz najpierw przejść 90-dniowy okres wyczekiwania, opłacając
+      terminowo dobrowolną składkę chorobową. Wcześniejsze okresy ubezpieczenia (np. z
+      etatu bezpośrednio poprzedzającego założenie firmy, jeśli przerwa nie przekroczyła
+      30 dni) mogą się wliczać i skrócić ten czas.
+    </p>
+
+    <p class="faq-pytanie">Czy podstawa zasiłku na B2B zależy od tego, ile faktycznie zarabiam?</p>
+    <p>
+      Nie — liczy się wyłącznie zadeklarowana podstawa składek (np. duży ZUS, preferencyjny
+      albo wyższa, dobrowolnie zadeklarowana podstawa), a nie realny przychód czy dochód z
+      działalności. To dlatego przy preferencyjnym ZUS zasiłek jest tak niski względem
+      faktycznych zarobków.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy. Konkretna wysokość zasiłku zależy od Twojej
+      historii ubezpieczenia i rodzaju niezdolności do pracy. Stawki na {ROK} r. Nie
+      stanowi porady prawnej — w razie wątpliwości skontaktuj się z ZUS lub księgowym.
+    </div>
+  </div>
+</Layout>
