@@ -1,0 +1,127 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+import { symulujNadplate, zl } from '../../lib/podatki';
+
+const aktualizacja = '19 sierpnia 2026';
+const tytul = 'Kredyt gotówkowy a nadpłata — czy opłaca się spłacać szybciej';
+const opis = 'Kredyt gotówkowy ma zwykle wyższe oprocentowanie niż hipoteczny — dlatego nadpłata daje tu proporcjonalnie większą oszczędność. Przykład na 30 000 zł i 5 latach.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-10-20',
+  dateModified: '2026-10-20',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/kredyt-gotowkowy-a-nadplata/',
+};
+
+const kapital = 30000;
+const oprocentowanie = 0.12;
+const okresMies = 60;
+const nadplataJednorazowa = 5000;
+
+const bezNadplaty = symulujNadplate({
+  kapital, oprocentowanie, okresMies, nadplataMies: 0, nadplataJednorazowa: 0, tryb: 'okres',
+});
+const zNadplata = symulujNadplate({
+  kapital, oprocentowanie, okresMies, nadplataMies: 0, nadplataJednorazowa, tryb: 'okres',
+});
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">przykład: 30 000 zł, 12% RRSO, 5 lat</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Kredyty gotówkowe mają zwykle znacznie wyższe oprocentowanie niż hipoteczne —
+      często 2-3 razy wyższe. To oznacza, że każda złotówka nadpłaty „pracuje" tu
+      mocniej: oszczędzasz odsetki naliczane po wyższej stopie. Jeśli masz jednocześnie
+      kredyt gotówkowy i hipoteczny, nadpłata tego pierwszego niemal zawsze ma
+      pierwszeństwo.
+    </p>
+
+    <h2>Dlaczego wyższe oprocentowanie = większa oszczędność z nadpłaty</h2>
+    <p>
+      Mechanika nadpłaty jest identyczna jak przy kredycie hipotecznym — zmniejszasz
+      kapitał, więc bank nalicza odsetki od mniejszej kwoty przez całą pozostałą
+      spłatę. Różnica jest tylko w stopie procentowej: przy 12% RRSO (typowe dla kredytu
+      gotówkowego) każda nadpłacona złotówka oszczędza więcej odsetek rocznie niż przy
+      7% RRSO typowym dla hipoteki.
+    </p>
+
+    <h2>Przykład: 30 000 zł na 5 lat, jednorazowa nadpłata 5 000 zł na start</h2>
+    <table>
+      <caption>Kredyt gotówkowy 30 000 zł, RRSO 12%, okres 5 lat. Nadpłata jednorazowa 5 000 zł na start.</caption>
+      <tbody>
+        <tr>
+          <td>Rata miesięczna (bez nadpłaty)</td>
+          <td class="mono">{zl(bezNadplaty.rataBazowa)}</td>
+        </tr>
+        <tr>
+          <td>Odsetki łącznie bez nadpłaty</td>
+          <td class="mono">{zl(bezNadplaty.odsetkiBez)}</td>
+        </tr>
+        <tr>
+          <td>Odsetki łącznie z nadpłatą 5 000 zł</td>
+          <td class="mono">{zl(zNadplata.odsetkiZ)}</td>
+        </tr>
+        <tr class="suma">
+          <td>Oszczędność na odsetkach</td>
+          <td class="mono">{zl(zNadplata.oszczednosc)}</td>
+        </tr>
+        <tr>
+          <td>Spłacisz szybciej o</td>
+          <td class="mono">{zNadplata.skrocenieMies} mies.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Nadpłata 5 000 zł (czyli jedna szósta pierwotnego kapitału) skraca kredyt o{' '}
+      {zNadplata.skrocenieMies} miesięcy i oszczędza {zl(zNadplata.oszczednosc)} —
+      relatywnie do wielkości kredytu to znacznie więcej niż dałaby ta sama kwota
+      nadpłacona w tańszym kredycie hipotecznym.
+    </p>
+
+    <h2>Kolejność spłaty przy kilku zobowiązaniach</h2>
+    <p>
+      Jeśli masz jednocześnie kredyt gotówkowy, kartę kredytową i kredyt hipoteczny, a
+      dysponujesz ograniczoną nadwyżką na nadpłaty, matematycznie najbardziej opłaca się
+      spłacać najpierw dług o <strong>najwyższym oprocentowaniu</strong> — zwykle karta
+      kredytowa, potem kredyt gotówkowy, na końcu hipoteka (zwykle najniższe
+      oprocentowanie ze wszystkich).
+    </p>
+    <p>
+      Masz też kredyt hipoteczny i zastanawiasz się nad jego nadpłatą? Sprawdź{' '}
+      <a href="/nadplata-kredytu/">kalkulator nadpłaty kredytu</a> — silnik obliczeniowy
+      jest identyczny jak w tym artykule, więc możesz podstawić własne liczby.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy bank może pobrać prowizję za wcześniejszą spłatę kredytu gotówkowego?</p>
+    <p>
+      Tak, w przeciwieństwie do kredytu hipotecznego (gdzie po 3 latach jest to zwykle
+      bezpłatne), banki częściej pobierają rekompensatę za wcześniejszą spłatę kredytu
+      konsumenckiego — sprawdź swoją umowę i formularz informacyjny (ważne są tu przepisy
+      o kredycie konsumenckim, nie hipotecznym).
+    </p>
+
+    <p class="faq-pytanie">Czy zawsze lepiej nadpłacać niż inwestować nadwyżkę?</p>
+    <p>
+      Przy oprocentowaniu rzędu 12% nadpłata daje gwarantowaną „stopę zwrotu" równą tej
+      wartości — trudno o bezpieczną inwestycję z porównywalnym, pewnym zyskiem. Dlatego
+      przy drogich kredytach konsumenckich nadpłata niemal zawsze wygrywa z
+      alternatywnym inwestowaniem tej samej kwoty.
+    </p>
+
+    <div class="zastrzezenie">
+      Przykład ma charakter poglądowy — realne RRSO i warunki umowy różnią się między
+      bankami i produktami. Stawki na {ROK} r. Nie stanowi porady finansowej.
+    </div>
+  </div>
+</Layout>
