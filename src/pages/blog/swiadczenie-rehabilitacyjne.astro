@@ -1,0 +1,156 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '19 sierpnia 2026';
+const tytul = 'Świadczenie rehabilitacyjne — ile wynosi i jak długo można je pobierać';
+const opis = 'Co dzieje się po wyczerpaniu 182 dni zasiłku chorobowego: warunki przyznania, stawki 90/75/100%, maksymalny okres 12 miesięcy — z przykładem liczbowym.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-15',
+  dateModified: '2026-09-15',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/swiadczenie-rehabilitacyjne/',
+};
+
+const bruttoPrzyklad = 6000;
+const podstawa = bruttoPrzyklad * 0.8629;
+const pierwsze3mies = podstawa * 0.9;
+const kolejneMies = podstawa * 0.75;
+const wCiazy = podstawa * 1.0;
+
+const fmt = (n: number) => n.toFixed(2).replace('.', ',') + ' zł';
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">po wyczerpaniu 182 dni zasiłku chorobowego · max 12 miesięcy</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Zasiłek chorobowy nie trwa w nieskończoność — po 182 dniach (270 przy gruźlicy lub
+      chorobie w ciąży) się kończy. Jeśli dalsze leczenie lub rehabilitacja rokują
+      odzyskanie zdolności do pracy, ZUS może przyznać kolejne świadczenie —
+      rehabilitacyjne. To nie jest formalność automatyczna i nie jest to też ta sama
+      stawka co zasiłek.
+    </p>
+
+    <h2>Komu przysługuje i kto decyduje</h2>
+    <p>
+      O przyznaniu świadczenia rehabilitacyjnego decyduje <strong>lekarz orzecznik
+      ZUS</strong> na podstawie wniosku i dokumentacji medycznej — nie przysługuje ono
+      automatycznie po wyczerpaniu zasiłku chorobowego. Warunkiem jest rokowanie, że
+      dalsze leczenie lub rehabilitacja przywrócą zdolność do pracy. Jeśli lekarz uzna,
+      że rokowania nie ma (np. bardziej zasadna byłaby renta z tytułu niezdolności do
+      pracy), świadczenia nie przyzna.
+    </p>
+
+    <h2>Ile trwa</h2>
+    <p>
+      Maksymalnie <strong>12 miesięcy łącznie</strong>. Lekarz orzecznik nie przyznaje
+      od razu całego okresu — ustala go w ratach (np. 3 miesiące, potem kolejna ocena),
+      w zależności od przewidywanego czasu potrzebnego do odzyskania zdolności do pracy.
+      Po każdym okresie trzeba przejść ponowne badanie, żeby uzyskać przedłużenie.
+    </p>
+
+    <h2>Ile wynosi świadczenie</h2>
+    <p>
+      Podstawa wymiaru jest liczona identycznie jak przy ostatnim zasiłku chorobowym
+      (przeciętne wynagrodzenie z 12 miesięcy, pomniejszone o 13,71%) — nie przelicza się
+      jej od nowa, chyba że przerwa w niezdolności do pracy przekroczyła 3 miesiące.
+      Stawki są niższe niż przy zasiłku chorobowym:
+    </p>
+    <ul>
+      <li><strong>90%</strong> podstawy — przez pierwsze 3 miesiące świadczenia.</li>
+      <li><strong>75%</strong> podstawy — za kolejne miesiące.</li>
+      <li><strong>100%</strong> podstawy — jeśli niezdolność do pracy przypada w okresie ciąży.</li>
+    </ul>
+
+    <h2>Przykład: 6 000 zł brutto miesięcznie</h2>
+    <p>
+      Podstawa wymiaru po pomniejszeniu o 13,71%: <strong>{fmt(podstawa)}</strong>.
+    </p>
+
+    <table>
+      <caption>Świadczenie rehabilitacyjne przy podstawie 6 000 zł brutto. Stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Okres</th>
+          <th class="liczba">Stawka</th>
+          <th class="liczba">Kwota/mies.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pierwsze 3 miesiące</td>
+          <td class="liczba">90%</td>
+          <td class="mono">{fmt(pierwsze3mies)}</td>
+        </tr>
+        <tr>
+          <td>Kolejne miesiące (do 12 łącznie)</td>
+          <td class="liczba">75%</td>
+          <td class="mono">{fmt(kolejneMies)}</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>Niezdolność w okresie ciąży</td>
+          <td class="liczba">100%</td>
+          <td class="mono">{fmt(wCiazy)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Przy pełnym wykorzystaniu 12 miesięcy różnica między stawką 90% a 75% robi się
+      odczuwalna: przy tym przykładzie to ok. {fmt(pierwsze3mies - kolejneMies)} miesięcznie
+      mniej od 4. miesiąca — warto to uwzględnić w planowaniu budżetu na dłuższą
+      niezdolność do pracy.
+    </p>
+
+    <h2>Co dalej po wyczerpaniu 12 miesięcy?</h2>
+    <p>
+      Jeśli po roku świadczenia rehabilitacyjnego nadal nie odzyskasz zdolności do pracy,
+      kolejnym krokiem jest zwykle wniosek o rentę z tytułu niezdolności do pracy —
+      osobne świadczenie, o które trzeba wystąpić z wyprzedzeniem, bo procedura orzecznicza
+      trwa. Warto złożyć wniosek rentowy jeszcze przed końcem okresu świadczenia
+      rehabilitacyjnego, żeby uniknąć przerwy w wypłatach.
+    </p>
+    <p>
+      Chcesz sprawdzić, ile wyniósłby zwykły zasiłek chorobowy przed przejściem na
+      świadczenie rehabilitacyjne? Zobacz{' '}
+      <a href="/blog/zasilek-chorobowy-etat-b2b/">Zasiłek chorobowy — etat vs B2B</a>.
+      Prowadzisz działalność i zastanawiasz się nad formalnościami przy dłuższej
+      niezdolności do pracy? Sprawdź{' '}
+      <a href="/blog/l4-na-dzialalnosci-gospodarczej/">L4 na działalności gospodarczej</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy pracodawca musi trzymać dla mnie miejsce pracy przez cały okres świadczenia?</p>
+    <p>
+      Ochrona przed wypowiedzeniem trwa przez czas pobierania zasiłku chorobowego i
+      świadczenia rehabilitacyjnego przez pierwsze 3 miesiące. Po tym okresie
+      pracodawca może rozwiązać umowę bez wypowiedzenia z powodu długotrwałej
+      niezdolności do pracy, jeśli łączny okres niezdolności przekroczy limity określone
+      w Kodeksie pracy — warto to sprawdzić indywidualnie z działem kadr.
+    </p>
+
+    <p class="faq-pytanie">Czy świadczenie rehabilitacyjne przysługuje też przedsiębiorcy na B2B?</p>
+    <p>
+      Tak, na tych samych zasadach co zasiłek chorobowy — pod warunkiem opłacania
+      dobrowolnej składki chorobowej i zachowania ciągłości ubezpieczenia. Podstawa
+      wymiaru będzie wtedy liczona od zadeklarowanej podstawy składek, a nie realnego
+      dochodu z działalności.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy. O przyznaniu i długości świadczenia decyduje ZUS
+      indywidualnie na podstawie dokumentacji medycznej. Stawki na {ROK} r. Nie stanowi
+      porady prawnej ani medycznej.
+    </div>
+  </div>
+</Layout>
