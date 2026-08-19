@@ -1,0 +1,161 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '19 sierpnia 2026';
+const tytul = 'Urlop macierzyński i rodzicielski — ile pieniędzy zostaje na rękę';
+const opis = `Porównanie dwóch wariantów zasiłku: 81,5% przez cały okres macierzyńskiego i rodzicielskiego vs 100%/70% osobno. Na przykładzie 6 000 zł brutto, stawki ${ROK}.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-01',
+  dateModified: '2026-09-01',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/urlop-macierzynski-rodzicielski/',
+};
+
+const bruttoPrzyklad = 6000;
+const podstawa = bruttoPrzyklad * 0.8629;
+const wariantA = podstawa * 0.815;
+const wariantB100 = podstawa;
+const wariantB70 = podstawa * 0.7;
+
+const fmt = (n: number) => n.toFixed(2).replace('.', ',') + ' zł';
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">macierzyński 20 tyg. · rodzicielski 41 tyg. (1 dziecko)</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Zasiłek macierzyński i rodzicielski można rozliczyć na dwa sposoby — i wybór ma
+      realny wpływ na to, ile trafia na konto co miesiąc. Jeden wariant daje wyższą kwotę
+      na start i niższą później, drugi — równą stawkę przez cały okres. Sprawdźmy różnicę
+      na liczbach.
+    </p>
+
+    <h2>Ile trwa urlop i ile wynosi zasiłek</h2>
+    <p>
+      Przy jednym dziecku urlop macierzyński trwa <strong>20 tygodni</strong>, a
+      rodzicielski (do podziału między oboje rodziców, z czego 9 tygodni jest
+      nieprzenaszalne dla każdego z nich) — <strong>41 tygodni</strong>. Łącznie to ok.
+      61 tygodni, czyli niemal 14 miesięcy. Wysokość zasiłku zależy od tego, kiedy złożysz
+      wniosek:
+    </p>
+    <ul>
+      <li>
+        <strong>Wniosek o oba urlopy naraz, złożony do 21 dni po porodzie:</strong>{' '}
+        zasiłek wynosi <strong>81,5% podstawy wymiaru</strong> przez cały okres —
+        macierzyński i rodzicielski razem.
+      </li>
+      <li>
+        <strong>Bez takiego wniosku (albo złożony później):</strong> macierzyński płatny
+        jest <strong>100%</strong> podstawy (20 tygodni), a rodzicielski —{' '}
+        <strong>70%</strong> podstawy (41 tygodni).
+      </li>
+    </ul>
+    <p>
+      Podstawę wymiaru liczy się tak samo jak przy zasiłku chorobowym: przeciętne
+      miesięczne wynagrodzenie brutto z ostatnich 12 miesięcy, pomniejszone o 13,71%.
+    </p>
+
+    <h2>Przykład: 6 000 zł brutto miesięcznie</h2>
+    <p>
+      Podstawa wymiaru po pomniejszeniu o 13,71%: <strong>{fmt(podstawa)}</strong> miesięcznie.
+    </p>
+
+    <table>
+      <caption>Zasiłek macierzyński i rodzicielski przy 6 000 zł brutto. Stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Wariant</th>
+          <th class="liczba">Zasiłek/mies.</th>
+          <th>Okres</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="wyroznione">
+          <td>Wniosek wczesny — 81,5% przez cały okres</td>
+          <td class="mono">{fmt(wariantA)}</td>
+          <td>~61 tygodni (ok. 14 mies.)</td>
+        </tr>
+        <tr>
+          <td>Bez wniosku — 100% macierzyński</td>
+          <td class="mono">{fmt(wariantB100)}</td>
+          <td>20 tygodni</td>
+        </tr>
+        <tr>
+          <td>Bez wniosku — 70% rodzicielski</td>
+          <td class="mono">{fmt(wariantB70)}</td>
+          <td>41 tygodni</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 260" role="img" aria-label="Wykres: zasiłek 81,5% wynosi 4 219 zł przez cały okres, w wariancie bez wniosku zasiłek to 5 177 zł przez pierwsze 20 tygodni, a potem spada do 3 624 zł na kolejne 41 tygodni.">
+        <title>Zasiłek macierzyński/rodzicielski — dwa warianty rozliczenia</title>
+        <line x1="40" y1="220" x2="600" y2="220" stroke="#c7dccf" stroke-width="1" />
+
+        <rect x="90" y="90" width="90" height="130" fill="#1e5b43" rx="2" />
+        <text x="135" y="80" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{fmt(wariantA)}</text>
+        <text x="135" y="240" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">81,5%, cały okres</text>
+
+        <rect x="280" y="65" width="90" height="155" fill="#c96f1e" rx="2" />
+        <text x="325" y="55" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{fmt(wariantB100)}</text>
+        <text x="325" y="240" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">100%, 20 tyg.</text>
+
+        <rect x="470" y="120" width="90" height="100" fill="#c96f1e" rx="2" opacity="0.7" />
+        <text x="515" y="110" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{fmt(wariantB70)}</text>
+        <text x="515" y="240" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">70%, 41 tyg.</text>
+      </svg>
+      <figcaption>
+        Wariant 81,5% daje niższą kwotę na start niż 100%, ale wyższą niż 70% — i jest
+        równa przez cały okres, co ułatwia planowanie budżetu domowego.
+      </figcaption>
+    </figure>
+
+    <h2>Który wariant się bardziej opłaca?</h2>
+    <p>
+      Łączna suma wypłacona w obu wariantach jest niemal identyczna — różnica to głównie
+      rozłożenie w czasie. Wariant 81,5% ma sens, gdy zależy Ci na przewidywalnym,
+      równym dochodzie przez cały urlop. Wariant 100%/70% daje wyższe wsparcie w
+      pierwszych, zwykle najbardziej wymagających finansowo miesiącach po porodzie,
+      kosztem wyraźnego spadku później. Decyzję trzeba podjąć wcześnie — zmiana wariantu
+      po terminie 21 dni od porodu nie jest już możliwa.
+    </p>
+    <p>
+      Planujesz też złożyć PIT-2 albo sprawdzić, jak urlop wpływa na inne świadczenia?
+      Zobacz <a href="/blog/placa-minimalna-2026/">Płaca minimalna {ROK}</a> — pokazujemy
+      tam, na jakie progi (w tym część świadczeń rodzinnych) wpływa jej wysokość.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy mogę zmienić wariant rozliczenia w trakcie urlopu?</p>
+    <p>
+      Nie — decyzję trzeba podjąć poprzez złożenie (lub niezłożenie) wniosku o urlop
+      rodzicielski w terminie 21 dni po porodzie. Po tym terminie wariant 81,5% nie jest
+      już dostępny dla tego dziecka.
+    </p>
+
+    <p class="faq-pytanie">Czy zasiłek macierzyński przysługuje też na B2B?</p>
+    <p>
+      Tak, pod warunkiem opłacania dobrowolnej składki chorobowej — analogicznie jak przy
+      zasiłku chorobowym. Podstawą wymiaru jest wtedy zadeklarowana podstawa składek, a
+      nie realny dochód z działalności, więc przy preferencyjnym ZUS zasiłek będzie
+      wyraźnie niższy niż przy dużym ZUS.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy — dotyczy jednego dziecka z porodu pojedynczego;
+      przy porodzie mnogim okresy i stawki są inne. Stawki na {ROK} r. Nie stanowi
+      porady prawnej — szczegóły ustal z działem kadr lub ZUS.
+    </div>
+  </div>
+</Layout>
