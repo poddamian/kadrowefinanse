@@ -1,0 +1,133 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+import { rataAnnuitetowa, zl } from '../../lib/podatki';
+
+const aktualizacja = '19 sierpnia 2026';
+const tytul = 'Leasing czy kredyt na firmowy samochód — co się bardziej opłaca na B2B';
+const opis = 'Różnice w rozliczeniu podatkowym: leasing operacyjny jako koszt bieżący vs kredyt z amortyzacją środka trwałego. Przykład raty na 100 000 zł netto.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-10-27',
+  dateModified: '2026-10-27',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/leasing-czy-kredyt-samochod-firmowy/',
+};
+
+const wartoscAuta = 100000;
+const wklad = wartoscAuta * 0.1;
+const finansowana = wartoscAuta - wklad;
+const okresMies = 48;
+
+const rataLeasing = rataAnnuitetowa(finansowana, 0.08, okresMies);
+const rataKredyt = rataAnnuitetowa(finansowana, 0.09, okresMies);
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">przykład: auto 100 000 zł netto, 48 mies.</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Leasing i kredyt finansują to samo — auto — ale zupełnie inaczej rozlicza się je
+      podatkowo. Wybór wpływa na to, kiedy i jak szybko wydatek trafia w koszty firmy, a
+      to ma realne znaczenie dla bieżącego podatku.
+    </p>
+
+    <h2>Leasing operacyjny — koszt na bieżąco</h2>
+    <p>
+      Przy leasingu operacyjnym samochód formalnie zostaje w majątku leasingodawcy — Ty
+      płacisz ratę, która <strong>w całości (do limitu) stanowi koszt uzyskania
+      przychodu</strong> w miesiącu, w którym ją ponosisz. Nie musisz prowadzić
+      amortyzacji ani wpisywać auta do ewidencji środków trwałych. To prostsze
+      księgowo i daje efekt podatkowy „od razu", rozłożony równomiernie na cały okres
+      umowy.
+    </p>
+
+    <h2>Kredyt — samochód jako środek trwały</h2>
+    <p>
+      Przy zakupie na kredyt auto staje się Twoim środkiem trwałym — wpisujesz je do
+      ewidencji i <strong>amortyzujesz</strong> (standardowo 20% rocznie, czyli przez 5
+      lat). W koszty firmy trafiają: odpisy amortyzacyjne oraz <strong>odsetki od
+      kredytu</strong> — ale nie sama rata kapitałowa, która zmniejsza tylko zadłużenie,
+      a nie podstawę opodatkowania.
+    </p>
+
+    <h2>Wspólny limit dla obu form</h2>
+    <p>
+      Niezależnie od formy finansowania, dla samochodów osobowych obowiązuje ustawowy
+      limit kosztów podatkowych — <strong>150 000 zł</strong> dla aut spalinowych i
+      hybrydowych, <strong>225 000 zł</strong> dla w pełni elektrycznych. Powyżej tego
+      limitu część raty/odpisu proporcjonalna do nadwyżki nie jest kosztem podatkowym.
+      Podobnie z VAT: przy typowym użytku mieszanym (firma + prywatnie) odliczysz tylko{' '}
+      <strong>50%</strong> VAT z raty czy faktury za paliwo — pełne 100% wymaga
+      prowadzenia szczegółowej ewidencji przebiegu i zgłoszenia auta wyłącznie do celów
+      firmowych.
+    </p>
+
+    <h2>Przykład: rata przy aucie za 100 000 zł netto</h2>
+    <p>
+      Przy wkładzie własnym 10% i finansowaniu pozostałej kwoty ({zl(finansowana)}) na
+      48 miesięcy, przy typowych oprocentowaniach dla każdej formy:
+    </p>
+    <table>
+      <caption>Orientacyjna rata miesięczna — leasing vs kredyt, 48 mies.</caption>
+      <tbody>
+        <tr>
+          <td>Leasing operacyjny (ok. 8% w skali roku)</td>
+          <td class="mono">{zl(rataLeasing)}/mies.</td>
+        </tr>
+        <tr>
+          <td>Kredyt (ok. 9% w skali roku)</td>
+          <td class="mono">{zl(rataKredyt)}/mies.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size: 0.9rem; color: var(--atrament-2);">
+      Uproszczenie: leasing operacyjny zwykle kończy się opcją wykupu za niewielką
+      wartość rezydualną, którą pominięto w tym przykładzie dla porównywalności rat —
+      realna oferta leasingowa może się różnić w zależności od wysokości wykupu.
+    </p>
+
+    <h2>Które rozwiązanie wybrać</h2>
+    <p>
+      Leasing operacyjny sprawdza się, gdy zależy Ci na prostocie księgowej i
+      równomiernym rozłożeniu kosztu w czasie — częsty wybór przy autach wymienianych co
+      kilka lat. Kredyt (z zakupem na własność) bywa korzystniejszy, gdy planujesz
+      użytkować auto dłużej niż standardowy okres leasingu i zależy Ci na tym, żeby po
+      spłacie auto było w pełni Twoje bez dodatkowej opłaty za wykup.
+    </p>
+    <p>
+      Zastanawiasz się ogólnie, ile Ci zostaje na B2B po odliczeniu wszystkich kosztów i
+      składek? Sprawdź <a href="/b2b-czy-uop/">kalkulator B2B vs umowa o pracę</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy leasing operacyjny wymaga wkładu własnego?</p>
+    <p>
+      Nie jest to wymóg prawny, ale w praktyce leasingodawcy najczęściej oczekują
+      wkładu własnego (zwykle 0–20% wartości pojazdu) — im wyższy, tym niższa rata
+      miesięczna.
+    </p>
+
+    <p class="faq-pytanie">Co się bardziej opłaca przy aucie elektrycznym?</p>
+    <p>
+      Wyższy limit kosztów podatkowych (225 000 zł zamiast 150 000 zł) sprawia, że przy
+      droższych autach elektrycznych proporcjonalnie więcej raty/odpisu trafia w koszty
+      podatkowe w obu formach finansowania — to argument za elektrykiem niezależnie od
+      wyboru leasingu czy kredytu, nie sam w sobie argument za jedną z tych form.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i upraszcza szczegóły umów leasingowych (wartość
+      rezydualna, opłata wstępna, ubezpieczenie w racie). Stawki i limity na {ROK} r. Nie
+      stanowi porady podatkowej — skonsultuj wybór z księgowym.
+    </div>
+  </div>
+</Layout>
