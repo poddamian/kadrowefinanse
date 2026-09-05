@@ -69,6 +69,50 @@ export function uopNetto(bruttoMies: number, kupMies = UOP.kupStandard): WynikUo
   };
 }
 
+// ─── Umowa zlecenie ────────────────────────────────────────────────────
+
+export interface WynikZlecenie {
+  bruttoMies: number;
+  spoleczneMies: number;
+  zdrowotnaMies: number;
+  pitMies: number;
+  nettoMies: number;
+}
+
+export interface OpcjeZlecenie {
+  /** Zlecenie to jedyny tytuł ubezpieczenia zleceniobiorcy (brak etatu/innego zlecenia dającego pełne składki) */
+  jedynyTytul: boolean;
+  /** Zleceniobiorca opłaca dobrowolną składkę chorobową (możliwe tylko przy jedynyTytul) */
+  chorobowe: boolean;
+  /** Student/uczeń do 26. roku życia — zwolnienie ze składek ZUS i z PIT (do limitu) */
+  student: boolean;
+}
+
+/** Netto z umowy zlecenia (średnia miesięczna z rozliczenia rocznego), KUP 20%. */
+export function zlecenieNetto(bruttoMies: number, o: OpcjeZlecenie): WynikZlecenie {
+  const bruttoRok = bruttoMies * 12;
+  const zusObowiazkowy = o.jedynyTytul && !o.student;
+
+  const emerytalna = zusObowiazkowy ? bruttoRok * UOP.emerytalna : 0;
+  const rentowa = zusObowiazkowy ? bruttoRok * UOP.rentowa : 0;
+  const chorobowa = zusObowiazkowy && o.chorobowe ? bruttoRok * UOP.chorobowa : 0;
+  const spoleczne = emerytalna + rentowa + chorobowa;
+
+  const zdrowotna = o.student ? 0 : (bruttoRok - spoleczne) * UOP.zdrowotna;
+  const kup = bruttoRok * 0.2;
+  const podstawaPit = Math.max(0, Math.round(bruttoRok - spoleczne - kup));
+  const pit = o.student ? 0 : Math.round(pitSkala(podstawaPit));
+  const netto = bruttoRok - spoleczne - zdrowotna - pit;
+
+  return {
+    bruttoMies: round2(bruttoMies),
+    spoleczneMies: round2(spoleczne / 12),
+    zdrowotnaMies: round2(zdrowotna / 12),
+    pitMies: round2(pit / 12),
+    nettoMies: round2(netto / 12),
+  };
+}
+
 // ─── JDG / B2B ─────────────────────────────────────────────────────────
 
 export type FormaOpodatkowania = 'skala' | 'liniowy' | 'ryczalt';

@@ -1,0 +1,187 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ROK, UOP } from '../lib/params2026';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `Kalkulator umowy zlecenie ${ROK}`,
+  url: 'https://kadrowefinanse.pl/kalkulator-zlecenia/',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (przeglądarka internetowa)',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'PLN' },
+  description: `Ile na rękę z umowy zlecenia — składki ZUS, zdrowotna i zaliczka PIT ze stawkami ${ROK}.`,
+};
+---
+
+<Layout
+  title={`Kalkulator umowy zlecenie ${ROK} — ile na rękę`}
+  description={`Policz netto z umowy zlecenia w ${ROK} roku — składki ZUS, zdrowotna i zaliczka PIT, z uwzględnieniem zbiegu tytułów ubezpieczenia i zwolnienia dla studentów do 26. roku życia.`}
+  aktywna="/kalkulator-zlecenia/"
+  schema={schema}
+>
+  <span class="brew">stawki {ROK} · umowa zlecenie</span>
+  <h1>Kalkulator umowy zlecenie — ile na rękę?</h1>
+  <p style="max-width: 640px; color: var(--atrament-2);">
+    Wpisz kwotę brutto z umowy zlecenia. Kalkulator uwzględnia, czy to jedyny tytuł
+    ubezpieczenia, czy opłacasz dobrowolne chorobowe oraz zwolnienie dla studentów do 26.
+    roku życia.
+  </p>
+
+  <div class="kalkulator">
+    <form class="formularz" id="frm" autocomplete="off">
+      <div class="pole">
+        <label for="brutto">Brutto z umowy zlecenia (zł/mies.)</label>
+        <input type="number" id="brutto" placeholder="np. 4000" min="0" step="100" inputmode="decimal" />
+      </div>
+
+      <div class="pole">
+        <label class="przelacznik">
+          <input type="checkbox" id="student" />
+          Student/uczeń do 26. roku życia
+        </label>
+        <span class="hint">Zwolnienie ze składek ZUS i z PIT (do rocznego limitu) — nadrzędne wobec pozostałych opcji.</span>
+      </div>
+
+      <div class="pole" id="poleTytul">
+        <label class="przelacznik">
+          <input type="checkbox" id="jedynyTytul" checked />
+          To jedyny tytuł ubezpieczenia (brak etatu lub innego zlecenia z pełnymi składkami)
+        </label>
+      </div>
+
+      <div class="pole" id="poleChorobowe">
+        <label class="przelacznik">
+          <input type="checkbox" id="chorobowe" />
+          Opłacam dobrowolną składkę chorobową
+        </label>
+      </div>
+    </form>
+
+    <div class="pasek-otoczka">
+      <div class="pasek" aria-live="polite">
+        <div class="pasek-naglowek">
+          <span>Rozliczenie zlecenia</span>
+          <span>{ROK}</span>
+        </div>
+        <div class="pasek-cialo">
+          <table>
+            <tbody>
+              <tr>
+                <td>Brutto</td>
+                <td class="mono" id="wBrutto">—</td>
+              </tr>
+              <tr class="ujemna">
+                <td>Składki społeczne</td>
+                <td class="mono" id="wSpoleczne">—</td>
+              </tr>
+              <tr class="ujemna">
+                <td>Składka zdrowotna</td>
+                <td class="mono" id="wZdrowotna">—</td>
+              </tr>
+              <tr class="ujemna">
+                <td>Zaliczka PIT</td>
+                <td class="mono" id="wPit">—</td>
+              </tr>
+              <tr class="suma">
+                <td>Netto</td>
+                <td class="mono" id="wNetto">—</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="roznica" id="info">Wpisz kwotę brutto, aby zobaczyć wynik.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="tresc">
+    <h2>Jak liczymy?</h2>
+    <p>
+      Przy zleceniu jako jedynym tytule ubezpieczenia odejmujemy od brutto składkę
+      emerytalną ({(UOP.emerytalna * 100).toFixed(2)}%), rentową ({(UOP.rentowa * 100).toFixed(2)}%)
+      i — jeśli zaznaczysz tę opcję — dobrowolną chorobową ({(UOP.chorobowa * 100).toFixed(2)}%),
+      następnie składkę zdrowotną ({(UOP.zdrowotna * 100).toFixed(0)}% podstawy pomniejszonej o
+      składki społeczne) oraz zaliczkę PIT wg skali 12/32%, z kosztami uzyskania przychodu 20%
+      brutto. Jeśli zlecenie nie jest jedynym tytułem (np. masz już etat), składki społeczne z
+      niego nie są pobierane. Studenci do 26. roku życia są zwolnieni zarówno ze składek ZUS,
+      jak i z PIT (do rocznego limitu) — w tym wariancie netto jest praktycznie równe brutto.
+    </p>
+    <p>
+      Pełne wyjaśnienie zasad i przykład liczbowy dla zlecenia jako jedynego tytułu
+      ubezpieczenia znajdziesz w artykule{' '}
+      <a href="/blog/umowa-zlecenie-a-umowa-o-prace/">umowa zlecenie a umowa o pracę</a>. Jeśli
+      zastanawiasz się też nad działalnością gospodarczą, sprawdź{' '}
+      <a href="/b2b-czy-uop/">kalkulator B2B czy umowa o pracę</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy zlecenie ze studentem do 26 lat jest zwolnione ze wszystkich składek?</p>
+    <p>
+      Tak — student lub uczeń do ukończenia 26. roku życia nie podlega obowiązkowym
+      ubezpieczeniom społecznym ani zdrowotnym z tytułu umowy zlecenia, a wynagrodzenie jest
+      też zwolnione z PIT do rocznego limitu (wspólnego z innymi dochodami objętymi tą ulgą).
+    </p>
+
+    <p class="faq-pytanie">Co się zmienia, jeśli mam już etat u innego pracodawcy?</p>
+    <p>
+      Jeśli Twój etat daje podstawę składek co najmniej na poziomie płacy minimalnej, składki
+      społeczne od zlecenia stają się dobrowolne (zwykle nieopłacane) — obowiązkowa zostaje
+      tylko składka zdrowotna. Zaznacz "to nie jest jedyny tytuł" w kalkulatorze, żeby to
+      zobaczyć.
+    </p>
+
+    <p class="faq-pytanie">Czy warto opłacać dobrowolne chorobowe na zleceniu?</p>
+    <p>
+      To zależy od tego, jak bardzo zależy Ci na płatnym L4 — bez tej składki nie przysługuje
+      żaden zasiłek chorobowy z tego tytułu. Włącz i wyłącz tę opcję w kalkulatorze, żeby
+      zobaczyć różnicę w kwocie netto.
+    </p>
+
+    <div class="zastrzezenie">
+      Kalkulator ma charakter poglądowy i przyjmuje uproszczenia (m.in. standardowe 20% kosztów
+      uzyskania, brak PIT-2 od innego płatnika, pominięcie limitu 30-krotności przy bardzo
+      wysokich zarobkach). Stawki na {ROK} r. Nie stanowi porady podatkowej — w razie
+      wątpliwości skonsultuj się z księgowym.
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { zlecenieNetto, zlGr } from '../lib/podatki';
+
+  const $ = (id: string) => document.getElementById(id) as HTMLInputElement;
+
+  function przelicz() {
+    const brutto = Math.max(0, Number($('brutto').value) || 0);
+    const student = $('student').checked;
+    const jedynyTytul = $('jedynyTytul').checked;
+    const chorobowe = $('chorobowe').checked;
+
+    ($('poleTytul') as HTMLElement).style.opacity = student ? '0.5' : '1';
+    ($('poleChorobowe') as HTMLElement).style.opacity = student || !jedynyTytul ? '0.5' : '1';
+    $('jedynyTytul').disabled = student;
+    $('chorobowe').disabled = student || !jedynyTytul;
+
+    if (brutto <= 0) {
+      ['wBrutto', 'wSpoleczne', 'wZdrowotna', 'wPit', 'wNetto'].forEach((id) => ($(id).textContent = '—'));
+      $('info').textContent = 'Wpisz kwotę brutto, aby zobaczyć wynik.';
+      return;
+    }
+
+    const w = zlecenieNetto(brutto, { jedynyTytul, chorobowe, student });
+
+    $('wBrutto').textContent = zlGr(w.bruttoMies);
+    $('wSpoleczne').textContent = w.spoleczneMies > 0 ? '−' + zlGr(w.spoleczneMies) : zlGr(0);
+    $('wZdrowotna').textContent = w.zdrowotnaMies > 0 ? '−' + zlGr(w.zdrowotnaMies) : zlGr(0);
+    $('wPit').textContent = w.pitMies > 0 ? '−' + zlGr(w.pitMies) : zlGr(0);
+    $('wNetto').textContent = zlGr(w.nettoMies);
+
+    const procent = ((w.nettoMies / w.bruttoMies) * 100).toFixed(1);
+    $('info').innerHTML = `Na rękę zostaje <b>${procent}%</b> kwoty brutto.`;
+  }
+
+  document.getElementById('frm')!.addEventListener('input', przelicz);
+  przelicz();
+</script>
