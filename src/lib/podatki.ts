@@ -113,6 +113,43 @@ export function zlecenieNetto(bruttoMies: number, o: OpcjeZlecenie): WynikZlecen
   };
 }
 
+// ─── Nadgodziny ────────────────────────────────────────────────────────
+
+export interface WynikNadgodziny {
+  stawkaGodzinowa: number;
+  doplataZaGodzine50: number;
+  doplataZaGodzine100: number;
+  kwota50: number;
+  kwota100: number;
+  razemDoplata: number;
+  wynagrodzenieCalkowite: number;
+}
+
+/**
+ * Dopłata za nadgodziny — pełna stawka godzinowa + dodatek 50% lub 100%,
+ * płatna oprócz stałego wynagrodzenia miesięcznego za nominalny czas pracy.
+ */
+export function nadgodziny(
+  wynagrodzenieBrutto: number,
+  nominalnyWymiarGodzin: number,
+  godzin50: number,
+  godzin100: number,
+): WynikNadgodziny {
+  const stawkaGodzinowa = nominalnyWymiarGodzin > 0 ? wynagrodzenieBrutto / nominalnyWymiarGodzin : 0;
+  const kwota50 = stawkaGodzinowa * 1.5 * godzin50;
+  const kwota100 = stawkaGodzinowa * 2 * godzin100;
+  const razemDoplata = kwota50 + kwota100;
+  return {
+    stawkaGodzinowa: round2(stawkaGodzinowa),
+    doplataZaGodzine50: round2(stawkaGodzinowa * 1.5),
+    doplataZaGodzine100: round2(stawkaGodzinowa * 2),
+    kwota50: round2(kwota50),
+    kwota100: round2(kwota100),
+    razemDoplata: round2(razemDoplata),
+    wynagrodzenieCalkowite: round2(wynagrodzenieBrutto + razemDoplata),
+  };
+}
+
 // ─── JDG / B2B ─────────────────────────────────────────────────────────
 
 export type FormaOpodatkowania = 'skala' | 'liniowy' | 'ryczalt';

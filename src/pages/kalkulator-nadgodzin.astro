@@ -1,0 +1,178 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ROK } from '../lib/params2026';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `Kalkulator nadgodzin ${ROK}`,
+  url: 'https://kadrowefinanse.pl/kalkulator-nadgodzin/',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (przeglądarka internetowa)',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'PLN' },
+  description: `Policz dopłatę za nadgodziny 50% i 100% na podstawie wynagrodzenia i nominalnego wymiaru czasu pracy w ${ROK} r.`,
+};
+---
+
+<Layout
+  title={`Kalkulator nadgodzin ${ROK} — dopłata 50% i 100%`}
+  description={`Policz stawkę godzinową i dopłatę za nadgodziny 50% oraz 100% na podstawie wynagrodzenia brutto i nominalnego wymiaru czasu pracy w danym miesiącu ${ROK} r.`}
+  aktywna="/kalkulator-nadgodzin/"
+  schema={schema}
+>
+  <span class="brew">stawki {ROK} · dopłata 50% i 100%</span>
+  <h1>Kalkulator nadgodzin — ile dopłaty za godziny nadliczbowe?</h1>
+  <p style="max-width: 640px; color: var(--atrament-2);">
+    Wpisz wynagrodzenie brutto, nominalny wymiar godzin w danym miesiącu oraz liczbę
+    przepracowanych nadgodzin. Kalkulator policzy stawkę godzinową i należną dopłatę — osobno
+    dla nadgodzin płatnych 50% i 100%.
+  </p>
+
+  <div class="kalkulator">
+    <form class="formularz" id="frm" autocomplete="off">
+      <div class="pole-wiersz">
+        <div class="pole">
+          <label for="brutto">Wynagrodzenie brutto (zł/mies.)</label>
+          <input type="number" id="brutto" placeholder="np. 6000" min="0" step="100" inputmode="decimal" />
+        </div>
+        <div class="pole">
+          <label for="norma">Nominalny wymiar czasu pracy w tym miesiącu (godz.)</label>
+          <input type="number" id="norma" placeholder="np. 168" min="1" step="1" inputmode="decimal" />
+          <span class="hint">Zależy od miesiąca i liczby dni roboczych — sprawdź na pasku wynagrodzeń lub w kalendarzu firmowym (zwykle 152–184 godz.).</span>
+        </div>
+      </div>
+
+      <div class="pole-wiersz">
+        <div class="pole">
+          <label for="godz50">Nadgodziny płatne 50% (godz.)</label>
+          <input type="number" id="godz50" placeholder="np. 10" min="0" step="1" inputmode="decimal" />
+          <span class="hint">Zwykłe dni robocze</span>
+        </div>
+        <div class="pole">
+          <label for="godz100">Nadgodziny płatne 100% (godz.)</label>
+          <input type="number" id="godz100" placeholder="np. 4" min="0" step="1" inputmode="decimal" />
+          <span class="hint">Noc, niedziele i święta niebędące dniami pracy, dzień wolny w zamian za pracę w niedzielę/święto</span>
+        </div>
+      </div>
+    </form>
+
+    <div class="pasek-otoczka">
+      <div class="pasek" aria-live="polite">
+        <div class="pasek-naglowek">
+          <span>Rozliczenie nadgodzin</span>
+          <span>{ROK}</span>
+        </div>
+        <div class="pasek-cialo">
+          <table>
+            <tbody>
+              <tr>
+                <td>Stawka godzinowa</td>
+                <td class="mono" id="wStawka">—</td>
+              </tr>
+              <tr>
+                <td>Dopłata za godz. 50%</td>
+                <td class="mono" id="wKwota50">—</td>
+              </tr>
+              <tr>
+                <td>Dopłata za godz. 100%</td>
+                <td class="mono" id="wKwota100">—</td>
+              </tr>
+              <tr class="suma">
+                <td>Razem dopłata</td>
+                <td class="mono" id="wRazem">—</td>
+              </tr>
+              <tr class="suma">
+                <td>Wynagrodzenie razem z nadgodzinami</td>
+                <td class="mono" id="wCalkowite">—</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="roznica" id="info">Wpisz dane, aby zobaczyć wynik.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="tresc">
+    <h2>Jak liczymy?</h2>
+    <p>
+      Stawkę godzinową liczymy jako wynagrodzenie brutto podzielone przez nominalny wymiar
+      czasu pracy w danym miesiącu (liczbę godzin, które pracownik powinien przepracować zgodnie
+      z obowiązującym go rozkładem czasu pracy). Za każdą nadgodzinę pracownikowi przysługuje{' '}
+      <strong>pełna stawka godzinowa plus dodatek</strong> — 50% stawki za nadgodziny w zwykłe
+      dni robocze, 100% za nadgodziny w nocy, w niedziele i święta niebędące dla pracownika
+      dniami pracy oraz w dniu wolnym udzielonym w zamian za pracę w niedzielę lub święto.
+    </p>
+    <p>
+      Więcej o tym, kiedy w ogóle powstają nadgodziny (szczególnie w systemie równoważnym) i
+      jak wygląda alternatywa w postaci czasu wolnego zamiast dopłaty, przeczytasz w artykule{' '}
+      <a href="/blog/nadgodziny-system-rownowazny/">jak rozliczyć nadgodziny w systemie równoważnym</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Skąd wziąć nominalny wymiar godzin w danym miesiącu?</p>
+    <p>
+      Znajdziesz go na pasku wynagrodzeń (jako podstawę do wyliczenia stawki godzinowej) albo w
+      kalendarzu czasu pracy publikowanym co roku przez Główny Inspektorat Pracy — zależy od
+      liczby dni roboczych w danym miesiącu i liczby świąt przypadających w dni powszednie.
+    </p>
+
+    <p class="faq-pytanie">Czy zamiast dopłaty można dostać czas wolny za nadgodziny?</p>
+    <p>
+      Tak — pracodawca może, na wniosek pracownika lub z własnej inicjatywy, udzielić czasu
+      wolnego zamiast dopłaty: 1 godzinę wolnego za każdą nadgodzinę na wniosek pracownika, albo
+      1,5 godziny wolnego za każdą nadgodzinę z inicjatywy pracodawcy.
+    </p>
+
+    <p class="faq-pytanie">Czy limit 150 godzin nadgodzin rocznie dotyczy też tego kalkulatora?</p>
+    <p>
+      Kalkulator liczy tylko wysokość należnej dopłaty za wpisaną liczbę godzin — nie pilnuje
+      rocznego limitu. Warto samodzielnie sumować nadgodziny w ciągu roku, żeby nie przekroczyć
+      ustawowego limitu 150 godzin (chyba że układ zbiorowy, regulamin pracy lub umowa
+      przewiduje wyższy limit).
+    </p>
+
+    <div class="zastrzezenie">
+      Kalkulator ma charakter poglądowy. Nie uwzględnia składek ZUS ani podatku od dopłaty za
+      nadgodziny (są one opodatkowane i oskładkowane tak samo jak zwykłe wynagrodzenie) ani
+      szczególnych zasad dla pracowników zarządzających w imieniu pracodawcy. Nie stanowi porady
+      prawnej — w razie wątpliwości skonsultuj się z działem kadr.
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { nadgodziny, zlGr } from '../lib/podatki';
+
+  const $ = (id: string) => document.getElementById(id) as HTMLInputElement;
+
+  function przelicz() {
+    const brutto = Math.max(0, Number($('brutto').value) || 0);
+    const norma = Math.max(0, Number($('norma').value) || 0);
+    const godz50 = Math.max(0, Number($('godz50').value) || 0);
+    const godz100 = Math.max(0, Number($('godz100').value) || 0);
+
+    if (brutto <= 0 || norma <= 0) {
+      ['wStawka', 'wKwota50', 'wKwota100', 'wRazem', 'wCalkowite'].forEach((id) => ($(id).textContent = '—'));
+      $('info').textContent = 'Wpisz wynagrodzenie i nominalny wymiar godzin, aby zobaczyć wynik.';
+      return;
+    }
+
+    const w = nadgodziny(brutto, norma, godz50, godz100);
+
+    $('wStawka').textContent = zlGr(w.stawkaGodzinowa);
+    $('wKwota50').textContent = zlGr(w.kwota50);
+    $('wKwota100').textContent = zlGr(w.kwota100);
+    $('wRazem').textContent = zlGr(w.razemDoplata);
+    $('wCalkowite').textContent = zlGr(w.wynagrodzenieCalkowite);
+
+    $('info').innerHTML =
+      godz50 + godz100 > 0
+        ? `Za ${godz50 + godz100} nadgodzin przysługuje dodatkowo <b>${zlGr(w.razemDoplata)}</b>.`
+        : 'Wpisz liczbę nadgodzin, aby zobaczyć dopłatę.';
+  }
+
+  document.getElementById('frm')!.addEventListener('input', przelicz);
+  przelicz();
+</script>
