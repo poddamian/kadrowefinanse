@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Przechowywanie dokumentacji płacowej po ustaniu zatrudnienia — zasady ${ROK}`;
+const opis = `Ile lat trzeba przechowywać listy płac i kartoteki wynagrodzeń po zwolnieniu pracownika, czym różni się to od okresu przechowywania akt osobowych i czym są e-teczki.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/przechowywanie-dokumentacji-placowej-po-zatrudnieniu/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · dokumentacja płacowa</span>
+  <h1>Przechowywanie dokumentacji płacowej po ustaniu zatrudnienia</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Dokumentacja płacowa — listy płac, karty wynagrodzeń, kartoteki podatkowe — podlega tym samym
+      okresom przechowywania co{' '}
+      <a href="/blog/akta-osobowe-2026/">akta osobowe</a>, ale bywa z nimi mylona jako osobny
+      zbiór o innych terminach. To nieprawda: od reformy z 2019 roku oba rodzaje dokumentacji
+      pracowniczej łączy jeden, wspólny okres przechowywania.
+    </p>
+
+    <h2>Ten sam okres co akta osobowe</h2>
+    <table>
+      <caption>Okres przechowywania dokumentacji płacowej po ustaniu zatrudnienia</caption>
+      <thead>
+        <tr>
+          <th>Data nawiązania stosunku pracy</th>
+          <th>Okres przechowywania</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Po 31 grudnia 2018 r.</td>
+          <td class="mono">10 lat od końca roku, w którym ustał stosunek pracy</td>
+        </tr>
+        <tr>
+          <td>1 stycznia 1999 r. – 31 grudnia 2018 r.</td>
+          <td class="mono">10 lat — jeśli złożono raport ZUS OSW/ZUS RIA; w innym wypadku 50 lat</td>
+        </tr>
+        <tr>
+          <td>Przed 1 stycznia 1999 r.</td>
+          <td class="mono">50 lat od zakończenia zatrudnienia</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      To skrócenie z 50 do 10 lat dotyczy jednak wyłącznie dokumentacji związanej ze stosunkiem
+      pracy. Dokumentacja podatkowa i księgowa (np. dowody księgowe dotyczące rozliczeń z ZUS i
+      urzędem skarbowym) podlega odrębnym przepisom podatkowym i rachunkowym — zwykle 5 lat licząc
+      od końca roku, w którym upłynął termin płatności podatku, co bywa krótsze niż 10-letni okres
+      z prawa pracy. W praktyce dla dokumentów, które są jednocześnie dowodem księgowym i częścią
+      dokumentacji pracowniczej, obowiązuje dłuższy z terminów.
+    </p>
+
+    <h2>Forma przechowywania — papier czy e-teczki</h2>
+    <p>
+      Podobnie jak akta osobowe, dokumentację płacową można prowadzić i przechowywać elektronicznie
+      (tzw. e-teczki) zamiast w formie papierowej — decyzję podejmuje pracodawca. Warunkiem jest
+      sporządzenie odwzorowania cyfrowego każdego dokumentu opatrzonego kwalifikowanym podpisem lub
+      pieczęcią elektroniczną, potwierdzającymi zgodność z oryginałem. Elektroniczna forma ułatwia
+      spełnienie obowiązku wydania kopii dokumentacji byłemu pracownikowi — może się to odbyć np.
+      w postaci pliku PDF zamiast fizycznych kserokopii.
+    </p>
+
+    <h2>Co dzieje się z dokumentacją po upływie okresu przechowywania</h2>
+    <p>
+      Po upływie okresu przechowywania pracodawca ma obowiązek zniszczyć dokumentację w sposób
+      uniemożliwiający odtworzenie jej treści — chyba że wcześniej (w ciągu ostatnich 12 miesięcy
+      przed planowanym zniszczeniem) poinformuje byłego pracownika o możliwości jej odbioru. Jeśli
+      pracownik nie odbierze dokumentacji w wyznaczonym terminie (nie krótszym niż 30 dni od
+      otrzymania informacji), pracodawca może ją zniszczyć.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy dokumentację płacową trzeba przechowywać dłużej niż akta osobowe?</p>
+    <p>
+      Co do zasady nie — obowiązuje ten sam, wspólny okres (10 lub 50 lat w zależności od daty
+      zatrudnienia). Wyjątkiem są dokumenty mające jednocześnie charakter dowodu księgowego lub
+      podatkowego, dla których stosuje się dłuższy z obowiązujących terminów.
+    </p>
+
+    <p class="faq-pytanie">Czy zwolniony pracownik może zażądać kopii listy płac?</p>
+    <p>
+      Tak — w okresie przechowywania dokumentacji pracownik (także były) ma prawo wystąpić o
+      wydanie kopii całości lub części dokumentacji pracowniczej, w tym płacowej, jego dotyczącej.
+    </p>
+
+    <p class="faq-pytanie">Co grozi za przedwczesne zniszczenie dokumentacji płacowej?</p>
+    <p>
+      Zniszczenie dokumentacji przed upływem obowiązkowego okresu przechowywania to naruszenie
+      przepisów o dokumentacji pracowniczej — może skutkować odpowiedzialnością wykroczeniową
+      (grzywna) oraz utrudnić pracownikowi udowodnienie stażu pracy lub wysokości zarobków np. przy
+      ustalaniu kapitału początkowego do emerytury.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej ani podatkowej. Stan prawny na
+      {ROK} r. — w razie wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr,
+      księgowym lub prawnikiem.
+    </div>
+  </div>
+</Layout>
