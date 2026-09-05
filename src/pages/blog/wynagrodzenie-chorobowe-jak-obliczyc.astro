@@ -1,0 +1,152 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, UOP } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+const round2 = (x: number) => Math.round(x * 100) / 100;
+
+const podstawa = 6000;
+const podstawaZasilku = round2(podstawa - podstawa * UOP.spoleczneRazem);
+const dziennaStawka80 = round2((podstawaZasilku / 30) * 0.8);
+const dziennaStawka100 = round2(podstawaZasilku / 30);
+
+const tytul = `Jak obliczyć wynagrodzenie chorobowe — krok po kroku`;
+const opis = `Skąd bierze się podstawa wymiaru wynagrodzenia chorobowego, kiedy przysługuje 80% a kiedy 100% wynagrodzenia i kto płaci za pierwsze dni choroby — pracodawca czy ZUS.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/wynagrodzenie-chorobowe-jak-obliczyc/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · mechanizm wyliczenia</span>
+  <h1>Jak obliczyć wynagrodzenie chorobowe — krok po kroku</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Ten artykuł tłumaczy sam mechanizm wyliczenia — dla porównania wynagrodzenia chorobowego na
+      etacie z analogicznym świadczeniem na działalności gospodarczej zobacz{' '}
+      <a href="/blog/zasilek-chorobowy-etat-b2b/">zasiłek chorobowy — etat vs B2B</a>.
+    </p>
+
+    <h2>Kto płaci za pierwsze dni choroby — pracodawca czy ZUS</h2>
+    <p>
+      Za pierwsze <strong>33 dni</strong> niezdolności do pracy w roku kalendarzowym (14 dni dla
+      pracownika, który ukończył 50 lat) wynagrodzenie chorobowe wypłaca{' '}
+      <strong>pracodawca</strong> z własnych środków. Dopiero po przekroczeniu tego limitu, za
+      kolejne dni tej samej lub kolejnej niezdolności do pracy w danym roku, świadczenie —
+      nazywane już zasiłkiem chorobowym, nie wynagrodzeniem chorobowym — wypłaca{' '}
+      <strong>ZUS</strong> (choć technicznie może to nadal robić pracodawca w imieniu ZUS, jeśli
+      jest uprawniony do wypłaty świadczeń).
+    </p>
+
+    <h2>Krok 1: podstawa wymiaru</h2>
+    <p>
+      Podstawę wymiaru stanowi przeciętne miesięczne wynagrodzenie wypłacone za okres{' '}
+      <strong>12 miesięcy kalendarzowych</strong> poprzedzających miesiąc, w którym powstała
+      niezdolność do pracy (przy krótszym stażu — z faktycznie przepracowanych miesięcy). Do
+      podstawy wlicza się wynagrodzenie pomniejszone o składki na ubezpieczenia społeczne
+      finansowane przez pracownika ({(UOP.spoleczneRazem * 100).toFixed(2)}% brutto).
+    </p>
+
+    <h2>Krok 2: stawka dzienna</h2>
+    <p>
+      Ustaloną podstawę miesięczną dzieli się przez 30 (niezależnie od faktycznej liczby dni w
+      danym miesiącu kalendarzowym) — otrzymując stawkę dzienną, którą następnie mnoży się przez
+      liczbę dni niezdolności do pracy.
+    </p>
+
+    <h2>Krok 3: właściwy procent — 80% czy 100%</h2>
+    <table>
+      <caption>Wysokość wynagrodzenia/zasiłku chorobowego</caption>
+      <thead>
+        <tr>
+          <th>Sytuacja</th>
+          <th class="liczba">Procent podstawy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Zwykła choroba</td>
+          <td class="mono">80%</td>
+        </tr>
+        <tr>
+          <td>Wypadek w drodze do/z pracy, choroba w ciąży, badania dawcy komórek/szpiku</td>
+          <td class="mono">100%</td>
+        </tr>
+        <tr>
+          <td>Pobyt w szpitalu (od 2022 r. brak odrębnej, niższej stawki — obowiązuje ta sama zasada co poza szpitalem)</td>
+          <td class="mono">80% / 100% jak wyżej</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Przykład liczbowy</h2>
+    <p>
+      Przy podstawie miesięcznej {podstawa.toLocaleString('pl-PL')} zł brutto (po odjęciu{' '}
+      {(UOP.spoleczneRazem * 100).toFixed(2)}% składek społecznych podstawa wymiaru zasiłku
+      wynosi {podstawaZasilku.toLocaleString('pl-PL')} zł):
+    </p>
+    <table>
+      <caption>Stawka dzienna przy podstawie {podstawaZasilku.toLocaleString('pl-PL')} zł/mies.</caption>
+      <thead>
+        <tr>
+          <th>Wariant</th>
+          <th class="liczba">Stawka dzienna</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>80% (zwykła choroba)</td>
+          <td class="mono">{dziennaStawka80.toLocaleString('pl-PL')} zł</td>
+        </tr>
+        <tr>
+          <td>100% (ciąża, wypadek w drodze do pracy)</td>
+          <td class="mono">{dziennaStawka100.toLocaleString('pl-PL')} zł</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Maksymalny okres pobierania świadczenia</h2>
+    <p>
+      Łącznie wynagrodzenie chorobowe i zasiłek chorobowy przysługują za nieprzerwaną lub przerywaną
+      krótkimi odstępami niezdolność do pracy maksymalnie przez <strong>182 dni</strong> (270 dni
+      przy chorobie przypadającej na okres ciąży lub przy gruźlicy). Po wyczerpaniu tego okresu, o
+      ile niezdolność do pracy się utrzymuje, w grę wchodzi świadczenie rehabilitacyjne.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy wynagrodzenie chorobowe wlicza się do podstawy przyszłego wynagrodzenia chorobowego?</p>
+    <p>
+      Nie — do podstawy wymiaru wlicza się wynagrodzenie faktycznie wypłacone za pracę, a nie same
+      świadczenia chorobowe z poprzednich okresów niezdolności do pracy.
+    </p>
+
+    <p class="faq-pytanie">Czy pracodawca może obniżyć wynagrodzenie chorobowe poniżej 80%?</p>
+    <p>
+      Nie — te wartości procentowe wynikają wprost z ustawy o świadczeniach pieniężnych z
+      ubezpieczenia społecznego w razie choroby i macierzyństwa i nie podlegają swobodnemu ustaleniu
+      przez pracodawcę.
+    </p>
+
+    <p class="faq-pytanie">Czy pierwszy dzień zwolnienia lekarskiego jest płatny?</p>
+    <p>
+      Tak — świadczenie przysługuje od pierwszego dnia niezdolności do pracy potwierdzonej
+      zwolnieniem lekarskim, bez tzw. dni karencyjnych.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub ZUS.
+    </div>
+  </div>
+</Layout>
