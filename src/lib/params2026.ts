@@ -103,6 +103,22 @@ export const WSPOLCZYNNIK_URLOPOWY = 20.92;
 /** Dobowa norma czasu pracy (godz.) */
 export const NORMA_DOBOWA = 8;
 
+// ─── PPK (Pracownicze Plany Kapitałowe) ────────────────────────────────
+export const PPK = {
+  wplataPodstawowaPracownika: 0.02,
+  /** Obniżona wpłata podstawowa — jeśli łączne wynagrodzenie z wszystkich źródeł w danym miesiącu nie przekracza limitu poniżej */
+  wplataPodstawowaPracownikaObnizona: 0.005,
+  /** Limit obniżonej wpłaty podstawowej: wielokrotność płacy minimalnej */
+  limitObnizonejWplaty: 1.2,
+  wplataDodatkowaPracownikaMax: 0.02,
+  wplataPodstawowaPracodawcy: 0.015,
+  wplataDodatkowaPracodawcyMax: 0.025,
+  /** Jednorazowa wpłata powitalna od państwa */
+  wplataPowitalna: 250,
+  /** Roczna dopłata od państwa (po spełnieniu warunku minimalnych wpłat w roku) */
+  doplataRoczna: 240,
+} as const;
+
 /** Popularne stawki ryczałtu (do wyboru w kalkulatorze) */
 export const STAWKI_RYCZALTU = [
   { stawka: 0.085, opis: '8,5% — większość usług' },

@@ -1,0 +1,222 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ROK, PPK, PLACA_MINIMALNA } from '../lib/params2026';
+
+const limitObnizonej = Math.round(PLACA_MINIMALNA * PPK.limitObnizonejWplaty * 100) / 100;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `Kalkulator PPK ${ROK}`,
+  url: 'https://kadrowefinanse.pl/kalkulator-ppk/',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Any (przeglądarka internetowa)',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'PLN' },
+  description: `Ile kosztuje PPK pracownika i pracodawcę — wpłaty podstawowe i dodatkowe, dopłata roczna i wpłata powitalna od państwa, stawki ${ROK}.`,
+};
+---
+
+<Layout
+  title={`Kalkulator PPK ${ROK} — ile kosztuje pracownika i pracodawcę`}
+  description={`Policz miesięczne i roczne wpłaty do Pracowniczych Planów Kapitałowych — wpłata podstawowa i dodatkowa pracownika oraz pracodawcy, dopłata roczna i wpłata powitalna od państwa. Stawki ${ROK}.`}
+  aktywna="/kalkulator-ppk/"
+  schema={schema}
+>
+  <span class="brew">stawki {ROK} · PPK</span>
+  <h1>Kalkulator PPK — ile kosztuje pracownika i pracodawcę?</h1>
+  <p style="max-width: 640px; color: var(--atrament-2);">
+    Wpisz wynagrodzenie brutto. Kalkulator pokaże, ile miesięcznie trafia na Twoje konto PPK —
+    osobno wpłata pracownika i pracodawcy — oraz ile zbierzesz w skali roku z uwzględnieniem
+    dopłat od państwa.
+  </p>
+
+  <div class="kalkulator">
+    <form class="formularz" id="frm" autocomplete="off">
+      <div class="pole">
+        <label for="brutto">Wynagrodzenie brutto (zł/mies.)</label>
+        <input type="number" id="brutto" placeholder="np. 6000" min="0" step="100" inputmode="decimal" />
+      </div>
+
+      <div class="pole">
+        <label class="przelacznik">
+          <input type="checkbox" id="obnizona" />
+          Zarabiam do {limitObnizonej.toLocaleString('pl-PL')} zł łącznie (1,2× płacy minimalnej)
+        </label>
+        <span class="hint">Uprawnia do obniżenia wpłaty podstawowej pracownika z 2% do 0,5% wynagrodzenia.</span>
+      </div>
+
+      <div class="pole-wiersz">
+        <div class="pole">
+          <label for="dodatkowaPracownik">Wpłata dodatkowa pracownika (0–2%)</label>
+          <select id="dodatkowaPracownik">
+            <option value="0" selected>0% (brak)</option>
+            <option value="0.005">0,5%</option>
+            <option value="0.01">1%</option>
+            <option value="0.015">1,5%</option>
+            <option value="0.02">2% (max.)</option>
+          </select>
+        </div>
+        <div class="pole">
+          <label for="dodatkowaPracodawca">Wpłata dodatkowa pracodawcy (0–2,5%)</label>
+          <select id="dodatkowaPracodawca">
+            <option value="0" selected>0% (brak)</option>
+            <option value="0.005">0,5%</option>
+            <option value="0.01">1%</option>
+            <option value="0.015">1,5%</option>
+            <option value="0.02">2%</option>
+            <option value="0.025">2,5% (max.)</option>
+          </select>
+        </div>
+      </div>
+    </form>
+
+    <div class="pasek-otoczka">
+      <div class="pasek" aria-live="polite">
+        <div class="pasek-naglowek">
+          <span>Wpłaty do PPK</span>
+          <span>{ROK}</span>
+        </div>
+        <div class="pasek-cialo">
+          <table>
+            <thead>
+              <tr>
+                <td></td>
+                <td style="font-weight:700; font-family: var(--font-ui);">Pracownik</td>
+                <td style="font-weight:700; font-family: var(--font-ui);">Pracodawca</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Wpłata podstawowa</td>
+                <td class="mono" id="wPodstawowaPracownik">—</td>
+                <td class="mono" id="wPodstawowaPracodawca">—</td>
+              </tr>
+              <tr>
+                <td>Wpłata dodatkowa</td>
+                <td class="mono" id="wDodatkowaPracownik">—</td>
+                <td class="mono" id="wDodatkowaPracodawca">—</td>
+              </tr>
+              <tr class="suma">
+                <td>Razem miesięcznie</td>
+                <td class="mono" id="wRazemPracownik">—</td>
+                <td class="mono" id="wRazemPracodawca">—</td>
+              </tr>
+            </tbody>
+          </table>
+          <table style="margin-top: 0.75rem;">
+            <tbody>
+              <tr class="suma">
+                <td>Łącznie na konto PPK / miesiąc</td>
+                <td class="mono" id="wRazemMies">—</td>
+              </tr>
+              <tr>
+                <td>+ dopłata roczna od państwa</td>
+                <td class="mono" id="wDoplataRoczna">—</td>
+              </tr>
+              <tr class="suma">
+                <td>Razem na koncie po roku</td>
+                <td class="mono" id="wRazemRok">—</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="roznica" id="info">Wpisz wynagrodzenie, aby zobaczyć wpłaty.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="tresc">
+    <h2>Jak liczymy?</h2>
+    <p>
+      Wpłata podstawowa pracownika wynosi standardowo {(PPK.wplataPodstawowaPracownika * 100).toFixed(1)}%
+      wynagrodzenia brutto — może zostać obniżona do {(PPK.wplataPodstawowaPracownikaObnizona * 100).toFixed(1)}%,
+      jeśli łączne wynagrodzenie ze wszystkich źródeł w danym miesiącu nie przekracza{' '}
+      {limitObnizonej.toLocaleString('pl-PL')} zł ({PPK.limitObnizonejWplaty}× płacy minimalnej{' '}
+      {ROK} r.). Pracodawca wpłaca obowiązkowo {(PPK.wplataPodstawowaPracodawcy * 100).toFixed(1)}%.
+      Obie strony mogą zadeklarować wpłatę dodatkową — pracownik do{' '}
+      {(PPK.wplataDodatkowaPracownikaMax * 100).toFixed(0)}%, pracodawca do{' '}
+      {(PPK.wplataDodatkowaPracodawcyMax * 100).toFixed(1)}%.
+    </p>
+    <p>
+      Do kwot z kalkulatora dochodzi jednorazowa <strong>wpłata powitalna</strong>{' '}
+      {PPK.wplataPowitalna} zł (po pierwszych 3 miesiącach uczestnictwa) oraz coroczna{' '}
+      <strong>dopłata roczna</strong> {PPK.doplataRoczna} zł od państwa — pod warunkiem, że
+      roczne wpłaty własne uczestnika (podstawowa i ewentualnie dodatkowa) osiągną ustawowy
+      próg minimalny.
+    </p>
+    <p>
+      Wpłata pracownika jest potrącana z wynagrodzenia <strong>po opodatkowaniu</strong> (obniża
+      kwotę netto), natomiast wpłata pracodawcy stanowi dla pracownika dodatkowy przychód
+      podlegający PIT (choć nie nalicza się od niej składek ZUS) — to koszt dodatkowy po stronie
+      pracodawcy, wykraczający poza samo wynagrodzenie brutto.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy uczestnictwo w PPK jest obowiązkowe?</p>
+    <p>
+      Nie — pracodawca ma obowiązek utworzyć PPK i zapisać do niego uprawnionych pracowników z
+      automatu, ale pracownik może w każdej chwili złożyć deklarację rezygnacji z dokonywania
+      wpłat.
+    </p>
+
+    <p class="faq-pytanie">Co się dzieje z pieniędzmi w PPK po zmianie pracy?</p>
+    <p>
+      Środki pozostają na Twoim rachunku PPK — możesz je przenieść do PPK u nowego pracodawcy
+      albo zostawić w dotychczasowej instytucji finansowej.
+    </p>
+
+    <p class="faq-pytanie">Czy warto zadeklarować wpłatę dodatkową?</p>
+    <p>
+      To zależy od Twojej sytuacji finansowej — wpłata dodatkowa zwiększa oszczędności
+      długoterminowe, ale obniża bieżące wynagrodzenie netto. Zmień wartości w kalkulatorze,
+      żeby zobaczyć, jak to wygląda przy Twoich zarobkach.
+    </p>
+
+    <div class="zastrzezenie">
+      Kalkulator ma charakter poglądowy i pokazuje same wpłaty do PPK — nie przelicza pełnego
+      wynagrodzenia netto pracownika (wpływ na PIT i podstawę składek pominięto dla
+      przejrzystości). Stawki na {ROK} r. Nie stanowi porady finansowej ani podatkowej.
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { ppkWplaty, zlGr } from '../lib/podatki';
+
+  const $ = (id: string) => document.getElementById(id) as HTMLInputElement;
+
+  function przelicz() {
+    const brutto = Math.max(0, Number($('brutto').value) || 0);
+    const obnizona = $('obnizona').checked;
+    const dodatkowaPracownik = Number(($('dodatkowaPracownik') as unknown as HTMLSelectElement).value);
+    const dodatkowaPracodawca = Number(($('dodatkowaPracodawca') as unknown as HTMLSelectElement).value);
+
+    if (brutto <= 0) {
+      [
+        'wPodstawowaPracownik', 'wDodatkowaPracownik', 'wRazemPracownik',
+        'wPodstawowaPracodawca', 'wDodatkowaPracodawca', 'wRazemPracodawca',
+        'wRazemMies', 'wDoplataRoczna', 'wRazemRok',
+      ].forEach((id) => ($(id).textContent = '—'));
+      $('info').textContent = 'Wpisz wynagrodzenie, aby zobaczyć wpłaty.';
+      return;
+    }
+
+    const w = ppkWplaty(brutto, obnizona, dodatkowaPracownik, dodatkowaPracodawca);
+
+    $('wPodstawowaPracownik').textContent = zlGr(w.wplataPodstawowaPracownikaMies);
+    $('wDodatkowaPracownik').textContent = zlGr(w.wplataDodatkowaPracownikaMies);
+    $('wRazemPracownik').textContent = zlGr(w.razemPracownikMies);
+    $('wPodstawowaPracodawca').textContent = zlGr(w.wplataPodstawowaPracodawcyMies);
+    $('wDodatkowaPracodawca').textContent = zlGr(w.wplataDodatkowaPracodawcyMies);
+    $('wRazemPracodawca').textContent = zlGr(w.razemPracodawcaMies);
+    $('wRazemMies').textContent = zlGr(w.razemNaKontoMies);
+    $('wDoplataRoczna').textContent = zlGr(w.doplataRoczna);
+    $('wRazemRok').textContent = zlGr(w.razemNaKontoRok);
+
+    $('info').innerHTML = `Miesięcznie na konto PPK trafia <b>${zlGr(w.razemNaKontoMies)}</b> (Ty + pracodawca razem).`;
+  }
+
+  document.getElementById('frm')!.addEventListener('input', przelicz);
+  przelicz();
+</script>

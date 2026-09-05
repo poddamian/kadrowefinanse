@@ -13,6 +13,7 @@ import {
   LIMIT_30_KROTNOSCI,
   WSPOLCZYNNIK_URLOPOWY,
   NORMA_DOBOWA,
+  PPK,
 } from './params2026';
 
 const round2 = (x: number) => Math.round(x * 100) / 100;
@@ -147,6 +148,60 @@ export function nadgodziny(
     kwota100: round2(kwota100),
     razemDoplata: round2(razemDoplata),
     wynagrodzenieCalkowite: round2(wynagrodzenieBrutto + razemDoplata),
+  };
+}
+
+// ─── PPK ───────────────────────────────────────────────────────────────
+
+export interface WynikPPK {
+  wplataPodstawowaPracownikaMies: number;
+  wplataDodatkowaPracownikaMies: number;
+  razemPracownikMies: number;
+  wplataPodstawowaPracodawcyMies: number;
+  wplataDodatkowaPracodawcyMies: number;
+  razemPracodawcaMies: number;
+  razemNaKontoMies: number;
+  razemNaKontoRok: number;
+  doplataRoczna: number;
+  wplataPowitalna: number;
+}
+
+/**
+ * Wpłaty do PPK — nie przelicza netto pracownika (wpłata pracownika obciąża
+ * wynagrodzenie po opodatkowaniu, wpłata pracodawcy jest dla pracownika
+ * przychodem podlegającym PIT, ale nie stanowi podstawy składek ZUS).
+ */
+export function ppkWplaty(
+  bruttoMies: number,
+  obnizonaWplataPracownika: boolean,
+  dodatkowaPracownikProc: number,
+  dodatkowaPracodawcaProc: number,
+): WynikPPK {
+  const podstawowaPracownikaProc = obnizonaWplataPracownika
+    ? PPK.wplataPodstawowaPracownikaObnizona
+    : PPK.wplataPodstawowaPracownika;
+
+  const wplataPodstawowaPracownikaMies = round2(bruttoMies * podstawowaPracownikaProc);
+  const wplataDodatkowaPracownikaMies = round2(bruttoMies * dodatkowaPracownikProc);
+  const razemPracownikMies = round2(wplataPodstawowaPracownikaMies + wplataDodatkowaPracownikaMies);
+
+  const wplataPodstawowaPracodawcyMies = round2(bruttoMies * PPK.wplataPodstawowaPracodawcy);
+  const wplataDodatkowaPracodawcyMies = round2(bruttoMies * dodatkowaPracodawcaProc);
+  const razemPracodawcaMies = round2(wplataPodstawowaPracodawcyMies + wplataDodatkowaPracodawcyMies);
+
+  const razemNaKontoMies = round2(razemPracownikMies + razemPracodawcaMies);
+
+  return {
+    wplataPodstawowaPracownikaMies,
+    wplataDodatkowaPracownikaMies,
+    razemPracownikMies,
+    wplataPodstawowaPracodawcyMies,
+    wplataDodatkowaPracodawcyMies,
+    razemPracodawcaMies,
+    razemNaKontoMies,
+    razemNaKontoRok: round2(razemNaKontoMies * 12 + PPK.doplataRoczna),
+    doplataRoczna: PPK.doplataRoczna,
+    wplataPowitalna: PPK.wplataPowitalna,
   };
 }
 
