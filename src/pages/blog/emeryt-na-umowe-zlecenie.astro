@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, UOP } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Czy można zatrudnić emeryta na umowę zlecenie? Zasady ${ROK}`;
+const opis = `Jakie składki ZUS płaci emeryt zatrudniony na zlecenie, czy trzeba pilnować limitów dorabiania i czym różni się to od zlecenia dla osoby bez innego tytułu ubezpieczenia.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/emeryt-na-umowe-zlecenie/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · składki i limity dorabiania</span>
+  <h1>Czy można zatrudnić emeryta na umowę zlecenie?</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Tak, przepisy nie ograniczają zatrudniania emerytów na umowę zlecenie — ani tych, którzy
+      osiągnęli już powszechny wiek emerytalny, ani tych na wcześniejszej emeryturze. Różnica w
+      porównaniu z osobą bez innego tytułu ubezpieczenia dotyczy głównie składek ZUS oraz — w
+      niektórych przypadkach — limitów dorabiania. Ogólne zasady rozliczania zlecenia opisujemy w{' '}
+      <a href="/blog/umowa-zlecenie-a-umowa-o-prace/">umowa zlecenie a umowa o pracę</a>.
+    </p>
+
+    <h2>Składki ZUS od zlecenia emeryta</h2>
+    <p>
+      Emeryt zatrudniony na zlecenie, dla którego jest to jedyny tytuł do ubezpieczeń (nie ma
+      równoległego etatu), podlega <strong>obowiązkowo</strong> ubezpieczeniu emerytalnemu,
+      rentowemu i zdrowotnemu na takich samych zasadach jak każdy inny zleceniobiorca —
+      status emeryta sam w sobie nie zwalnia z tych składek. Dobrowolna pozostaje, tak jak zawsze,
+      składka chorobowa.
+    </p>
+    <p>
+      Jeśli emeryt ma już inny tytuł ubezpieczenia dający podstawę co najmniej na poziomie płacy
+      minimalnej (np. inny etat) albo zbiega się kilka umów zlecenia u różnych zleceniodawców,
+      zastosowanie mają ogólne zasady zbiegu tytułów ubezpieczenia — podobnie jak przy zlecleniu
+      studenta czy osoby na etacie.
+    </p>
+
+    <h2>Limity dorabiania — zależą od rodzaju emerytury</h2>
+    <table>
+      <caption>Limity dorabiania do emerytury/renty w {ROK} r.</caption>
+      <thead>
+        <tr>
+          <th>Sytuacja</th>
+          <th>Limit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Emerytura po osiągnięciu powszechnego wieku emerytalnego</td>
+          <td class="mono">brak limitu — można zarabiać bez ograniczeń</td>
+        </tr>
+        <tr>
+          <td>Wcześniejsza emerytura / renta (przed powszechnym wiekiem emerytalnym)</td>
+          <td class="mono">przychód do 70% przeciętnego wynagrodzenia — bez wpływu; 70–130% — świadczenie zmniejszone; powyżej 130% — świadczenie zawieszone</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      To rozróżnienie ma kluczowe znaczenie: emeryt, który już osiągnął powszechny wiek emerytalny
+      (60 lat kobiety, 65 lat mężczyźni), może zarabiać na zleceniu dowolną kwotę bez wpływu na
+      wysokość świadczenia. Ograniczenia dotyczą wyłącznie osób pobierających świadczenie
+      wcześniej, np. rencistów lub emerytów na świadczeniach przedemerytalnych.
+    </p>
+
+    <h2>Czy zlecenie emeryta wlicza się do stażu ubezpieczeniowego</h2>
+    <p>
+      Tak, jeśli odprowadzane są składki emerytalno-rentowe — mimo że emeryt już pobiera
+      świadczenie, opłacone składki mogą podnieść wysokość emerytury przy jej przeliczeniu (ZUS
+      przelicza emeryturę na wniosek, uwzględniając nowo opłacone składki, zwykle raz w roku z
+      urzędu po zakończeniu poprzedniego roku kalendarzowego).
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy zleceniodawca musi informować ZUS, że zleceniobiorca jest emerytem?</p>
+    <p>
+      Nie ma odrębnego obowiązku informacyjnego w tym zakresie — zgłoszenie do ubezpieczeń
+      (ZUS ZUA/ZZA) nie wymaga wskazywania statusu emeryta. To sam emeryt (rencista pobierający
+      świadczenie przed powszechnym wiekiem emerytalnym) ma obowiązek informować ZUS o wysokości
+      osiąganego przychodu, jeśli podlega limitom dorabiania.
+    </p>
+
+    <p class="faq-pytanie">Czy emeryt na zleceniu płaci niższe składki niż zwykły zleceniobiorca?</p>
+    <p>
+      Nie — stawki składek są identyczne. Ewentualna różnica w kwocie netto wynika wyłącznie z
+      indywidualnej sytuacji (np. wieku uprawniającego do zwolnienia z niektórych składek w innych
+      okolicznościach), a nie z samego faktu pobierania emerytury.
+    </p>
+
+    <p class="faq-pytanie">Czy po przekroczeniu limitu dorabiania trzeba zwrócić całą emeryturę?</p>
+    <p>
+      Nie — w przedziale 70–130% przeciętnego wynagrodzenia świadczenie jest jedynie zmniejszane o
+      kwotę maksymalnego zmniejszenia ustaloną przez ZUS, a dopiero powyżej 130% zostaje w całości
+      zawieszone za dany miesiąc.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej ani podatkowej. Stan prawny na
+      {ROK} r. — składka zdrowotna zleceniobiorcy wynosi {(UOP.zdrowotna * 100).toFixed(0)}%
+      podstawy. W razie wątpliwości co do konkretnego przypadku skonsultuj się z ZUS lub doradcą
+      podatkowym.
+    </div>
+  </div>
+</Layout>
