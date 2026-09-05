@@ -1,0 +1,105 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Świadectwo pracy — jak wypełnić i w jakim terminie wydać w ${ROK} roku`;
+const opis = `Co musi się znaleźć w świadectwie pracy, w jakim terminie pracodawca musi je wydać i jak sprostować błędy — z omówieniem najczęstszych pomyłek.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/swiadectwo-pracy-jak-wypelnic/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · wzór i terminy</span>
+  <h1>Świadectwo pracy — jak wypełnić i w jakim terminie wydać</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Świadectwo pracy to dokument, który pracodawca musi wydać z urzędu — pracownik nie musi o nie
+      wnioskować. Błędy w jego treści potrafią później utrudnić uzyskanie zasiłku dla bezrobotnych,
+      naliczenie stażu pracy u nowego pracodawcy czy ustalenie prawa do emerytury. Zobacz też nasz
+      artykuł o{' '}
+      <a href="/blog/wypowiedzenie-umowy-a-ekwiwalent/">wypowiedzeniu umowy o pracę a wypłacie ekwiwalentu</a>,
+      który często wydawany jest razem ze świadectwem.
+    </p>
+
+    <h2>Termin wydania</h2>
+    <p>
+      Pracodawca ma obowiązek wydać świadectwo pracy w dniu, w którym następuje rozwiązanie lub
+      wygaśnięcie stosunku pracy — jeśli tego dnia nie zamierza nawiązać z tą samą osobą kolejnego
+      stosunku pracy w ciągu 7 dni. Jeżeli wydanie świadectwa w tym dniu nie jest możliwe (np.
+      pracownik nie stawia się w zakładzie), pracodawca przesyła je pocztą albo doręcza w inny
+      sposób w ciągu 7 dni od ustania zatrudnienia.
+    </p>
+
+    <h2>Co musi zawierać świadectwo pracy</h2>
+    <ul>
+      <li>okres i rodzaj wykonywanej pracy, zajmowane stanowiska,</li>
+      <li>tryb i podstawę prawną rozwiązania lub wygaśnięcia stosunku pracy (albo stwierdzenie, że umowa uległa przekształceniu),</li>
+      <li>wymiar czasu pracy w trakcie trwania stosunku pracy,</li>
+      <li>liczbę dni urlopu wypoczynkowego wykorzystanego w roku kalendarzowym, w którym ustał stosunek pracy,</li>
+      <li>wykorzystany urlop bezpłatny i podstawę prawną jego udzielenia,</li>
+      <li>wykorzystany urlop ojcowski, rodzicielski i wychowawczy,</li>
+      <li>liczbę dni, za które pracownik otrzymał wynagrodzenie za czas niezdolności do pracy w danym roku,</li>
+      <li>okres odbytej czynnej służby wojskowej lub jej form zastępczych,</li>
+      <li>okresy nieskładkowe uwzględniane przy ustalaniu prawa do emerytury lub renty,</li>
+      <li>na wniosek pracownika — informacje o wysokości i składnikach wynagrodzenia oraz uzyskanych kwalifikacjach.</li>
+    </ul>
+
+    <h2>Najczęstsze błędy</h2>
+    <p>
+      Do najczęstszych pomyłek należą: pominięcie informacji o wykorzystanym urlopie wypoczynkowym
+      w bieżącym roku (co utrudnia rozliczenie ekwiwalentu u nowego pracodawcy), błędne wskazanie
+      podstawy prawnej rozwiązania umowy (np. pomylenie art. 30 § 1 pkt 1 z pkt 2 Kodeksu pracy) oraz
+      brak wzmianki o urlopie rodzicielskim, gdy pracownik z niego korzystał.
+    </p>
+
+    <h2>Sprostowanie świadectwa pracy</h2>
+    <p>
+      Pracownik może w ciągu 14 dni od otrzymania świadectwa pracy wystąpić do pracodawcy z
+      wnioskiem o jego sprostowanie. Jeżeli pracodawca odmówi lub nie odpowie, pracownikowi
+      przysługuje w kolejnych 14 dniach prawo wystąpienia z żądaniem sprostowania do sądu pracy.
+      Pracodawca, który sam zauważy błąd, może i powinien wydać sprostowane świadectwo z własnej
+      inicjatywy, bez czekania na wniosek.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy trzeba wnioskować o wydanie świadectwa pracy?</p>
+    <p>
+      Nie — pracodawca wydaje je z urzędu, bez wniosku pracownika, w dniu ustania zatrudnienia albo
+      w ciągu 7 dni, jeśli wydanie tego samego dnia nie było możliwe.
+    </p>
+
+    <p class="faq-pytanie">Co grozi pracodawcy za niewydanie świadectwa pracy w terminie?</p>
+    <p>
+      Pracownikowi przysługuje roszczenie o odszkodowanie za szkodę wyrządzoną w związku z
+      niewydaniem świadectwa w terminie (np. utrata zasiłku dla bezrobotnych za dany okres) oraz
+      możliwość złożenia skargi do Państwowej Inspekcji Pracy.
+    </p>
+
+    <p class="faq-pytanie">Czy przy kolejnej umowie z tym samym pracodawcą trzeba wydawać świadectwo po każdej umowie?</p>
+    <p>
+      Nie, jeśli w ciągu 7 dni od rozwiązania jednej umowy strony zawierają kolejną — świadectwo
+      wydaje się dopiero po zakończeniu całego okresu zatrudnienia (na wniosek pracownika można
+      jednak otrzymać świadectwo za zakończony już okres wcześniej).
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
