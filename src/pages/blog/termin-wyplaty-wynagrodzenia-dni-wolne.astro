@@ -1,0 +1,91 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Termin wypłaty wynagrodzenia a dni wolne od pracy`;
+const opis = `Kiedy najpóźniej trzeba wypłacić pensję, jeśli ustalony w regulaminie dzień wypłaty wypada w sobotę, niedzielę lub święto, i czy pracodawca może z tego powodu wypłacić później.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/termin-wyplaty-wynagrodzenia-dni-wolne/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · terminy wypłaty</span>
+  <h1>Termin wypłaty wynagrodzenia a dni wolne od pracy</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Termin wypłaty wynagrodzenia ustala pracodawca — w regulaminie pracy, układzie zbiorowym
+      albo w informacji o warunkach zatrudnienia — jako konkretny dzień miesiąca, nie później
+      jednak niż w ciągu pierwszych 10 dni następnego miesiąca kalendarzowego, jeżeli
+      wynagrodzenie jest płatne raz w miesiącu z dołu.
+    </p>
+
+    <h2>Co się dzieje, gdy dzień wypłaty wypada w dzień wolny</h2>
+    <p>
+      Jeśli ustalony dzień wypłaty przypada na sobotę, niedzielę, święto lub inny dzień wolny od
+      pracy, wynagrodzenie należy wypłacić <strong>nie później niż w ostatnim dniu roboczym
+      poprzedzającym ten dzień</strong> — a więc wcześniej, nigdy później. Przesunięcie wypłaty na
+      pierwszy dzień roboczy po dniu wolnym byłoby naruszeniem terminu i mogłoby narazić
+      pracodawcę na odpowiedzialność za wykroczenie przeciwko prawom pracownika.
+    </p>
+    <p>
+      To reguła ogólna wynikająca z ugruntowanego orzecznictwa i praktyki inspekcji pracy —
+      obowiązek terminowej wypłaty jest jednym z podstawowych obowiązków pracodawcy i nie może być
+      odraczany z powodów leżących po stronie organizacji pracy czy kalendarza bankowego.
+    </p>
+
+    <h2>Forma wypłaty</h2>
+    <p>
+      Wynagrodzenie wypłaca się w formie pieniężnej — przelewem na wskazany rachunek bankowy
+      pracownika (od 2019 roku to forma domyślna) albo do rąk własnych w kasie zakładu pracy,
+      jeśli pracownik złożył wniosek o taką formę wypłaty. Przy przelewie liczy się data uznania
+      rachunku pracownika, a nie data zlecenia przelewu przez pracodawcę — dlatego przy wypłatach w
+      okolicach weekendu trzeba uwzględnić czas księgowania międzybankowego.
+    </p>
+
+    <h2>Co grozi za opóźnienie w wypłacie</h2>
+    <ul>
+      <li>pracownikowi przysługują odsetki ustawowe za opóźnienie, naliczane automatycznie od dnia następującego po ustalonym terminie wypłaty,</li>
+      <li>pracodawca popełnia wykroczenie przeciwko prawom pracownika (grzywna od 1000 do 30 000 zł),</li>
+      <li>uporczywe lub złośliwe niewypłacanie wynagrodzenia w terminie może stanowić przyczynę rozwiązania umowy przez pracownika bez wypowiedzenia z winy pracodawcy, z zachowaniem prawa do odszkodowania.</li>
+    </ul>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy pracodawca może wypłacić wynagrodzenie kilka dni wcześniej bez zgody pracownika?</p>
+    <p>
+      Tak — wcześniejsza wypłata nie narusza interesu pracownika i nie wymaga jego zgody. Problemem
+      prawnym jest wyłącznie wypłata późniejsza niż ustalony termin.
+    </p>
+
+    <p class="faq-pytanie">Czy różne dni wypłaty dla różnych grup pracowników są dopuszczalne?</p>
+    <p>
+      Tak, jeśli wynika to z obiektywnych, uzasadnionych kryteriów (np. inny system wynagradzania
+      dla różnych stanowisk) i zostało odpowiednio ustalone w regulaminie pracy lub umowach.
+    </p>
+
+    <p class="faq-pytanie">Czy przy wypłacie zaliczkowej (dwa razy w miesiącu) obowiązują te same zasady?</p>
+    <p>
+      Tak — każdy ustalony termin cząstkowej wypłaty podlega tej samej regule: jeśli wypada w dzień
+      wolny, wypłatę trzeba zrealizować wcześniej, nie później.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
