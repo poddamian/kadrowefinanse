@@ -1,0 +1,149 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, UOP } from '../../lib/params2026';
+import { pitSkala } from '../../lib/podatki';
+
+const aktualizacja = '5 września 2026';
+const round2 = (x: number) => Math.round(x * 100) / 100;
+
+const brutto = 3000;
+const emerytalna = round2(brutto * UOP.emerytalna);
+const rentowa = round2(brutto * UOP.rentowa);
+const spoleczneRazem = round2(emerytalna + rentowa);
+const zdrowotnaPodstawa = round2(brutto - spoleczneRazem);
+const zdrowotna = round2(zdrowotnaPodstawa * UOP.zdrowotna);
+const kup = round2(brutto * 0.2);
+const podstawaPit = Math.max(0, Math.round(brutto - spoleczneRazem - kup));
+const pit = Math.round(pitSkala(podstawaPit * 12) / 12);
+const doWyplaty = round2(brutto - spoleczneRazem - zdrowotna - pit);
+
+const tytul = `Jak poprawnie wystawić rachunek do umowy zlecenie (${ROK})`;
+const opis = `Wzór rachunku do umowy zlecenia krok po kroku, obowiązkowe elementy i przykład wyliczenia składek ZUS oraz zaliczki PIT przy 3000 zł brutto.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/rachunek-do-umowy-zlecenie-wzor/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · wzór + przykład liczbowy</span>
+  <h1>Jak poprawnie wystawić rachunek do umowy zlecenie</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Rachunek do umowy zlecenia to dokument potwierdzający wykonanie zlecenia i będący podstawą
+      wypłaty wynagrodzenia — w przeciwieństwie do umowy o pracę, gdzie wystarczy lista płac.
+      Obowiązek jego wystawienia zwykle spoczywa na zleceniobiorcy, choć w praktyce wiele firm
+      przygotowuje gotowy wzór do podpisu. Ogólne różnice między zleceniem a etatem opisujemy w{' '}
+      <a href="/blog/umowa-zlecenie-a-umowa-o-prace/">osobnym artykule</a>.
+    </p>
+
+    <h2>Obowiązkowe elementy rachunku</h2>
+    <ul>
+      <li>data i miejsce wystawienia,</li>
+      <li>dane zleceniodawcy i zleceniobiorcy (nazwa/imię i nazwisko, adres, NIP lub PESEL),</li>
+      <li>numer i data umowy zlecenia, której dotyczy rachunek,</li>
+      <li>okres, za który wystawiany jest rachunek (jeśli umowa trwa dłużej niż jeden miesiąc),</li>
+      <li>kwota brutto wynagrodzenia,</li>
+      <li>rozbicie: składki społeczne, składka zdrowotna, koszty uzyskania przychodu, zaliczka na PIT,</li>
+      <li>kwota netto do wypłaty,</li>
+      <li>podpis zleceniobiorcy.</li>
+    </ul>
+    <p>
+      Od 2022 roku (Polski Ład) obowiązek obliczenia i pobrania składek oraz zaliczki na podatek
+      spoczywa na płatniku, czyli zleceniodawcy — zleceniobiorca nie musi więc samodzielnie liczyć
+      kwot, a jedynie potwierdzić wykonanie zlecenia. W praktyce to dział księgowości zleceniodawcy
+      przygotowuje wyliczenie, a zleceniobiorca podpisuje gotowy rachunek.
+    </p>
+
+    <h2>Przykład wyliczenia przy {brutto.toLocaleString('pl-PL')} zł brutto</h2>
+    <table>
+      <caption>Rachunek do umowy zlecenia — jedyny tytuł ubezpieczenia, bez dobrowolnego chorobowego</caption>
+      <thead>
+        <tr>
+          <th>Pozycja</th>
+          <th class="liczba">Kwota</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Wynagrodzenie brutto</td>
+          <td class="mono">{brutto.toLocaleString('pl-PL')} zł</td>
+        </tr>
+        <tr>
+          <td>Składka emerytalna ({(UOP.emerytalna * 100).toFixed(2)}%)</td>
+          <td class="mono">{emerytalna.toLocaleString('pl-PL')} zł</td>
+        </tr>
+        <tr>
+          <td>Składka rentowa ({(UOP.rentowa * 100).toFixed(2)}%)</td>
+          <td class="mono">{rentowa.toLocaleString('pl-PL')} zł</td>
+        </tr>
+        <tr>
+          <td>Składka zdrowotna ({(UOP.zdrowotna * 100).toFixed(0)}% podstawy)</td>
+          <td class="mono">{zdrowotna.toLocaleString('pl-PL')} zł</td>
+        </tr>
+        <tr>
+          <td>Koszty uzyskania przychodu (20%)</td>
+          <td class="mono">{kup.toLocaleString('pl-PL')} zł</td>
+        </tr>
+        <tr>
+          <td>Zaliczka PIT</td>
+          <td class="mono">{pit.toLocaleString('pl-PL')} zł</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>Do wypłaty</td>
+          <td class="mono">{doWyplaty.toLocaleString('pl-PL')} zł</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Wyliczenie zakłada najprostszy scenariusz: zlecenie jako jedyny tytuł ubezpieczenia, bez
+      dobrowolnej składki chorobowej i ze standardowymi 20% kosztów uzyskania przychodu. Jeśli
+      zleceniobiorca ma zbieg tytułów (np. równoległy etat), kwoty składek mogą być inne lub w
+      ogóle nie wystąpić.
+    </p>
+
+    <h2>Kiedy nie trzeba pobierać zaliczki na PIT</h2>
+    <p>
+      Jeśli zleceniobiorca złożył <strong>PIT-2</strong> lub oświadczenie o zastosowaniu zwolnienia
+      z PIT dla młodych (do 26. roku życia) albo umowa opiewa na kwotę do 200 zł brutto rozliczaną
+      ryczałtowo (zryczałtowany 12% podatek zamiast skali, bez KUP i bez łączenia z innymi
+      dochodami) — zasady poboru zaliczki mogą się różnić od standardowego rachunku powyżej.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Kto wystawia rachunek do umowy zlecenia — zleceniodawca czy zleceniobiorca?</p>
+    <p>
+      Formalnie dokument potwierdza wykonanie zlecenia przez zleceniobiorcę, ale to zleceniodawca
+      (jako płatnik składek i podatku) odpowiada za prawidłowe wyliczenie kwot na rachunku. W
+      praktyce większość firm przygotowuje gotowy wzór, a zleceniobiorca go tylko podpisuje.
+    </p>
+
+    <p class="faq-pytanie">Czy do każdej wypłaty trzeba osobnego rachunku?</p>
+    <p>
+      Przy umowach wieloetapowych zwykle wystawia się rachunek za każdy okres rozliczeniowy (np.
+      miesiąc) osobno — zależy to od zapisów samej umowy zlecenia.
+    </p>
+
+    <p class="faq-pytanie">Czy rachunek do umowy zlecenia trzeba przechowywać?</p>
+    <p>
+      Tak, jako dokumentację płacową — obowiązują te same zasady i terminy co przy{' '}
+      <a href="/blog/przechowywanie-dokumentacji-placowej-po-zatrudnieniu/">przechowywaniu dokumentacji płacowej pracowników etatowych</a>.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady podatkowej. Stan prawny na {ROK} r.,
+      wyliczenie w uproszczeniu (bez uwzględnienia ulg i oświadczeń indywidualnych). W razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z księgowym.
+    </div>
+  </div>
+</Layout>
