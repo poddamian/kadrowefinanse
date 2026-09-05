@@ -1,0 +1,132 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Czy umowa zlecenie wlicza się do stażu pracy? (${ROK})`;
+const opis = `Różnica między stażem pracy (Kodeks pracy) a stażem ubezpieczeniowym (ZUS) — co dokładnie traci zleceniobiorca: wymiar urlopu, dodatek stażowy, nagrodę jubileuszową i okres wypowiedzenia.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/umowa-zlecenie-a-staz-pracy/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · staż pracy vs staż ubezpieczeniowy</span>
+  <h1>Czy umowa zlecenie wlicza się do stażu pracy?</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Krótka odpowiedź brzmi: nie, umowa zlecenie nie wlicza się do stażu pracy w rozumieniu
+      Kodeksu pracy — pisaliśmy o tym krótko przy okazji{' '}
+      <a href="/blog/umowa-zlecenie-a-umowa-o-prace/">porównania zlecenia z etatem</a>. Tutaj
+      rozwijamy temat: czym dokładnie różni się staż pracy od stażu ubezpieczeniowego i jakie
+      konkretne uprawnienia traci osoba, która przez lata pracowała wyłącznie na zleceniach.
+    </p>
+
+    <h2>Dwa różne pojęcia stażu</h2>
+    <table>
+      <caption>Staż pracy (Kodeks pracy) a staż ubezpieczeniowy (ZUS)</caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Staż pracy</th>
+          <th>Staż ubezpieczeniowy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Co liczy</td>
+          <td>okresy zatrudnienia na umowę o pracę (i niektóre okresy zrównane, np. nauka, bezrobocie z zasiłkiem)</td>
+          <td>okresy, za które odprowadzono składki emerytalno-rentowe do ZUS</td>
+        </tr>
+        <tr>
+          <td>Do czego służy</td>
+          <td>wymiar urlopu, dodatek stażowy, nagroda jubileuszowa, okres wypowiedzenia</td>
+          <td>prawo do emerytury i jej wysokość</td>
+        </tr>
+        <tr>
+          <td>Czy liczy zlecenie</td>
+          <td class="mono">nie</td>
+          <td class="mono">tak, jeśli odprowadzano składki</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Co konkretnie traci osoba pracująca tylko na zleceniach</h2>
+    <ul>
+      <li>
+        <strong>Niższy wymiar urlopu u kolejnego pracodawcy</strong> — do 10-letniego stażu
+        uprawniającego do 26 dni urlopu (zamiast 20) liczą się tylko okresy zatrudnienia na umowę o
+        pracę oraz np. okres nauki (w ograniczonym wymiarze zależnym od typu szkoły). Lata
+        przepracowane wyłącznie na zleceniu nie podnoszą tego wymiaru.
+      </li>
+      <li>
+        <strong>Brak dodatku stażowego</strong> — tam, gdzie obowiązuje (głównie sfera budżetowa,
+        niektóre układy zbiorowe), dodatek za wysługę lat nalicza się od stażu pracy, a nie
+        ubezpieczeniowego.
+      </li>
+      <li>
+        <strong>Brak wpływu na nagrodę jubileuszową</strong> — z tych samych powodów co dodatek
+        stażowy.
+      </li>
+      <li>
+        <strong>Krótszy okres wypowiedzenia</strong> — długość okresu wypowiedzenia umowy o pracę
+        na czas nieokreślony (2 tygodnie, 1 miesiąc, 3 miesiące) zależy od zakładowego stażu pracy u
+        danego pracodawcy, nie od łącznego stażu ubezpieczeniowego.
+      </li>
+    </ul>
+
+    <h2>Co mimo wszystko się liczy</h2>
+    <p>
+      Składki emerytalno-rentowe odprowadzone od zlecenia realnie podnoszą przyszłą emeryturę —
+      wpływają na tzw. kapitał początkowy/zgromadzony na koncie w ZUS, z którego wylicza się
+      świadczenie. Zlecenie "nie znika" z perspektywy ubezpieczeniowej — po prostu nie daje tych
+      samych uprawnień pracowniczych co etat.
+    </p>
+
+    <h2>Czy da się to jakoś nadrobić</h2>
+    <p>
+      Nie ma mechanizmu przekształcenia stażu ze zlecenia w staż pracy z mocą wsteczną. Jedyna
+      droga to zatrudnienie na umowę o pracę — od tego momentu zaczyna się liczyć zakładowy staż
+      pracy u danego pracodawcy (do okresu wypowiedzenia) oraz łączny staż pracy (do wymiaru
+      urlopu), niezależnie od tego, ile lat wcześniej przepracowano na zleceniach.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy zlecenie liczy się do emerytury?</p>
+    <p>
+      Tak, w zakresie, w jakim odprowadzano od niego składki emerytalno-rentowe — to zupełnie
+      inna kwestia niż staż pracy z Kodeksu pracy.
+    </p>
+
+    <p class="faq-pytanie">Czy B2B (działalność gospodarcza) też nie liczy się do stażu pracy?</p>
+    <p>
+      Zgadza się, z tych samych powodów — to również nie jest umowa o pracę. Więcej o różnicach
+      między B2B a etatem w{' '}
+      <a href="/blog/b2b-czy-umowa-o-prace-2026/">osobnym artykule</a>.
+    </p>
+
+    <p class="faq-pytanie">Czy pracodawca może dobrowolnie zaliczyć staż ze zlecenia do wymiaru urlopu?</p>
+    <p>
+      Nie — wymiar urlopu wynika wprost z przepisów Kodeksu pracy i nie podlega swobodnemu uznaniu
+      pracodawcy w tym zakresie.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
