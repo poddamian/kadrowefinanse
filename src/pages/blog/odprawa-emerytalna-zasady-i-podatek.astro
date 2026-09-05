@@ -1,0 +1,99 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Odprawa emerytalna — zasady wypłaty i opodatkowanie`;
+const opis = `Komu przysługuje odprawa emerytalno-rentowa, w jakiej wysokości, czy trzeba od niej płacić składki ZUS oraz podatek dochodowy i czy można ją dostać dwa razy.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/odprawa-emerytalna-zasady-i-podatek/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · zasady wypłaty i podatek</span>
+  <h1>Odprawa emerytalna — zasady wypłaty i opodatkowanie</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Odprawa emerytalno-rentowa to świadczenie, które pracodawca musi wypłacić pracownikowi
+      przechodzącemu na emeryturę lub rentę z tytułu niezdolności do pracy — niezależnie od stażu
+      pracy czy wielkości zakładu pracy. Obowiązek wynika wprost z Kodeksu pracy (art. 92¹), więc
+      nie trzeba go zapisywać w umowie ani w regulaminie.
+    </p>
+
+    <h2>Komu przysługuje i w jakiej wysokości</h2>
+    <p>
+      Odprawa przysługuje pracownikowi, którego stosunek pracy ustał w związku z przejściem na
+      emeryturę lub rentę z tytułu niezdolności do pracy. Podstawowa wysokość to{' '}
+      <strong>jednomiesięczne wynagrodzenie</strong>, liczone według zasad jak przy ekwiwalencie za
+      urlop (zobacz{' '}
+      <a href="/blog/ekwiwalent-za-urlop-jak-liczyc/">jak liczy się podstawę do ekwiwalentu</a>).
+      Wyższą odprawę (np. wielokrotność miesięcznego wynagrodzenia rosnącą wraz ze stażem pracy)
+      mogą przewidywać przepisy szczególne dotyczące niektórych grup zawodowych (np. sfera
+      budżetowa, nauczyciele, służby mundurowe) albo korzystniejsze zapisy układu zbiorowego pracy
+      czy regulaminu wynagradzania.
+    </p>
+
+    <h2>Czy odprawę można dostać więcej niż raz</h2>
+    <p>
+      Nie — pracownik, który już otrzymał odprawę emerytalną lub rentową, nie może nabyć do niej
+      prawa ponownie. Dotyczy to np. sytuacji, gdy osoba pobierająca rentę z tytułu niezdolności do
+      pracy (i za to otrzymała już odprawę) później przechodzi na emeryturę — drugiej odprawy już
+      nie dostanie.
+    </p>
+
+    <h2>Składki ZUS — odprawa jest z nich zwolniona</h2>
+    <p>
+      Odprawa emerytalno-rentowa nie stanowi podstawy wymiaru składek na ubezpieczenia społeczne
+      ani zdrowotne — jest to jedna z pozycji wprost wyłączonych rozporządzeniem w sprawie
+      szczegółowych zasad ustalania podstawy wymiaru składek na ubezpieczenia emerytalne i rentowe.
+      Pracodawca wypłaca ją więc w pełnej kwocie brutto bez potrącania składek ZUS.
+    </p>
+
+    <h2>Podatek dochodowy — odprawa podlega opodatkowaniu na zasadach ogólnych</h2>
+    <p>
+      W przeciwieństwie do składek ZUS, odprawa emerytalno-rentowa <strong>nie jest zwolniona z
+      podatku dochodowego</strong> — dolicza się ją do pozostałych przychodów ze stosunku pracy w
+      danym miesiącu i opodatkowuje na zasadach skali podatkowej, tak jak zwykłe wynagrodzenie.
+      Pracodawca jako płatnik pobiera zaliczkę na PIT od łącznej kwoty (bieżące wynagrodzenie plus
+      odprawa) wypłacanej w danym miesiącu.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy odprawa emerytalna przysługuje przy rozwiązaniu umowy za porozumieniem stron?</p>
+    <p>
+      Tak, o ile bezpośrednią przyczyną rozwiązania stosunku pracy jest przejście na emeryturę lub
+      rentę — sam tryb rozwiązania umowy (wypowiedzenie, porozumienie, wygaśnięcie) nie ma tu
+      znaczenia, liczy się związek przyczynowy z przejściem na świadczenie.
+    </p>
+
+    <p class="faq-pytanie">Czy odprawa emerytalna jest wliczana do podstawy zasiłku chorobowego lub innych świadczeń?</p>
+    <p>
+      Nie — skoro nie stanowi podstawy wymiaru składek, nie wchodzi też do podstawy obliczania
+      świadczeń z ubezpieczenia chorobowego.</p>
+
+    <p class="faq-pytanie">Czy odprawę wypłaca się razem z ostatnią wypłatą, czy osobno?</p>
+    <p>
+      Przepisy nie narzucają odrębnego terminu — w praktyce wypłaca się ją razem z ostatnim
+      wynagrodzeniem, w standardowym terminie wypłaty obowiązującym u danego pracodawcy.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej ani podatkowej. Stan prawny na
+      {ROK} r. — w razie wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub
+      doradcą podatkowym.
+    </div>
+  </div>
+</Layout>
