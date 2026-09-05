@@ -1,0 +1,100 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, PLACA_MINIMALNA } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Zatrudnienie pracownika krok po kroku — formalności ${ROK}`;
+const opis = `Checklist zatrudnienia pierwszego pracownika: badania wstępne, szkolenie BHP, zgłoszenie do ZUS, terminy i najczęstsze błędy nowych pracodawców.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/zatrudnienie-pracownika-krok-po-kroku/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · checklist krok po kroku</span>
+  <h1>Zatrudnienie pracownika krok po kroku</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Zatrudnienie pierwszego pracownika to dla wielu przedsiębiorców pierwszy kontakt z
+      obowiązkami wobec ZUS i Państwowej Inspekcji Pracy. Poniżej pełna checklist formalności — w
+      kolejności, w jakiej trzeba je zrealizować. Jeśli zastanawiasz się nad formą zatrudnienia,
+      zobacz też{' '}
+      <a href="/blog/umowa-zlecenie-a-umowa-o-prace/">umowa zlecenie a umowa o pracę</a> i{' '}
+      <a href="/blog/b2b-czy-umowa-o-prace-2026/">B2B czy umowa o pracę</a>.
+    </p>
+
+    <h2>Przed podpisaniem umowy</h2>
+    <ul>
+      <li><strong>Badania wstępne</strong> — obowiązkowe przed dopuszczeniem do pracy (wyjątek: osoba przyjmowana ponownie na to samo stanowisko w ciągu 30 dni od rozwiązania poprzedniej umowy z tym samym pracodawcą, jeśli aktualne orzeczenie nie wygasło).</li>
+      <li><strong>Szkolenie wstępne BHP</strong> — instruktaż ogólny i stanowiskowy, przed dopuszczeniem do pracy, niezależnie od stanowiska.</li>
+      <li><strong>Umowa o pracę na piśmie</strong> — najpóźniej w dniu rozpoczęcia pracy (jeśli nie zawarto jej pisemnie wcześniej, pracodawca musi przed dopuszczeniem do pracy potwierdzić pracownikowi na piśmie ustalenia co do stron, rodzaju i warunków umowy).</li>
+    </ul>
+
+    <h2>Zgłoszenie do ZUS</h2>
+    <p>
+      Nowego pracownika zgłasza się do ubezpieczeń w ciągu <strong>7 dni</strong> od daty
+      powstania obowiązku ubezpieczeń (czyli zwykle od dnia rozpoczęcia pracy) — formularzem{' '}
+      <strong>ZUS ZUA</strong> (zgłoszenie do ubezpieczeń społecznych i zdrowotnego) albo{' '}
+      <strong>ZUS ZZA</strong>, jeśli pracownik podlega wyłącznie ubezpieczeniu zdrowotnemu (rzadki
+      przypadek przy umowie o pracę). Jeśli to pierwszy pracownik firmy, trzeba wcześniej zgłosić
+      się jako płatnik składek formularzem <strong>ZUS ZFA</strong> (jednoosobowa działalność
+      zwykle jest już zarejestrowana jako płatnik z tytułu własnych składek, ale zgłoszenie
+      pracownika to odrębna czynność).
+    </p>
+
+    <h2>W pierwszym miesiącu zatrudnienia</h2>
+    <ul>
+      <li>założenie akt osobowych — zobacz <a href="/blog/akta-osobowe-2026/">zasady prowadzenia akt osobowych</a>,</li>
+      <li>przekazanie pracownikowi informacji o warunkach zatrudnienia (art. 29 § 3 Kodeksu pracy) — wymiar czasu pracy, wymiar urlopu, długość okresu wypowiedzenia i inne warunki, jeśli nie zawarto ich w samej umowie,</li>
+      <li>zgłoszenie do Państwowego Funduszu Rehabilitacji Osób Niepełnosprawnych (PFRON) — dotyczy pracodawców zatrudniających co najmniej 25 pracowników w przeliczeniu na pełny etat,</li>
+      <li>ustalenie zasad PPK (Pracowniczych Planów Kapitałowych), jeśli firma jeszcze ich nie wdrożyła.</li>
+    </ul>
+
+    <h2>Najczęstsze błędy nowych pracodawców</h2>
+    <p>
+      Do najczęściej popełnianych błędów należą: dopuszczenie do pracy przed badaniami wstępnymi
+      lub szkoleniem BHP (wykroczenie zagrożone grzywną), spóźnione zgłoszenie do ZUS po terminie 7
+      dni (nie powoduje utraty ubezpieczenia, ale bywa sankcjonowane przy kontroli) oraz wypłacanie
+      wynagrodzenia niższego niż płaca minimalna {PLACA_MINIMALNA.toLocaleString('pl-PL')} zł
+      brutto przy pełnym etacie w {ROK} r.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Ile dni ma pracodawca na zgłoszenie pracownika do ZUS?</p>
+    <p>
+      7 dni od daty powstania obowiązku ubezpieczeń społecznych, czyli zwykle od dnia rozpoczęcia
+      pracy określonego w umowie.
+    </p>
+
+    <p class="faq-pytanie">Czy trzeba robić badania wstępne, jeśli pracownik ma aktualne badania od poprzedniego pracodawcy?</p>
+    <p>
+      Co do zasady tak — badania wstępne są przypisane do konkretnego pracodawcy i stanowiska.
+      Wyjątkiem jest ponowne zatrudnienie u tego samego pracodawcy na to samo stanowisko w ciągu 30
+      dni od rozwiązania poprzedniej umowy.
+    </p>
+
+    <p class="faq-pytanie">Czy zgłoszenie do ZUS można zrobić przed podpisaniem umowy?</p>
+    <p>
+      Nie ma takiej potrzeby — zgłoszenia dokonuje się już po nawiązaniu stosunku pracy, w ciągu 7
+      dni od tej daty. Zgłoszenie przed faktycznym zatrudnieniem nie ma podstawy prawnej.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
