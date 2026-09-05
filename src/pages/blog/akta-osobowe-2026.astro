@@ -1,0 +1,139 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Zasady prowadzenia akt osobowych w ${ROK} roku — części A, B, C, D`;
+const opis = `Co wchodzi do każdej z czterech części akt osobowych pracownika, czy dokumentacja musi być papierowa i jak długo ją przechowywać po zmianach z 2019 roku.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/akta-osobowe-2026/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · akta osobowe krok po kroku</span>
+  <h1>Zasady prowadzenia akt osobowych w {ROK} roku</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Akta osobowe pracownika dzielą się na cztery części — A, B, C i D — z których każda ma
+      ściśle określoną zawartość. Błędne przypisanie dokumentu do części to jeden z najczęstszych
+      błędów wykrywanych podczas kontroli Państwowej Inspekcji Pracy. Poniżej pełny podział wraz z
+      zasadami przechowywania obowiązującymi od reformy z 2019 roku.
+    </p>
+
+    <h2>Część A — dokumenty związane z ubieganiem się o zatrudnienie</h2>
+    <ul>
+      <li>kwestionariusz osobowy dla osoby ubiegającej się o zatrudnienie,</li>
+      <li>dokumenty potwierdzające kwalifikacje zawodowe wymagane do wykonywania oferowanej pracy,</li>
+      <li>świadectwa pracy z poprzednich miejsc zatrudnienia lub inne dokumenty potwierdzające okresy zatrudnienia,</li>
+      <li>orzeczenie lekarskie stwierdzające brak przeciwwskazań do pracy na określonym stanowisku (badanie wstępne).</li>
+    </ul>
+
+    <h2>Część B — dokumenty dotyczące przebiegu zatrudnienia</h2>
+    <ul>
+      <li>umowa o pracę, a jeżeli nie została zawarta na piśmie — potwierdzenie ustaleń co do stron, rodzaju i warunków umowy,</li>
+      <li>zakres obowiązków, jeśli pracodawca go określił,</li>
+      <li>dokumenty dotyczące wykonywania pracy zdalnej,</li>
+      <li>zaświadczenia o ukończeniu wymaganego szkolenia BHP,</li>
+      <li>oświadczenia dotyczące wypowiedzenia warunków pracy lub płacy albo zmiany tych warunków w innym trybie,</li>
+      <li>dokumenty dotyczące przyznania nagrody lub wyróżnienia,</li>
+      <li>dokumenty związane z ubieganiem się i korzystaniem z urlopu wychowawczego lub obniżonego wymiaru czasu pracy.</li>
+    </ul>
+
+    <h2>Część C — dokumenty związane z ustaniem zatrudnienia</h2>
+    <ul>
+      <li>oświadczenie o wypowiedzeniu lub rozwiązaniu umowy o pracę,</li>
+      <li>dokumenty dotyczące żądania wydania świadectwa pracy,</li>
+      <li>kopia wydanego świadectwa pracy (zasady jego wypełniania opisujemy osobno),</li>
+      <li>dokumenty dotyczące niewypłacenia pracownikowi ekwiwalentu za urlop — jeśli strony postanowiły o wykorzystaniu urlopu w kolejnym zatrudnieniu.</li>
+    </ul>
+
+    <h2>Część D — kary porządkowe i odpowiedzialność</h2>
+    <p>
+      Od 2019 roku dokumenty dotyczące kar porządkowych (upomnienie, nagana, kara pieniężna) oraz
+      innych uregulowanych przepisami przypadków ponoszenia odpowiedzialności porządkowej lub
+      dyscyplinarnej tworzą osobną część D. Dokumenty usuwa się z akt po roku nienagannej pracy —
+      zgodnie z Kodeksem pracy nie mogą zostać w teczce bezterminowo.
+    </p>
+
+    <h2>Czy akta muszą być papierowe?</h2>
+    <p>
+      Nie. Od 1 stycznia 2019 roku pracodawca sam wybiera formę prowadzenia i przechowywania
+      dokumentacji pracowniczej — papierową albo elektroniczną (tzw. e-teczki). Zmiana formy z
+      papierowej na elektroniczną wymaga sporządzenia odwzorowania cyfrowego (np. skanu) każdego
+      dokumentu i opatrzenia go kwalifikowanym podpisem elektronicznym lub kwalifikowaną pieczęcią
+      elektroniczną pracodawcy, potwierdzającymi zgodność z dokumentem papierowym. Papierowe
+      oryginały można wtedy zniszczyć lub wydać pracownikowi.
+    </p>
+
+    <h2>Okres przechowywania — zależy od daty zatrudnienia</h2>
+    <table>
+      <caption>Okres przechowywania akt osobowych po ustaniu zatrudnienia</caption>
+      <thead>
+        <tr>
+          <th>Data nawiązania stosunku pracy</th>
+          <th>Okres przechowywania</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Po 31 grudnia 2018 r.</td>
+          <td class="mono">10 lat od końca roku, w którym ustał stosunek pracy</td>
+        </tr>
+        <tr>
+          <td>1 stycznia 1999 r. – 31 grudnia 2018 r.</td>
+          <td class="mono">10 lat — jeśli pracodawca złożył raport ZUS OSW/ZUS RIA; w innym wypadku 50 lat</td>
+        </tr>
+        <tr>
+          <td>Przed 1 stycznia 1999 r.</td>
+          <td class="mono">50 lat od zakończenia zatrudnienia</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Skrócenie okresu z 50 do 10 lat dla zatrudnionych w latach 1999–2018 wymagało od pracodawcy
+      złożenia w ZUS raportu informacyjnego (ZUS OSW razem z ZUS RIA za każdego pracownika) w
+      okresie przejściowym, który już minął — bez tego zgłoszenia obowiązuje nadal okres 50-letni.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy pracodawca może prowadzić akta osobowe częściowo papierowo, a częściowo elektronicznie?</p>
+    <p>
+      Nie — dla danego pracownika trzeba wybrać jedną formę prowadzenia dokumentacji. Różni
+      pracownicy w tej samej firmie mogą mieć jednak dokumentację prowadzoną w różnej formie, jeśli
+      pracodawca zmieniał zasady stopniowo.
+    </p>
+
+    <p class="faq-pytanie">Czy trzeba prowadzić odrębne akta dla każdej umowy z tym samym pracownikiem?</p>
+    <p>
+      Nie, jeśli umowy następują po sobie bez przerwy lub z krótką przerwą — dokumentację prowadzi
+      się łącznie dla wszystkich okresów zatrudnienia u tego pracodawcy, chyba że przepisy szczególne
+      (np. dotyczące okresu przechowywania) wymagają rozróżnienia dat.
+    </p>
+
+    <p class="faq-pytanie">Co grozi za nieprawidłowe prowadzenie akt osobowych?</p>
+    <p>
+      Nieprowadzenie dokumentacji pracowniczej albo prowadzenie jej niezgodnie z przepisami to
+      wykroczenie przeciwko prawom pracownika zagrożone grzywną od 1000 do 30 000 zł — kontrolę
+      przeprowadza Państwowa Inspekcja Pracy.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
