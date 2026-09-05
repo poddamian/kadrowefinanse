@@ -1,0 +1,122 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Rozwiązanie umowy o pracę za porozumieniem stron — wzór i zasady`;
+const opis = `Czym różni się rozwiązanie umowy za porozumieniem stron od wypowiedzenia, co powinno zawierać porozumienie i jakie są jego skutki dla zasiłku dla bezrobotnych.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/wypowiedzenie-za-porozumieniem-stron-wzor/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · wzór i skutki</span>
+  <h1>Rozwiązanie umowy o pracę za porozumieniem stron</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Rozwiązanie umowy za porozumieniem stron to odrębny tryb od wypowiedzenia — wymaga zgody
+      obu stron i pozwala zakończyć zatrudnienie w dowolnym, wspólnie ustalonym terminie, bez
+      zachowania okresu wypowiedzenia. To odróżnia go od tematu opisanego w{' '}
+      <a href="/blog/wypowiedzenie-umowy-a-ekwiwalent/">wypowiedzenie umowy o pracę a wypłata ekwiwalentu</a>,
+      gdzie stroną decydującą o rozwiązaniu i długości okresu jest tylko jedna ze stron.
+    </p>
+
+    <h2>Co powinno zawierać porozumienie</h2>
+    <ul>
+      <li>zgodne oświadczenia woli obu stron o rozwiązaniu umowy w tym trybie,</li>
+      <li>datę rozwiązania umowy (może to być dzień podpisania porozumienia albo dowolna inna, wspólnie ustalona data),</li>
+      <li>ewentualne dodatkowe ustalenia — np. co do wykorzystania zaległego urlopu, terminu wydania świadectwa pracy czy zwrotu mienia służbowego,</li>
+      <li>podpisy obu stron.</li>
+    </ul>
+    <p>
+      Nie ma ustawowo narzuconego wzoru — wystarczy pisemne oświadczenie potwierdzające zgodną
+      wolę obu stron. W praktyce inicjatywę może zgłosić zarówno pracodawca, jak i pracownik — druga
+      strona musi się na nią zgodzić, bo bez zgody porozumienie nie dochodzi do skutku (wtedy
+      pozostaje tryb wypowiedzenia).
+    </p>
+
+    <h2>Kluczowe różnice względem wypowiedzenia</h2>
+    <table>
+      <caption>Porozumienie stron a wypowiedzenie umowy o pracę</caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Porozumienie stron</th>
+          <th>Wypowiedzenie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Kto decyduje</td>
+          <td>obie strony zgodnie</td>
+          <td>jedna strona jednostronnie</td>
+        </tr>
+        <tr>
+          <td>Okres wypowiedzenia</td>
+          <td>nie obowiązuje — dowolna ustalona data</td>
+          <td>ustawowy, zależny od stażu pracy</td>
+        </tr>
+        <tr>
+          <td>Wymóg podania przyczyny</td>
+          <td>nie</td>
+          <td>tak, przy umowie na czas nieokreślony</td>
+        </tr>
+        <tr>
+          <td>Ochrona szczególna (np. ciąża, wiek przedemerytalny)</td>
+          <td>nie ma zastosowania — wymaga zgody chronionego pracownika</td>
+          <td>obowiązuje, ogranicza możliwość wypowiedzenia</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Skutki dla zasiłku dla bezrobotnych</h2>
+    <p>
+      To najważniejsza praktyczna pułapka: rozwiązanie umowy za porozumieniem stron{' '}
+      <strong>z inicjatywy pracownika</strong> (lub bez ważnej przyczyny leżącej po stronie
+      pracodawcy) skutkuje <strong>90-dniowym okresem karencji</strong> przed nabyciem prawa do
+      zasiłku dla bezrobotnych, liczonym od dnia zarejestrowania się w urzędzie pracy. Karencji tej
+      unika się, jeśli porozumienie nastąpiło z inicjatywy pracodawcy z przyczyn dotyczących
+      zakładu pracy (np. redukcja etatów) — wtedy zasiłek przysługuje na zasadach ogólnych.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy porozumienie stron trzeba uzasadniać?</p>
+    <p>
+      Nie ma obowiązku podawania przyczyny — w przeciwieństwie do wypowiedzenia umowy na czas
+      nieokreślony, gdzie przyczyna jest wymagana. Warto jednak wskazać, z czyjej inicjatywy
+      nastąpiło rozwiązanie, jeśli ma to wpływ na uprawnienia do zasiłku.
+    </p>
+
+    <p class="faq-pytanie">Czy można cofnąć zgodę na porozumienie stron po jego podpisaniu?</p>
+    <p>
+      Co do zasady nie — porozumienie wiąże obie strony od momentu podpisania. Wyjątkiem jest
+      złożenie oświadczenia o uchyleniu się od skutków prawnych oświadczenia woli z powodu błędu
+      lub groźby, na zasadach ogólnych prawa cywilnego.
+    </p>
+
+    <p class="faq-pytanie">Czy przy porozumieniu stron pracownikowi przysługuje ekwiwalent za niewykorzystany urlop?</p>
+    <p>
+      Tak, na takich samych zasadach jak przy każdym innym trybie rozwiązania umowy — zobacz{' '}
+      <a href="/blog/ekwiwalent-za-urlop-jak-liczyc/">jak liczyć ekwiwalent za niewykorzystany urlop</a>.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
