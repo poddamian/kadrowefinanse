@@ -1,0 +1,112 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Urlop okolicznościowy w przypadku śmierci członka rodziny`;
+const opis = `Ile dni urlopu okolicznościowego przysługuje w razie śmierci małżonka, dziecka, rodzica czy dziadków, jak go zgłosić i czy pracodawca może odmówić.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/urlop-okolicznosciowy-smierc-czlonka-rodziny/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · urlop okolicznościowy</span>
+  <h1>Urlop okolicznościowy w przypadku śmierci członka rodziny</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Urlop okolicznościowy to płatne zwolnienie od pracy z zachowaniem prawa do wynagrodzenia,
+      przysługujące w ściśle określonych sytuacjach rodzinnych — w tym w razie śmierci bliskiej
+      osoby. Wymiar zależy od stopnia pokrewieństwa ze zmarłym. Inny rodzaj urlopu, dostępny w
+      podobnych, trudnych okolicznościach, omawiamy w{' '}
+      <a href="/blog/urlop-proporcjonalny-na-zadanie-zalegly/">kompendium o urlopie na żądanie, zaległym i proporcjonalnym</a>.
+    </p>
+
+    <h2>Wymiar dni w zależności od pokrewieństwa</h2>
+    <table>
+      <caption>Urlop okolicznościowy w razie śmierci — wymiar dni</caption>
+      <thead>
+        <tr>
+          <th>Osoba zmarła</th>
+          <th class="liczba">Liczba dni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Małżonek, dziecko, matka, ojciec, macocha, ojczym</td>
+          <td class="mono">2 dni</td>
+        </tr>
+        <tr>
+          <td>Siostra, brat, teściowa, teść, babka, dziadek, inna osoba na utrzymaniu lub pod bezpośrednią opieką pracownika</td>
+          <td class="mono">1 dzień</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Podstawa prawna to rozporządzenie w sprawie sposobu usprawiedliwiania nieobecności w pracy
+      oraz udzielania pracownikom zwolnień od pracy — wydane na podstawie Kodeksu pracy. Urlop
+      przysługuje niezależnie od wymiaru etatu i stażu pracy.
+    </p>
+
+    <h2>Jak zgłosić urlop okolicznościowy</h2>
+    <p>
+      Zgłoszenia dokonuje się bezpośrednio u pracodawcy, zwykle w formie wniosku (pisemnego,
+      mailowego lub nawet ustnego, w zależności od praktyki w danym zakładzie pracy), najlepiej
+      niezwłocznie po powzięciu wiadomości o zdarzeniu. Wykorzystanie dni nie musi przypadać
+      dokładnie w dniu śmierci — zwykle wiąże się z organizacją pogrzebu i formalności, więc
+      pracownik ma pewną swobodę co do konkretnego terminu w rozsądnym odstępie od zdarzenia.
+    </p>
+
+    <h2>Czy pracodawca może odmówić udzielenia urlopu okolicznościowego</h2>
+    <p>
+      Nie — jeśli spełnione są ustawowe przesłanki (odpowiedni stopień pokrewieństwa, zdarzenie
+      wskazane w przepisach), pracodawca ma obowiązek zwolnić pracownika od pracy z zachowaniem
+      prawa do wynagrodzenia. To uprawnienie pracownika, a nie decyzja uznaniowa pracodawcy.
+    </p>
+
+    <h2>Wynagrodzenie za dni urlopu okolicznościowego</h2>
+    <p>
+      Za czas urlopu okolicznościowego pracownik zachowuje prawo do wynagrodzenia, obliczanego na
+      takich samych zasadach jak wynagrodzenie za urlop wypoczynkowy — czyli z uwzględnieniem
+      zarówno składników stałych, jak i zmiennych wynagrodzenia z odpowiedniego okresu.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy urlop okolicznościowy pomniejsza wymiar urlopu wypoczynkowego?</p>
+    <p>
+      Nie — to odrębne, dodatkowe zwolnienie od pracy, niezależne od puli urlopu wypoczynkowego
+      przysługującego w danym roku kalendarzowym.
+    </p>
+
+    <p class="faq-pytanie">Czy urlop okolicznościowy przysługuje przy śmierci teściów obojga małżonków?</p>
+    <p>
+      Tak, przepisy nie różnicują linii pokrewieństwa przez małżeństwo — teściowa i teść (niezależnie
+      od tego, czy to rodzice męża czy żony) dają prawo do 1 dnia urlopu okolicznościowego.
+    </p>
+
+    <p class="faq-pytanie">Czy trzeba przedstawić akt zgonu, żeby otrzymać urlop okolicznościowy?</p>
+    <p>
+      Przepisy nie precyzują wprost obowiązku dokumentowania z góry — w praktyce pracodawca może
+      poprosić o przedstawienie dokumentu potwierdzającego zdarzenie (np. akt zgonu) po powrocie do
+      pracy, w ramach standardowego usprawiedliwiania nieobecności.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
