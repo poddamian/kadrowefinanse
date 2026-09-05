@@ -1,0 +1,106 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Czy pracodawca musi płacić za przestój w pracy?`;
+const opis = `Czym jest przestój w rozumieniu Kodeksu pracy, ile wynosi wynagrodzenie postojowe i czy pracodawca może zamiast tego powierzyć pracownikowi inną pracę.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/przestoj-w-pracy-czy-nalezy-sie-wynagrodzenie/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · wynagrodzenie postojowe</span>
+  <h1>Czy pracodawca musi płacić za przestój w pracy?</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Tak — jeśli pracownik był gotowy do wykonywania pracy, a nie mógł jej wykonywać z przyczyn
+      leżących po stronie pracodawcy, przysługuje mu wynagrodzenie za czas przestoju. To zupełnie
+      inna sytuacja niż nieobecność z winy pracownika czy urlop — tu pracownik pozostawał w
+      gotowości, ale pracodawca nie zapewnił mu możliwości pracy.
+    </p>
+
+    <h2>Czym jest przestój w rozumieniu Kodeksu pracy</h2>
+    <p>
+      Przestój to przerwa w wykonywaniu pracy spowodowana przyczynami niezależnymi od pracownika —
+      np. awaria maszyny, brak surowców do produkcji, brak zleceń, przerwa w dostawie prądu, decyzja
+      organu administracji. Kluczowy warunek: pracownik musi być gotowy do podjęcia pracy (obecny w
+      zakładzie lub w gotowości zgodnie z poleceniem pracodawcy) — jeśli sam nie stawił się do
+      pracy, przepisy o przestoju go nie obejmują.
+    </p>
+
+    <h2>Ile wynosi wynagrodzenie za przestój</h2>
+    <p>
+      Za czas przestoju pracownikowi przysługuje wynagrodzenie wynikające z jego osobistego
+      zaszeregowania (stawki wynagrodzenia zasadniczego), a jeśli taki składnik nie został
+      wyodrębniony — 60% wynagrodzenia obliczanego jak wynagrodzenie za urlop wypoczynkowy. W obu
+      przypadkach wynagrodzenie za przestój nie może być niższe niż wysokość minimalnego
+      wynagrodzenia za pracę.
+    </p>
+
+    <h2>Czy pracodawca może powierzyć inną pracę zamiast płacić za przestój</h2>
+    <p>
+      Tak — w okresie przestoju pracodawca może powierzyć pracownikowi inną, odpowiednią pracę (ze
+      względu na kwalifikacje pracownika), za wynagrodzeniem przewidzianym za tę pracę, nie niższym
+      jednak od wynagrodzenia ustalonego dla przestoju. To rozwiązanie często stosowane, np.
+      kierując pracownika produkcji do prac porządkowych na czas awarii linii produkcyjnej.
+    </p>
+
+    <h2>Przestój z winy pracownika — inne zasady</h2>
+    <p>
+      Jeśli przestój został spowodowany z winy pracownika (np. celowe uszkodzenie sprzętu),
+      wynagrodzenie za czas przestoju nie przysługuje. Podobnie, jeśli pracownik nie stawił się do
+      pracy lub odmówił wykonania innej powierzonej mu pracy bez uzasadnionej przyczyny.
+    </p>
+
+    <h2>Przestój zbiorowy — czy to co innego niż przestój ekonomiczny</h2>
+    <p>
+      Warto odróżnić zwykły przestój z Kodeksu pracy od tzw. przestoju ekonomicznego wprowadzanego
+      na podstawie ustawy o szczególnych rozwiązaniach związanych z ochroną miejsc pracy (np. w
+      okresie spadku obrotów gospodarczych) — ten drugi wiąże się z obniżonym wynagrodzeniem (nie
+      niższym niż minimalne) i może być częściowo dofinansowany ze środków publicznych, ale wymaga
+      odrębnej podstawy prawnej (porozumienia z załogą i zgłoszenia do odpowiedniego programu) —
+      nie jest to automatyczny mechanizm dostępny dla każdego pracodawcy.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy przestój musi trwać cały dzień pracy, żeby przysługiwało wynagrodzenie?</p>
+    <p>
+      Nie — wynagrodzenie za przestój przysługuje za każdy okres gotowości do pracy, w którym
+      pracownik faktycznie nie mógł pracować z przyczyn leżących po stronie pracodawcy, niezależnie
+      od tego, czy dotyczy to części dnia, całego dnia czy dłuższego okresu.
+    </p>
+
+    <p class="faq-pytanie">Czy pracownik musi pozostawać w zakładzie pracy podczas przestoju?</p>
+    <p>
+      Co do zasady tak, chyba że pracodawca zwolni go z takiego obowiązku — kluczowe jest
+      pozostawanie w gotowości do pracy zgodnie z poleceniami pracodawcy, a nie fizyczna obecność
+      sama w sobie.
+    </p>
+
+    <p class="faq-pytanie">Czy za przestój płaci się składki ZUS tak jak od zwykłego wynagrodzenia?</p>
+    <p>
+      Tak — wynagrodzenie za czas przestoju jest traktowane jak zwykłe wynagrodzenie za pracę i
+      podlega standardowemu oskładkowaniu oraz opodatkowaniu.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
