@@ -1,0 +1,121 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, WSPOLCZYNNIK_URLOPOWY } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const wymiarPelny = 26;
+const miesiaceOkresuProbnego = 3;
+const urlopZaOkresProbny = Math.round((wymiarPelny / 12) * miesiaceOkresuProbnego * 100) / 100;
+
+const tytul = `Czy pracownik na okresie próbnym ma prawo do urlopu? (${ROK})`;
+const opis = `Ile dni urlopu należy się na umowie na okres próbny, kiedy można z niego skorzystać i jak liczy się urlop proporcjonalny przy przejściu na kolejną umowę.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/okres-probny-a-prawo-do-urlopu/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · przykład liczbowy</span>
+  <h1>Czy pracownik na okresie próbnym ma prawo do urlopu?</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Tak — umowa na okres próbny jest pełnoprawną umową o pracę w rozumieniu Kodeksu pracy, więc
+      przysługuje z niej urlop wypoczynkowy na takich samych zasadach jak przy każdej innej
+      umowie. Jedyna różnica to zwykle krótszy okres, więc urlop nalicza się proporcjonalnie do
+      przepracowanego czasu. Zasady liczenia opisujemy szerzej w{' '}
+      <a href="/blog/urlop-proporcjonalny-na-zadanie-zalegly/">kompendium o urlopie proporcjonalnym</a>.
+    </p>
+
+    <h2>Ile dni urlopu na okresie próbnym</h2>
+    <p>
+      Wymiar urlopu (20 lub 26 dni rocznie, w zależności od stażu pracy) nalicza się
+      proporcjonalnie do liczby przepracowanych miesięcy w danym roku kalendarzowym — niepełny
+      miesiąc pracy zaokrągla się w górę do pełnego. Przy typowej umowie próbnej na 3 miesiące i
+      wymiarze {wymiarPelny} dni rocznie (staż powyżej 10 lat) wychodzi to na:
+    </p>
+
+    <table>
+      <caption>Urlop proporcjonalny za okres próbny 3 miesiące, wymiar roczny {wymiarPelny} dni</caption>
+      <thead>
+        <tr>
+          <th>Wymiar roczny</th>
+          <th class="liczba">Urlop za 3 miesiące</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>26 dni (staż ≥ 10 lat)</td>
+          <td class="mono">{urlopZaOkresProbny} dnia</td>
+        </tr>
+        <tr>
+          <td>20 dni (staż &lt; 10 lat)</td>
+          <td class="mono">{Math.round((20 / 12) * miesiaceOkresuProbnego * 100) / 100} dnia</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      W praktyce niepełny dzień urlopu zawsze zaokrągla się w górę do pełnego dnia — więc przy
+      3-miesięcznym okresie próbnym i wymiarze 26 dni rocznie (26 ÷ 12 × 3 = 6,5 dnia) pracownikowi
+      przysługują <strong>7 dni</strong> urlopu, a przy wymiarze 20 dni (20 ÷ 12 × 3 ≈ 5 dni) —{' '}
+      <strong>5 dni</strong>.
+    </p>
+
+    <h2>Kiedy można wykorzystać urlop na okresie próbnym</h2>
+    <p>
+      Prawo do pierwszego urlopu w karierze zawodowej pracownik nabywa z upływem każdego
+      przepracowanego miesiąca, w wymiarze 1/12 rocznego wymiaru — czyli już po pierwszym miesiącu
+      pracy na okresie próbnym można wykorzystać przysługującą część urlopu. Nie trzeba czekać do
+      końca umowy próbnej ani do rozpoczęcia kolejnej umowy.
+    </p>
+
+    <h2>Co z niewykorzystanym urlopem po zakończeniu okresu próbnego</h2>
+    <p>
+      Jeśli po umowie na okres próbny strony zawierają kolejną umowę z tym samym pracodawcą bez
+      przerwy, niewykorzystany urlop po prostu przechodzi na kolejną umowę — nie trzeba go
+      rozliczać ekwiwalentem. Ekwiwalent za niewykorzystany urlop wypłaca się tylko wtedy, gdy
+      stosunek pracy faktycznie się kończy (np. żadna ze stron nie chce kontynuować współpracy po
+      okresie próbnym) — zasady tego rozliczenia opisujemy w artykule o{' '}
+      <a href="/blog/ekwiwalent-za-urlop-jak-liczyc/">ekwiwalencie za niewykorzystany urlop</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy pracodawca może odmówić urlopu na okresie próbnym?</p>
+    <p>
+      Nie może odmówić prawa do urlopu jako takiego — może natomiast, tak jak przy każdej umowie,
+      ustalić termin jego wykorzystania zgodnie z planem urlopów lub w porozumieniu z pracownikiem,
+      uwzględniając potrzeby zakładu pracy.
+    </p>
+
+    <p class="faq-pytanie">Czy urlop na żądanie przysługuje już na okresie próbnym?</p>
+    <p>
+      Tak, w ramach limitu 4 dni urlopu na żądanie w roku kalendarzowym, w granicach urlopu, do
+      którego pracownik już nabył prawo (proporcjonalnie do przepracowanych miesięcy).
+    </p>
+
+    <p class="faq-pytanie">Czy okres próbny wlicza się do stażu pracy uprawniającego do wyższego wymiaru urlopu?</p>
+    <p>
+      Tak — każdy okres zatrudnienia na podstawie umowy o pracę, w tym na okres próbny, wlicza się
+      do stażu pracy decydującego o przejściu z 20 na 26 dni urlopu rocznie po przekroczeniu 10 lat
+      łącznego stażu.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r.
+      Współczynnik urlopowy do ekwiwalentu w {ROK} r. wynosi {WSPOLCZYNNIK_URLOPOWY}. W razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
