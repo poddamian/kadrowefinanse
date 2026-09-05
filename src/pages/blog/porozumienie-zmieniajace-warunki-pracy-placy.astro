@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Porozumienie zmieniające warunki pracy i płacy — jak to działa`;
+const opis = `Czym różni się porozumienie zmieniające od wypowiedzenia zmieniającego, kiedy pracodawca może z niego skorzystać i co się dzieje, gdy pracownik nie chce się zgodzić.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/porozumienie-zmieniajace-warunki-pracy-placy/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · zmiana warunków zatrudnienia</span>
+  <h1>Porozumienie zmieniające warunki pracy i płacy</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Zmianę warunków umowy o pracę — stanowiska, wynagrodzenia, wymiaru etatu, miejsca pracy —
+      można przeprowadzić na dwa sposoby: przez porozumienie zmieniające (za obopólną zgodą) albo
+      przez wypowiedzenie zmieniające (jednostronnie, z zachowaniem okresu wypowiedzenia). To
+      inny mechanizm niż{' '}
+      <a href="/blog/wypowiedzenie-za-porozumieniem-stron-wzor/">porozumienie rozwiązujące umowę</a>{' '}
+      — tutaj umowa trwa dalej, zmieniają się tylko jej warunki.
+    </p>
+
+    <h2>Porozumienie zmieniające — wymaga zgody pracownika</h2>
+    <p>
+      Porozumienie zmieniające to zwykła zmiana umowy w drodze aneksu, na którą musi się zgodzić
+      zarówno pracodawca, jak i pracownik. Może dotyczyć dowolnego elementu umowy — wynagrodzenia,
+      stanowiska, wymiaru etatu, miejsca wykonywania pracy — i wchodzi w życie z dniem wskazanym w
+      porozumieniu, bez okresu wypowiedzenia. Jeśli pracownik nie chce się zgodzić na proponowane
+      zmiany, porozumienie po prostu nie dochodzi do skutku — pracodawca nie może go wymusić w tym
+      trybie.
+    </p>
+
+    <h2>Wypowiedzenie zmieniające — gdy pracownik nie zgadza się dobrowolnie</h2>
+    <p>
+      Jeśli pracodawca chce zmienić warunki, a pracownik się na to nie zgadza, jedynym sposobem
+      jest <strong>wypowiedzenie zmieniające</strong> — pracodawca wypowiada dotychczasowe warunki
+      pracy lub płacy, jednocześnie proponując nowe, z zachowaniem takiego samego okresu
+      wypowiedzenia jak przy rozwiązaniu umowy. Pracownik ma czas (połowę okresu wypowiedzenia, nie
+      dłużej niż 2 tygodnie) na złożenie oświadczenia o odmowie przyjęcia nowych warunków — brak
+      takiego oświadczenia oznacza zgodę na proponowane zmiany.
+    </p>
+    <p>
+      Jeśli pracownik odmówi przyjęcia nowych warunków, umowa rozwiązuje się z upływem okresu
+      wypowiedzenia na dotychczasowych zasadach — czyli skutek jest analogiczny do zwykłego
+      wypowiedzenia umowy przez pracodawcę.
+    </p>
+
+    <h2>Kiedy wypowiedzenie zmieniające wymaga uzasadnienia</h2>
+    <p>
+      Przy umowie na czas nieokreślony wypowiedzenie zmieniające, tak jak zwykłe wypowiedzenie,
+      wymaga wskazania konkretnej, prawdziwej przyczyny (np. zmiana organizacji pracy, likwidacja
+      stanowiska w dotychczasowym kształcie). Podlega też tym samym ograniczeniom co zwykłe
+      wypowiedzenie — w tym ochronie szczególnych grup pracowników (ciąża, wiek przedemerytalny,
+      urlop) w takim samym zakresie.
+    </p>
+
+    <h2>Czy pogorszenie warunków zawsze wymaga któregoś z tych trybów</h2>
+    <p>
+      Nie zawsze. Jeśli zmiana mieści się w granicach polecenia służbowego, które i tak wynika z
+      umowy (np. czasowe powierzenie innej pracy zgodnie z art. 42 § 4 Kodeksu pracy — do 3
+      miesięcy w roku kalendarzowym, bez obniżania wynagrodzenia i przy pracy odpowiadającej
+      kwalifikacjom pracownika), nie jest wymagane ani porozumienie, ani wypowiedzenie zmieniające.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy pracodawca może obniżyć wynagrodzenie bez zgody pracownika?</p>
+    <p>
+      Nie w drodze zwykłej decyzji — wymaga to albo zgody pracownika (porozumienie zmieniające),
+      albo wypowiedzenia zmieniającego z zachowaniem okresu wypowiedzenia i zasad dotyczących
+      uzasadnienia.
+    </p>
+
+    <p class="faq-pytanie">Czy przy wypowiedzeniu zmieniającym trzeba czekać do końca okresu wypowiedzenia, żeby nowe warunki zaczęły obowiązywać?</p>
+    <p>
+      Tak — nowe warunki wchodzą w życie dopiero po upływie okresu wypowiedzenia (a nie od razu),
+      chyba że strony zgodnie postanowią inaczej w drodze odrębnego porozumienia.
+    </p>
+
+    <p class="faq-pytanie">Czy odmowa przyjęcia nowych warunków oznacza automatyczne zwolnienie dyscyplinarne?</p>
+    <p>
+      Nie — skutkiem jest rozwiązanie umowy z zachowaniem okresu wypowiedzenia na dotychczasowych
+      warunkach, tak jak przy zwykłym wypowiedzeniu przez pracodawcę, a nie zwolnienie
+      dyscyplinarne.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
