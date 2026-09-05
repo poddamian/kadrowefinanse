@@ -1,0 +1,126 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Praca zdalna okazjonalna — wzór wniosku i zasady`;
+const opis = `Ile dni pracy zdalnej okazjonalnej przysługuje w roku, jak złożyć wniosek i czym różni się to od zwykłej pracy zdalnej uzgodnionej w umowie.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/wniosek-o-prace-zdalna-okazjonalna-wzor/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · wzór wniosku</span>
+  <h1>Praca zdalna okazjonalna — wzór wniosku i zasady</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Praca zdalna okazjonalna to instytucja wprowadzona do Kodeksu pracy w 2023 roku, odrębna od
+      zwykłej pracy zdalnej uzgodnionej na stałe lub hybrydowo w umowie o pracę. Jej cechą
+      charakterystyczną jest to, że wystarczy sam wniosek pracownika — nie trzeba zmieniać umowy
+      ani warunków zatrudnienia.
+    </p>
+
+    <h2>Ile dni pracy zdalnej okazjonalnej przysługuje</h2>
+    <p>
+      Pracownikowi przysługuje <strong>24 dni w roku kalendarzowym</strong> pracy zdalnej
+      okazjonalnej. Limit ten nie jest proporcjonalny do wymiaru etatu ani do okresu zatrudnienia w
+      danym roku — przysługuje w pełnej wysokości niezależnie od tego, czy pracownik jest
+      zatrudniony na cały etat, czy na część etatu, i niezależnie od tego, od kiedy w danym roku
+      pracuje u danego pracodawcy.
+    </p>
+
+    <h2>Jak złożyć wniosek</h2>
+    <p>
+      Wniosek składa się w postaci papierowej lub elektronicznej. Powinien wskazywać dni (lub
+      liczbę dni), na które pracownik wnioskuje o pracę zdalną. W przeciwieństwie do zwykłej pracy
+      zdalnej, przy pracy okazjonalnej pracodawca <strong>nie ma obowiązku uzgadniania z
+      pracownikiem miejsca jej wykonywania w formie odrębnej umowy</strong> ani zapewniania
+      materiałów i narzędzi pracy na takich samych zasadach jak przy stałej pracy zdalnej (np. bez
+      obowiązkowego ryczałtu na koszty energii elektrycznej i internetu, choć strony mogą się na to
+      umówić dobrowolnie).
+    </p>
+
+    <h2>Czy pracodawca musi się zgodzić</h2>
+    <p>
+      To kluczowa różnica względem pracy zdalnej na wniosek niektórych uprzywilejowanych grup
+      (rodzice dzieci do 4. roku życia, opiekunowie osób z niepełnosprawnością i inni wskazani w
+      przepisach), gdzie odmowa wymaga wykazania niemożliwości ze względu na organizację pracy lub
+      jej rodzaj. Przy pracy zdalnej okazjonalnej pracodawca ma pełną swobodę decyzji —{' '}
+      <strong>wniosek nie jest dla niego wiążący</strong>, może go uwzględnić w całości, częściowo
+      albo odmówić bez podawania przyczyny.
+    </p>
+
+    <h2>Czym różni się od zwykłej pracy zdalnej</h2>
+    <table>
+      <caption>Praca zdalna okazjonalna a praca zdalna uzgodniona w umowie</caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Okazjonalna</th>
+          <th>Uzgodniona (stała/hybrydowa)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Podstawa</td>
+          <td>wniosek pracownika</td>
+          <td>zmiana umowy lub odrębne porozumienie</td>
+        </tr>
+        <tr>
+          <td>Limit dni</td>
+          <td>24 dni w roku</td>
+          <td>brak ustawowego limitu</td>
+        </tr>
+        <tr>
+          <td>Obowiązek zapewnienia sprzętu i ryczałtu</td>
+          <td>nie, chyba że strony ustalą inaczej</td>
+          <td>tak, na zasadach ustawowych</td>
+        </tr>
+        <tr>
+          <td>Zgoda pracodawcy</td>
+          <td>swobodna, bez uzasadnienia</td>
+          <td>zależnie od trybu (dobrowolny lub na wniosek grup uprzywilejowanych)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy niewykorzystane dni pracy zdalnej okazjonalnej przechodzą na kolejny rok?</p>
+    <p>
+      Nie — limit 24 dni dotyczy danego roku kalendarzowego i nie kumuluje się ani nie przechodzi
+      na następny rok.
+    </p>
+
+    <p class="faq-pytanie">Czy pracodawca musi kontrolować BHP przy pracy zdalnej okazjonalnej tak samo jak przy stałej?</p>
+    <p>
+      Obowiązki w zakresie BHP są ograniczone w porównaniu ze stałą pracą zdalną — pracownik składa
+      jedynie oświadczenie o zapoznaniu się z zasadami BHP oraz potwierdza, że stanowisko pracy w
+      miejscu zdalnym spełnia wymogi bezpiecznego i higienicznego wykonywania pracy.
+    </p>
+
+    <p class="faq-pytanie">Czy praca zdalna okazjonalna wymaga zmiany umowy o pracę?</p>
+    <p>
+      Nie — to jej główna zaleta organizacyjna. Wystarczy wniosek pracownika i (fakultatywna,
+      bo niewymagana ustawowo) zgoda pracodawcy — bez aneksowania umowy.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
