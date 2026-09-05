@@ -1,0 +1,124 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, NORMA_DOBOWA } from '../../lib/params2026';
+
+const aktualizacja = '5 września 2026';
+
+const tytul = `Jak rozliczyć nadgodziny w systemie równoważnym czasu pracy`;
+const opis = `Na czym polega równoważny system czasu pracy, do ilu godzin można wydłużyć dobowy wymiar i kiedy w takim systemie w ogóle powstają nadgodziny.`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-05',
+  dateModified: '2026-09-05',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/nadgodziny-system-rownowazny/',
+};
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">poradnik · system równoważny</span>
+  <h1>Jak rozliczyć nadgodziny w systemie równoważnym czasu pracy</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      System równoważny to jeden z podstawowych systemów czasu pracy z Kodeksu pracy, w którym
+      dobowy wymiar czasu pracy może zostać wydłużony ponad standardowe {NORMA_DOBOWA} godzin, pod
+      warunkiem że w innym dniu zostanie odpowiednio skrócony — tak, by średnio w okresie
+      rozliczeniowym wyjść na normę 40 godzin tygodniowo. To sprawia, że liczenie nadgodzin wygląda
+      tu inaczej niż w podstawowym systemie czasu pracy.
+    </p>
+
+    <h2>Do ilu godzin można wydłużyć dobę pracowniczą</h2>
+    <table>
+      <caption>Maksymalne wydłużenie doby pracowniczej w systemie równoważnym</caption>
+      <thead>
+        <tr>
+          <th>Rodzaj pracy</th>
+          <th class="liczba">Maksymalny dobowy wymiar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Standardowy system równoważny</td>
+          <td class="mono">12 godzin</td>
+        </tr>
+        <tr>
+          <td>Praca przy dozorze urządzeń lub pogotowiu do pracy</td>
+          <td class="mono">16 godzin</td>
+        </tr>
+        <tr>
+          <td>Pracownicy zatrudnieni przy pilnowaniu mienia lub ochronie osób</td>
+          <td class="mono">24 godziny</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Okres rozliczeniowy w systemie równoważnym wynosi standardowo 1 miesiąc, ale w
+      uzasadnionych przypadkach (organizacja pracy, rodzaj działalności) może zostać przedłużony do
+      3 miesięcy, a przy pracach uzależnionych od pory roku lub warunków atmosferycznych — nawet do
+      4 miesięcy.
+    </p>
+
+    <h2>Kiedy w systemie równoważnym powstają nadgodziny</h2>
+    <p>
+      Wydłużenie doby pracowniczej zgodnie z harmonogramem <strong>nie jest samo w sobie</strong>{' '}
+      nadgodziną — to zaplanowana, dłuższa zmiana, którą rekompensuje krótszy dzień pracy w innym
+      terminie tego samego okresu rozliczeniowego. Nadgodziny powstają dopiero, gdy pracownik
+      przepracuje:
+    </p>
+    <ul>
+      <li>więcej godzin niż przewiduje harmonogram na dany dzień (nadgodziny dobowe),</li>
+      <li>więcej godzin niż wynika z obowiązującej normy średniotygodniowej po zsumowaniu całego okresu rozliczeniowego (nadgodziny średniotygodniowe/okresu rozliczeniowego).</li>
+    </ul>
+    <p>
+      Innymi słowy: to samo 12-godzinne zaplanowane zejście z pracy w systemie równoważnym jest w
+      pełni zgodne z prawem i nie generuje nadgodzin — dopiero praca ponad harmonogram (np. 14
+      godzin zamiast zaplanowanych 12) rodzi nadgodziny za te dodatkowe 2 godziny.
+    </p>
+
+    <h2>Wynagrodzenie i dodatek za nadgodziny</h2>
+    <p>
+      Zasady dodatku za nadgodziny są identyczne jak w podstawowym systemie czasu pracy — 100%
+      wynagrodzenia za nadgodziny w nocy, w niedziele i święta niebędące dla pracownika dniami
+      pracy zgodnie z obowiązującym rozkładem czasu pracy oraz w dniu wolnym udzielonym w zamian za
+      pracę w niedzielę lub święto; 50% wynagrodzenia za nadgodziny w pozostałych dniach. Zamiast
+      dodatku pracodawca może, na wniosek pracownika lub z własnej inicjatywy, udzielić czasu
+      wolnego w odpowiednim wymiarze (1,5 godziny wolnego za każdą godzinę nadliczbową na wniosek
+      pracodawcy, albo 1 godzina za 1 godzinę na wniosek pracownika).
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy w systemie równoważnym można pracować więcej niż 12 godzin na dobę?</p>
+    <p>
+      Tak, ale tylko w wyjątkach przewidzianych przepisami — przy dozorze urządzeń, pogotowiu do
+      pracy (do 16 godzin) albo przy pilnowaniu mienia lub ochronie osób (do 24 godzin). Poza tymi
+      przypadkami maksimum to 12 godzin na dobę.
+    </p>
+
+    <p class="faq-pytanie">Czy pracownik w systemie równoważnym może mieć nadgodziny mimo krótszego dnia pracy w innym terminie?</p>
+    <p>
+      Tak — jeśli w danym dniu przepracował więcej niż przewidywał harmonogram, powstają nadgodziny
+      dobowe niezależnie od tego, że w innym dniu miał krótszą zmianę.
+    </p>
+
+    <p class="faq-pytanie">Ile maksymalnie nadgodzin w roku dopuszcza Kodeks pracy w systemie równoważnym?</p>
+    <p>
+      Ten sam ogólny limit co w innych systemach — 150 godzin nadgodzin rocznie wynikający wprost z
+      Kodeksu pracy (chyba że układ zbiorowy, regulamin pracy lub umowa o pracę przewiduje inny,
+      wyższy limit) oraz limit tygodniowy wynikający z zachowania co najmniej 11-godzinnego
+      nieprzerwanego odpoczynku dobowego.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie stanowi porady prawnej. Stan prawny na {ROK} r. — w razie
+      wątpliwości co do konkretnego przypadku skonsultuj się z działem kadr lub prawnikiem
+      specjalizującym się w prawie pracy.
+    </div>
+  </div>
+</Layout>
