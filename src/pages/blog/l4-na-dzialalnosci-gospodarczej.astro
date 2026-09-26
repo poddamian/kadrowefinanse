@@ -1,0 +1,113 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, ZUS_STAWKI, ZUS_DUZY_PODSTAWA } from '../../lib/params2026';
+
+const aktualizacja = '19 sierpnia 2026';
+const tytul = 'Zwolnienie L4 na działalności gospodarczej — jak liczy się zasiłek';
+const opis = 'Praktyczny przewodnik dla przedsiębiorców: 90-dniowy okres wyczekiwania, terminy opłacania składki chorobowej, co się dzieje przy zawieszeniu firmy i jak zgłosić zwolnienie do ZUS.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-08',
+  dateModified: '2026-09-08',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/l4-na-dzialalnosci-gospodarczej/',
+};
+
+const skladkaChorobowaDuzyZus = ZUS_DUZY_PODSTAWA * ZUS_STAWKI.chorobowa;
+const fmt = (n: number) => n.toFixed(2).replace('.', ',') + ' zł';
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">okres wyczekiwania: 90 dni</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Zasiłek chorobowy na działalności gospodarczej to nie automat — trzeba spełnić
+      kilka warunków formalnych, zanim ZUS w ogóle zacznie go wypłacać. Poniżej krok po
+      kroku: co musisz mieć opłacone, jakie terminy pilnować i co się dzieje, gdy
+      przegapisz płatność albo zawiesisz firmę.
+    </p>
+
+    <h2>Warunek podstawowy: dobrowolna składka chorobowa</h2>
+    <p>
+      W przeciwieństwie do składek emerytalnej, rentowej i wypadkowej — chorobowa jest
+      dla przedsiębiorcy <strong>dobrowolna</strong>. Bez niej nie ma prawa do zasiłku
+      chorobowego, macierzyńskiego ani opiekuńczego, niezależnie od tego, ile lat
+      prowadzisz firmę. Stawka to {(ZUS_STAWKI.chorobowa * 100).toString().replace('.', ',')}%
+      podstawy wymiaru — przy dużym ZUS to {fmt(skladkaChorobowaDuzyZus)} miesięcznie.
+    </p>
+
+    <h2>90 dni wyczekiwania — i jak łatwo je stracić</h2>
+    <p>
+      Prawo do zasiłku nabywasz dopiero po <strong>90 dniach nieprzerwanego
+      ubezpieczenia chorobowego</strong>. „Nieprzerwane" to słowo klucz: jeśli spóźnisz
+      się z opłatą składki choćby o jeden dzień po terminie, ZUS traktuje to jako
+      przerwę w ubezpieczeniu chorobowym — i 90-dniowy licznik startuje od zera. Wpłata
+      z odsetkami po terminie nie naprawia tej przerwy retroaktywnie.
+    </p>
+    <ul>
+      <li>Termin płatności składek: do 20. dnia następnego miesiąca (osoby zatrudniające pracowników) lub do 20. dnia (jednoosobowa działalność bez pracowników — sprawdź swój indywidualny numer rachunku i termin w CEIDG/ZUS).</li>
+      <li>Wcześniejszy okres ubezpieczenia chorobowego (np. z etatu tuż przed założeniem firmy) może się wliczyć do 90 dni, jeśli przerwa między tytułami ubezpieczenia nie przekroczyła 30 dni.</li>
+      <li>Osoby korzystające z ulgi na start (tylko ubezpieczenie zdrowotne, bez społecznych) nie mają w tym okresie ubezpieczenia chorobowego w ogóle — okres wyczekiwania zaczyna biec dopiero po przejściu na preferencyjny lub duży ZUS ze składką chorobową.</li>
+    </ul>
+
+    <h2>Jak zgłosić zwolnienie</h2>
+    <p>
+      Lekarz wystawia e-ZLA elektronicznie — trafia ono automatycznie do ZUS, nie musisz
+      nigdzie nic dostarczać osobiście. Do wypłaty zasiłku ZUS może jednak zażądać
+      dodatkowych dokumentów, m.in. zaświadczenia płatnika składek (jeśli jesteś
+      jednocześnie zatrudniony) albo oświadczenia o okolicznościach niezbędnych do
+      ustalenia prawa do zasiłku (Z-10). W większości przypadków, gdy przedsiębiorca
+      sam opłaca składki i nie zatrudnia pracowników, ZUS wypłaca zasiłek bezpośrednio
+      po weryfikacji e-ZLA i historii składkowej.
+    </p>
+
+    <h2>Co z zawieszoną działalnością?</h2>
+    <p>
+      W okresie zawieszenia działalności nie płacisz składek — w tym chorobowej — więc
+      ubezpieczenie chorobowe ustaje. Zwolnienie lekarskie w trakcie zawieszenia nie
+      daje prawa do zasiłku z tego tytułu. Jeśli planujesz zawiesić firmę, a spodziewasz
+      się w najbliższym czasie dłuższej niezdolności do pracy (np. planowany zabieg),
+      warto przeliczyć, czy nie lepiej odłożyć zawieszenie do czasu zakończenia
+      zwolnienia.
+    </p>
+    <p>
+      Chcesz zobaczyć, ile realnie wynosi zasiłek przy różnych wariantach ZUS? Mamy
+      wyliczenia w <a href="/blog/zasilek-chorobowy-etat-b2b/">Zasiłek chorobowy — etat vs B2B</a>.
+      Wybierasz między dużym a preferencyjnym ZUS przy zakładaniu firmy? Sprawdź to w{' '}
+      <a href="/blog/preferencyjny-zus-ulga-na-start/">Preferencyjny ZUS i ulga na start</a>{' '}
+      oraz w <a href="/b2b-czy-uop/">kalkulatorze B2B vs umowa o pracę</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy jednodniowe spóźnienie ze składką naprawdę zeruje okres wyczekiwania?</p>
+    <p>
+      Tak, formalnie każda przerwa w opłacaniu składki chorobowej w terminie przerywa
+      ciągłość ubezpieczenia chorobowego, co oznacza ponowne liczenie 90 dni. W praktyce
+      ZUS bada to indywidualnie na podstawie historii wpłat — dlatego pilnowanie
+      terminów jest ważniejsze na działalności niż na etacie, gdzie za terminowość
+      odpowiada pracodawca.
+    </p>
+
+    <p class="faq-pytanie">Czy można dopłacić zaległą składkę chorobową, żeby nie stracić ciągłości?</p>
+    <p>
+      Nie w sposób, który cofnąłby skutek przerwy — wpłata po terminie z odsetkami
+      pokrywa zaległość, ale nie przywraca ciągłości ubezpieczenia chorobowego wstecz.
+      Jedyne zabezpieczenie to pilnowanie terminu płatności na bieżąco, najlepiej ze
+      stałym zleceniem przelewu kilka dni przed terminem.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy. Indywidualne terminy i numery rachunków składkowych
+      ustala ZUS dla każdego płatnika osobno. Stawki na {ROK} r. Nie stanowi porady
+      prawnej — w razie wątpliwości skontaktuj się z ZUS lub księgowym.
+    </div>
+  </div>
+</Layout>

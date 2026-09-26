@@ -1,0 +1,143 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '19 sierpnia 2026';
+const tytul = `PPK ${ROK} — ile realnie kosztuje pracownika i pracodawcę`;
+const opis = 'Ile miesięcznie potrąca się z Twojej pensji na PPK, ile dokłada pracodawca i ile dopłaca państwo — pełne rozbicie na przykładzie 6 000 zł brutto.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-22',
+  dateModified: '2026-09-22',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/ppk-ile-kosztuje/',
+};
+
+const brutto = 6000;
+const wplataPracownika = brutto * 0.02;
+const wplataPracodawcy = brutto * 0.015;
+const wplataPracownikaMax = brutto * 0.04;
+const wplataPracodawcyMax = brutto * 0.04;
+const fmt = (n: number) => n.toFixed(2).replace('.', ',') + ' zł';
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">wpłata podstawowa: 2% pracownik + 1,5% pracodawca</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      PPK (Pracowniczy Plan Kapitałowy) to dodatkowy program oszczędzania na emeryturę,
+      do którego pracownicy są zapisywani automatycznie (z możliwością rezygnacji). Zanim
+      zdecydujesz, czy w nim zostać, warto policzyć, ile to realnie kosztuje — i ile
+      dokłada za Ciebie pracodawca i państwo.
+    </p>
+
+    <h2>Kto ile wpłaca</h2>
+    <ul>
+      <li><strong>Pracownik:</strong> wpłata podstawowa 2% wynagrodzenia brutto (można obniżyć do 0,5%, jeśli łączne wynagrodzenie ze wszystkich źródeł nie przekracza 1,2-krotności płacy minimalnej), opcjonalna wpłata dodatkowa do 2% — łącznie maksymalnie 4%.</li>
+      <li><strong>Pracodawca:</strong> wpłata podstawowa 1,5% wynagrodzenia brutto pracownika, opcjonalna dodatkowa do 2,5% — łącznie maksymalnie 4%.</li>
+      <li><strong>Państwo:</strong> jednorazowa wpłata powitalna 250 zł oraz dopłata roczna 240 zł, pod warunkiem wpłacenia minimalnej wymaganej kwoty w danym roku.</li>
+    </ul>
+    <p>
+      Ważna różnica w mechanice potrąceń: wpłata pracownika jest potrącana z
+      wynagrodzenia <strong>netto</strong> (już po podatku i składkach ZUS) — zmniejsza
+      więc bezpośrednio to, co widzisz na koncie. Wpłata pracodawcy jest dodatkowym
+      kosztem po jego stronie i stanowi Twój przychód podlegający PIT (choć nie trafia na
+      Twoje konto bankowe, tylko na rachunek PPK) — nie jest za to oskładkowana ZUS.
+    </p>
+
+    <h2>Przykład: 6 000 zł brutto miesięcznie</h2>
+    <table>
+      <caption>Wpłaty PPK przy wpłacie podstawowej i maksymalnej. Stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Wpłata</th>
+          <th class="liczba">Podstawowa</th>
+          <th class="liczba">Maksymalna (2%+2% / 1,5%+2,5%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pracownik (potrącenie z netto)</td>
+          <td class="mono">{fmt(wplataPracownika)}/mies.</td>
+          <td class="mono">{fmt(wplataPracownikaMax)}/mies.</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>Pracodawca (dodatkowy koszt)</td>
+          <td class="mono">{fmt(wplataPracodawcy)}/mies.</td>
+          <td class="mono">{fmt(wplataPracodawcyMax)}/mies.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg viewBox="0 0 640 240" role="img" aria-label="Wykres: przy wpłacie podstawowej pracownik wpłaca 120 zł miesięcznie, a pracodawca dokłada 90 zł. Do tego 240 zł rocznej dopłaty od państwa.">
+        <title>Kto wpłaca ile do PPK — przykład 6 000 zł brutto</title>
+        <line x1="40" y1="200" x2="600" y2="200" stroke="#c7dccf" stroke-width="1" />
+        <rect x="120" y="70" width="90" height="130" fill="#1e5b43" rx="2" />
+        <text x="165" y="60" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{fmt(wplataPracownika)}</text>
+        <text x="165" y="220" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">Pracownik/mies.</text>
+
+        <rect x="330" y="105" width="90" height="95" fill="#c96f1e" rx="2" />
+        <text x="375" y="95" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">{fmt(wplataPracodawcy)}</text>
+        <text x="375" y="220" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">Pracodawca/mies.</text>
+
+        <rect x="470" y="180" width="90" height="20" fill="#c96f1e" rx="2" opacity="0.6" />
+        <text x="515" y="170" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#16281f">20,00 zł</text>
+        <text x="515" y="220" text-anchor="middle" font-family="Manrope Variable, sans-serif" font-size="12" fill="#4a5d53">Państwo (240 zł/12)</text>
+      </svg>
+      <figcaption>
+        Za każde 120 zł wpłacone przez pracownika pracodawca i państwo dokładają razem
+        ok. 110 zł — to prawie 1:1 „dopłaty" do własnej wpłaty.
+      </figcaption>
+    </figure>
+
+    <h2>Co się dzieje z pieniędzmi</h2>
+    <p>
+      Środki trafiają na Twój indywidualny rachunek w wybranym (lub domyślnym) funduszu
+      inwestycyjnym zdefiniowanej daty — im bliżej 60. roku życia, tym fundusz
+      automatycznie przesuwa się w bezpieczniejsze aktywa. Pieniądze są prywatne i
+      dziedziczone. Możesz je wypłacić w każdej chwili przed 60. rokiem życia, ale
+      tracisz wtedy dopłaty państwowe, 30% wpłat pracodawcy trafia na Twoje konto
+      emerytalne w ZUS (nie wraca do Ciebie), a od zysków płacisz podatek Belki.
+    </p>
+    <p>
+      Zastanawiasz się, czy lepiej zrezygnować z PPK? Policzyliśmy realny koszt
+      uczestnictwa i korzyści w <a href="/blog/rezygnacja-z-ppk-kalkulacja/">Czy warto rezygnować z PPK</a>.
+      Sprawdzasz różnice w przyszłej emeryturze między etatem a B2B? Zobacz{' '}
+      <a href="/blog/emerytura-etat-b2b/">Emerytura na etacie a na B2B</a> i{' '}
+      <a href="/b2b-czy-uop/">kalkulator B2B vs umowa o pracę</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy PPK dotyczy też osób na B2B?</p>
+    <p>
+      Nie — PPK dotyczy osób zatrudnionych na podstawie umowy o pracę (oraz części umów
+      zlecenia podlegających obowiązkowo ubezpieczeniom emerytalnemu i rentowemu).
+      Przedsiębiorcy prowadzący jednoosobową działalność gospodarczą nie są nim objęci i
+      nie mają odpowiednika finansowanego przez „pracodawcę" — dla nich alternatywą są
+      IKE i IKZE.
+    </p>
+
+    <p class="faq-pytanie">Czy mogę zmienić wysokość swojej wpłaty w trakcie roku?</p>
+    <p>
+      Tak, wysokość wpłaty dodatkowej (ponad podstawowe 2%) możesz zmieniać w dowolnym
+      momencie poprzez deklarację złożoną instytucji finansowej lub pracodawcy. Obniżenie
+      wpłaty podstawowej do 0,5% jest możliwe tylko przy niskich zarobkach (do 1,2×
+      płacy minimalnej ze wszystkich źródeł).
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy. Stawki na {ROK} r. Nie stanowi porady finansowej
+      ani inwestycyjnej — decyzję o uczestnictwie warto podjąć po zapoznaniu się z kartą
+      funduszu wybranej instytucji finansowej.
+    </div>
+  </div>
+</Layout>
