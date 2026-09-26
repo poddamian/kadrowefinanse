@@ -1,0 +1,142 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK } from '../../lib/params2026';
+
+const aktualizacja = '19 sierpnia 2026';
+const tytul = 'Czy warto rezygnować z PPK — kalkulacja korzyści i strat';
+const opis = 'Ile realnie tracisz, rezygnując z PPK, a ile zyskujesz na wyższym wynagrodzeniu netto od razu. Porównanie na 10-letnim przykładzie bez zakładania stopy zwrotu z inwestycji.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-09-29',
+  dateModified: '2026-09-29',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/rezygnacja-z-ppk-kalkulacja/',
+};
+
+const brutto = 6000;
+const wplataPracownikaMies = brutto * 0.02;
+const wplataPracodawcyMies = brutto * 0.015;
+const dopalataRoczna = 240;
+const wplataPowitalna = 250;
+
+const lata = 10;
+const wplataPracownikaSuma = wplataPracownikaMies * 12 * lata;
+const wplataPracodawcySuma = wplataPracodawcyMies * 12 * lata;
+const dopalataSuma = dopalataRoczna * lata + wplataPowitalna;
+const razemBezZyskow = wplataPracownikaSuma + wplataPracodawcySuma + dopalataSuma;
+
+const fmt = (n: number) => n.toFixed(2).replace('.', ',') + ' zł';
+const fmt0 = (n: number) => Math.round(n).toLocaleString('pl-PL') + ' zł';
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">10-letni przykład · bez zakładania stopy zwrotu</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      Rezygnacja z PPK daje natychmiastowy, wymierny efekt: wyższe wynagrodzenie netto
+      co miesiąc. Zostanie w PPK daje efekt odroczony, ale — jak pokazuje sama
+      arytmetyka wpłat, bez liczenia jeszcze zysków z inwestowania — wyraźnie większy w
+      długim terminie. Sprawdźmy obie strony na liczbach.
+    </p>
+
+    <h2>Co zyskujesz, rezygnując</h2>
+    <p>
+      Rezygnując, przestajesz „tracić" wpłatę pracownika potrącaną z wynagrodzenia
+      netto. Przy 6 000 zł brutto (wpłata podstawowa 2%) to <strong>{fmt(wplataPracownikaMies)}</strong>{' '}
+      więcej na koncie co miesiąc — {fmt(wplataPracownikaMies * 12)} rocznie.
+    </p>
+
+    <h2>Co tracisz, rezygnując</h2>
+    <p>
+      Wraz z własną wpłatą tracisz też to, czego pracodawca i państwo nie wpłacą, jeśli
+      Cię nie ma w programie — a to nie jest Twoja wpłata, tylko czysty dodatek:
+    </p>
+    <ul>
+      <li>Wpłata pracodawcy (1,5% brutto): {fmt(wplataPracodawcyMies)}/mies., {fmt(wplataPracodawcyMies * 12)}/rok.</li>
+      <li>Dopłata roczna od państwa: {dopalataRoczna} zł/rok (po spełnieniu warunku minimalnych wpłat).</li>
+      <li>Jednorazowa wpłata powitalna: {wplataPowitalna} zł.</li>
+      <li>Zwolnienie z podatku Belki od zysków wypracowanych w PPK do wypłaty po 60. roku życia.</li>
+    </ul>
+
+    <h2>Bilans po 10 latach — sama arytmetyka wpłat</h2>
+    <p>
+      Poniżej suma wpłat przy założeniu stałego wynagrodzenia 6 000 zł brutto przez 10
+      lat, <strong>bez uwzględnienia jakiegokolwiek zysku z inwestowania</strong> tych
+      środków (realny wynik z reguły będzie wyższy lub niższy, zależnie od koniunktury
+      rynkowej).
+    </p>
+    <table>
+      <caption>Suma wpłat do PPK po 10 latach przy 6 000 zł brutto/mies. Stawki {ROK}.</caption>
+      <tbody>
+        <tr>
+          <td>Wpłaty pracownika (2% × 10 lat)</td>
+          <td class="mono">{fmt0(wplataPracownikaSuma)}</td>
+        </tr>
+        <tr>
+          <td>Wpłaty pracodawcy (1,5% × 10 lat)</td>
+          <td class="mono">{fmt0(wplataPracodawcySuma)}</td>
+        </tr>
+        <tr>
+          <td>Dopłaty państwa (powitalna + roczne × 10)</td>
+          <td class="mono">{fmt0(dopalataSuma)}</td>
+        </tr>
+        <tr class="suma">
+          <td>Razem na koncie PPK po 10 latach</td>
+          <td class="mono">{fmt0(razemBezZyskow)}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Z tego <strong>{fmt0(wplataPracownikaSuma)}</strong> to Twoje własne pieniądze —
+      reszta, <strong>{fmt0(razemBezZyskow - wplataPracownikaSuma)}</strong>, to „darmowy"
+      dodatek od pracodawcy i państwa, którego nie dostaniesz, jeśli zrezygnujesz. To
+      ponad {Math.round(((razemBezZyskow - wplataPracownikaSuma) / wplataPracownikaSuma) * 100)}%
+      więcej niż to, co sam wpłaciłeś — zanim jeszcze fundusz cokolwiek zarobi na
+      rynku.
+    </p>
+
+    <h2>Kiedy rezygnacja mimo to ma sens</h2>
+    <p>
+      Rezygnacja bywa racjonalna, gdy priorytetem jest bieżąca płynność finansowa —
+      np. spłacasz drogi dług konsumencki o wyższym oprocentowaniu niż realistyczna stopa
+      zwrotu z PPK, albo brakuje Ci na bieżące wydatki. W takiej sytuacji nadpłata
+      droższego zobowiązania (zobacz{' '}
+      <a href="/blog/kredyt-gotowkowy-a-nadplata/">Kredyt gotówkowy a nadpłata</a>) może
+      się bardziej opłacać niż „darmowy" dodatek do PPK, którego nie poczujesz od razu w
+      portfelu.
+    </p>
+    <p>
+      Chcesz zobaczyć pełne rozbicie wpłat i mechanikę PPK? Zacznij od{' '}
+      <a href="/blog/ppk-ile-kosztuje/">PPK — ile realnie kosztuje pracownika i pracodawcę</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Czy rezygnacja jest trwała?</p>
+    <p>
+      Nie — deklaracja o rezygnacji jest ważna maksymalnie 4 lata. Co 4 lata pracodawca
+      jest zobowiązany ponownie zapisać wszystkich uprawnionych pracowników automatycznie
+      (autozapis), niezależnie od wcześniejszej rezygnacji. Możesz oczywiście złożyć
+      kolejną deklarację rezygnacji.
+    </p>
+
+    <p class="faq-pytanie">Czy mogę wrócić do PPK wcześniej, jeśli zrezygnowałem?</p>
+    <p>
+      Tak, w każdej chwili możesz złożyć wniosek o wznowienie dokonywania wpłat — nie
+      trzeba czekać na kolejny autozapis.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy i nie zakłada zysków ani strat z inwestowania
+      środków — realny wynik zależy od wybranego funduszu i koniunktury rynkowej.
+      Stawki na {ROK} r. Nie stanowi porady finansowej ani inwestycyjnej.
+    </div>
+  </div>
+</Layout>
