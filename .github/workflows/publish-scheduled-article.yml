@@ -1,0 +1,64 @@
+name: Publish scheduled article
+
+on:
+  schedule:
+    - cron: '17 7 * * 2'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  merge-next-article:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Fetch all branches
+        run: git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+
+      - name: Find next unmerged scheduled-artykul branch
+        id: find
+        run: |
+          next=""
+          for n in $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/scheduled-artykul-*' \
+                     | sed 's#.*scheduled-artykul-##' | sort -n); do
+            branch="origin/scheduled-artykul-$n"
+            if ! git merge-base --is-ancestor "$branch" HEAD; then
+              next="$n"
+              break
+            fi
+          done
+          if [ -z "$next" ]; then
+            echo "No pending scheduled-artykul branch to merge."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Next branch to merge: scheduled-artykul-$next"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            echo "branch=scheduled-artykul-$next" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Merge branch into master
+        if: steps.find.outputs.found == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git merge --no-ff --no-edit "origin/${{ steps.find.outputs.branch }}"
+
+      - uses: actions/setup-node@v4
+        if: steps.find.outputs.found == 'true'
+        with:
+          node-version: 20
+
+      - name: Verify build before publishing
+        if: steps.find.outputs.found == 'true'
+        run: |
+          npm ci
+          npm run build
+
+      - name: Push to master (triggers Cloudflare deploy)
+        if: steps.find.outputs.found == 'true'
+        run: git push origin master
