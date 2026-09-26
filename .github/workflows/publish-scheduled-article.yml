@@ -23,9 +23,17 @@ jobs:
       - name: Find next unmerged scheduled-artykul branch
         id: find
         run: |
+          # Branches below #22 are already published on master through an older,
+          # non-ancestor-preserving merge (git history doesn't line up), which makes
+          # ancestor checks against them misfire as false "unmerged" conflicts.
+          # #1-21 confirmed live on master 2026-09-26 — floor the search at #22.
+          MIN_N=22
           next=""
           for n in $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/scheduled-artykul-*' \
                      | sed 's#.*scheduled-artykul-##' | sort -n); do
+            if [ "$n" -lt "$MIN_N" ]; then
+              continue
+            fi
             branch="origin/scheduled-artykul-$n"
             if ! git merge-base --is-ancestor "$branch" HEAD; then
               next="$n"
