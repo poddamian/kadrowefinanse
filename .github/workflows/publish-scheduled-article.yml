@@ -59,7 +59,7 @@ jobs:
       - uses: actions/setup-node@v4
         if: steps.find.outputs.found == 'true'
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Verify build before publishing
         if: steps.find.outputs.found == 'true'
