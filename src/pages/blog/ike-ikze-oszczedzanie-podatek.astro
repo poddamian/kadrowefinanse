@@ -1,0 +1,147 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ROK, PRZECIETNE_PROGNOZOWANE, PIT } from '../../lib/params2026';
+
+const aktualizacja = '19 sierpnia 2026';
+const tytul = 'IKE i IKZE — ile można zaoszczędzić na podatku';
+const opis = 'Różnice między IKE a IKZE: limity wpłat, ulga podatkowa przy wpłacie na IKZE, zwolnienie z podatku Belki, zasady wypłaty po 60./65. roku życia.';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: tytul,
+  description: opis,
+  datePublished: '2026-10-13',
+  dateModified: '2026-10-13',
+  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  url: 'https://kadrowefinanse.pl/blog/ike-ikze-oszczedzanie-podatek/',
+};
+
+// Limity orientacyjne — oficjalne kwoty ogłasza corocznie Ministerstwo Finansów w komunikacie
+const limitIkeOrientacyjny = 3 * PRZECIETNE_PROGNOZOWANE;
+const limitIkzeEtatOrientacyjny = 1.2 * PRZECIETNE_PROGNOZOWANE;
+const limitIkzeJdgOrientacyjny = 1.8 * PRZECIETNE_PROGNOZOWANE;
+
+const wplataIkze = limitIkzeEtatOrientacyjny;
+const oszczednoscPodatkowa12 = wplataIkze * PIT.stawka1;
+const oszczednoscPodatkowa32 = wplataIkze * PIT.stawka2;
+
+const fmt0 = (n: number) => Math.round(n).toLocaleString('pl-PL') + ' zł';
+---
+
+<Layout title={tytul} description={opis} schema={schema}>
+  <span class="brew">IKE: bez podatku od zysków · IKZE: ulga w PIT od razu</span>
+  <h1>{tytul}</h1>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+
+  <div class="tresc" style="margin-top: 1rem;">
+    <p style="font-size: 1.05rem;">
+      IKE i IKZE to dwa konta emerytalne o zupełnie innej logice podatkowej — jedno daje
+      korzyść na końcu (brak podatku od zysków), drugie od razu (odliczenie od dochodu).
+      Można mieć oba naraz i łączyć korzyści. Zobaczmy, jak to działa na liczbach.
+    </p>
+
+    <h2>IKE — Indywidualne Konto Emerytalne</h2>
+    <p>
+      Wpłacasz środki już opodatkowane (nie odliczasz wpłaty od dochodu), ale za to{' '}
+      <strong>zyski wypracowane na koncie są całkowicie zwolnione z podatku od zysków
+      kapitałowych (tzw. podatku Belki)</strong>, pod warunkiem wypłaty po ukończeniu 60.
+      roku życia (55 lat dla osób z wcześniejszymi uprawnieniami emerytalnymi) i dokonania
+      wpłat w co najmniej 5 dowolnych latach kalendarzowych (albo wpłacenia ponad połowy
+      wartości wpłat w roku poprzedzającym wypłatę).
+    </p>
+
+    <h2>IKZE — Indywidualne Konto Zabezpieczenia Emerytalnego</h2>
+    <p>
+      Wpłatę na IKZE <strong>odliczasz od podstawy opodatkowania PIT w roku wpłaty</strong> —
+      to realna, natychmiastowa korzyść podatkowa, tym większa, im wyższa Twoja krańcowa
+      stawka podatku. W zamian przy wypłacie po 65. roku życia (i po minimum 5 latach
+      wpłat) płacisz zryczałtowany podatek <strong>10%</strong> od całej wypłaty — zamiast
+      standardowej skali czy liniowego PIT.
+    </p>
+
+    <h2>Ile możesz wpłacić</h2>
+    <p>
+      Roczne limity wpłat są ustalane odrębnie na każdy rok jako wielokrotność
+      prognozowanego przeciętnego wynagrodzenia w gospodarce narodowej i ogłaszane
+      komunikatem Ministra Finansów. Orientacyjnie, licząc od przeciętnego prognozowanego
+      wynagrodzenia na {ROK} r. przyjętego przez ZUS ({PRZECIETNE_PROGNOZOWANE.toLocaleString('pl-PL')} zł):
+    </p>
+    <ul>
+      <li>IKE: ok. 3-krotność, czyli w przybliżeniu <strong>{fmt0(limitIkeOrientacyjny)} zł</strong> rocznie.</li>
+      <li>IKZE (etat, zlecenie): ok. 1,2-krotność, czyli w przybliżeniu <strong>{fmt0(limitIkzeEtatOrientacyjny)} zł</strong> rocznie.</li>
+      <li>IKZE (działalność gospodarcza): ok. 1,8-krotność, czyli w przybliżeniu <strong>{fmt0(limitIkzeJdgOrientacyjny)} zł</strong> rocznie.</li>
+    </ul>
+    <p style="font-size: 0.9rem; color: var(--atrament-2);">
+      To są przybliżenia oparte na ogólnym wzorze — dokładne kwoty na dany rok ogłasza
+      oficjalnie Ministerstwo Finansów; przed wpłatą sprawdź aktualny komunikat.
+    </p>
+
+    <h2>Przykład: korzyść podatkowa z wpłaty na IKZE</h2>
+    <p>
+      Przy wpłacie równej orientacyjnemu limitowi dla etatu ({fmt0(wplataIkze)} zł
+      rocznie), oszczędność podatkowa w roku wpłaty zależy od Twojej stawki PIT:
+    </p>
+    <table>
+      <caption>Oszczędność podatkowa z odliczenia wpłaty na IKZE. Stawki {ROK}.</caption>
+      <thead>
+        <tr>
+          <th>Stawka PIT</th>
+          <th class="liczba">Oszczędność w roku wpłaty</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>12% (dochód do 120 000 zł/rok)</td>
+          <td class="mono">{fmt0(oszczednoscPodatkowa12)}</td>
+        </tr>
+        <tr class="wyroznione">
+          <td>32% (nadwyżka ponad 120 000 zł/rok)</td>
+          <td class="mono">{fmt0(oszczednoscPodatkowa32)}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Im wyższa Twoja krańcowa stawka podatku, tym większa korzyść z IKZE „tu i teraz" —
+      dlatego IKZE bywa szczególnie atrakcyjne dla osób wchodzących w drugi próg
+      podatkowy albo rozliczających się podatkiem liniowym na B2B.
+    </p>
+
+    <h2>Które konto wybrać</h2>
+    <p>
+      Nie trzeba wybierać jednego — limity IKE i IKZE są niezależne, można wpłacać na
+      oba w tym samym roku. W uproszczeniu: IKZE opłaca się bardziej przy wysokiej
+      bieżącej stawce podatkowej (korzyść od razu), IKE — gdy zależy Ci na pełnej
+      elastyczności i zerowym podatku od zysków w przyszłości, bez czekania na ulgę
+      podatkową teraz.
+    </p>
+    <p>
+      Prowadzisz działalność i zastanawiasz się, jak to wygląda na tle przyszłej
+      emerytury z ZUS? Zobacz{' '}
+      <a href="/blog/emerytura-etat-b2b/">Emerytura na etacie a na B2B</a>.
+    </p>
+
+    <h2>Najczęstsze pytania</h2>
+
+    <p class="faq-pytanie">Co się dzieje, jeśli wypłacę środki z IKE lub IKZE przed czasem?</p>
+    <p>
+      Wcześniejsza wypłata (tzw. zwrot) traktowana jest inaczej niż standardowa wypłata
+      po osiągnięciu wieku emerytalnego: na IKE tracisz zwolnienie z podatku Belki od
+      wypracowanych zysków, a na IKZE cała wypłacona kwota (nie tylko zyski) dolicza się
+      do Twojego dochodu i jest opodatkowana na zasadach ogólnych zamiast preferencyjnych
+      10%.
+    </p>
+
+    <p class="faq-pytanie">Czy niewykorzystany limit wpłat przechodzi na kolejny rok?</p>
+    <p>
+      Nie — limit obowiązuje w danym roku kalendarzowym i nie kumuluje się. Jeśli nie
+      wpłacisz maksymalnej kwoty w danym roku, ta „przestrzeń" po prostu przepada.
+    </p>
+
+    <div class="zastrzezenie">
+      Artykuł ma charakter poglądowy. Podane limity wpłat są orientacyjne — dokładne
+      kwoty na {ROK} r. ogłasza Ministerstwo Finansów odrębnym komunikatem. Nie stanowi
+      porady finansowej ani podatkowej.
+    </div>
+  </div>
+</Layout>
