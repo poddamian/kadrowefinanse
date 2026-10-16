@@ -12,8 +12,8 @@ const schema = {
   description: opis,
   datePublished: '2026-10-13',
   dateModified: '2026-10-13',
-  author: { '@type': 'Organization', name: 'Kadrowe Finanse' },
-  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/' },
+  author: { '@type': 'Person', name: 'Damian Podolski', jobTitle: 'Księgowy', url: 'https://kadrowefinanse.pl/o-nas/', image: 'https://kadrowefinanse.pl/DamianPodolski.png' },
+  publisher: { '@type': 'Organization', name: 'Kadrowe Finanse', url: 'https://kadrowefinanse.pl/o-nas/', image: 'https://kadrowefinanse.pl/DamianPodolski.png' },
   url: 'https://kadrowefinanse.pl/blog/ike-ikze-oszczedzanie-podatek/',
 };
 
@@ -32,7 +32,7 @@ const fmt0 = (n: number) => Math.round(n).toLocaleString('pl-PL') + ' zł';
 <Layout title={tytul} description={opis} schema={schema}>
   <span class="brew">IKE: bez podatku od zysków · IKZE: ulga w PIT od razu</span>
   <h1>{tytul}</h1>
-  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: Redakcja Kadrowe Finanse</p>
+  <p style="color: var(--atrament-2); font-size: 0.9rem;">Ostatnia aktualizacja: {aktualizacja} · Autor: <a href="/o-nas/">Damian Podolski</a>, księgowy z 30-letnim doświadczeniem</p>
 
   <div class="tresc" style="margin-top: 1rem;">
     <p style="font-size: 1.05rem;">
