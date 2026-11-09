@@ -1,6 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { PLACA_MINIMALNA } from '../lib/params2026';
+import { PLACA_MINIMALNA, ROK } from '../lib/params2026';
+import { artykuly } from './blog/index.astro';
+
+// Nowe artykuły są dopisywane na koniec listy w blog/index.astro
+const najnowsze = artykuly.slice(-6).reverse();
 ---
 
 <Layout
@@ -8,7 +12,7 @@ import { PLACA_MINIMALNA } from '../lib/params2026';
   description="Darmowe kalkulatory: B2B czy umowa o pracę, nadpłata kredytu, ekwiwalent za urlop, składka zdrowotna 2026. Bez rejestracji, obliczenia w przeglądarce, aktualne stawki."
 >
   <section>
-    <span class="brew">stawki zaktualizowane · {new Date().getFullYear()}</span>
+    <span class="brew">stawki zaktualizowane · {ROK}</span>
     <h1>Policz, ile naprawdę zostaje.</h1>
     <p style="max-width: 560px; font-size: 1.05rem; color: var(--atrament-2);">
       Kalkulatory finansowo-kadrowe z aktualnymi polskimi stawkami — ZUS, PIT, składka
@@ -17,7 +21,7 @@ import { PLACA_MINIMALNA } from '../lib/params2026';
     </p>
 
     <div class="siatka-kart">
-      <a href="/b2b-czy-uop/" class="karta-narzedzia">
+      <a href="/b2b-czy-uop/" class="karta-narzedzia karta-wyrozniona">
         <h3>B2B czy umowa o pracę?</h3>
         <p>
           Porównaj netto „na rękę” z etatu i faktury — skala, liniowy albo ryczałt, z
@@ -82,12 +86,30 @@ import { PLACA_MINIMALNA } from '../lib/params2026';
     </div>
   </section>
 
+  <section>
+    <div class="sekcja-naglowek">
+      <h2>Najnowsze artykuły</h2>
+      <a href="/blog/" class="karta-cta">Wszystkie artykuły ({artykuly.length}) →</a>
+    </div>
+    <div class="siatka-kart siatka-artykulow">
+      {
+        najnowsze.map((a) => (
+          <a href={a.url} class="karta-narzedzia">
+            <span class="brew">{a.brew}</span>
+            <h3>{a.tytul}</h3>
+            <p>{a.opis}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
   <section class="tresc">
     <h2>Dlaczego Kadrowe Finanse?</h2>
     <p>
       Większość kalkulatorów w polskim internecie to albo ciężkie portale kadrowe pełne
       reklam, albo strony, które nie nadążają za zmianami przepisów. My robimy jedną
-      rzecz: <strong>aktualne stawki na {new Date().getFullYear()} rok</strong> (płaca
+      rzecz: <strong>aktualne stawki na {ROK} rok</strong> (płaca
       minimalna {PLACA_MINIMALNA} zł, nowe podstawy ZUS, składka zdrowotna po zmianach) i
       czytelny wynik z rozbiciem każdej pozycji — tak, żebyś rozumiał, skąd bierze się
       każda złotówka.
